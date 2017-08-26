@@ -1,0 +1,798 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+		<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+		<title>Mihai_Popescu-Resume</title>
+		<!--<xml>
+			<o:DocumentProperties>
+			  <o:Author>Mihai Popescu</o:Author>
+			  <o:LastAuthor>Mihai Popescu</o:LastAuthor>
+			  <o:Revision>16</o:Revision>
+			  <o:Created>2014-05-07T13:33:00Z</o:Created>
+			 </o:DocumentProperties>
+		</xml>-->
+		<style>
+		    /* Text formatting */
+            a:link {
+                text-decoration: none;
+            }
+            
+            .green {
+                color:#94ae44;
+            }
+            
+            .dark-green {
+                color:#4a5722;
+            }
+
+            .trebut {
+                font: "Trebuchet MS", Georgia, serif;
+            }
+
+            .arial {
+                font: "Arial Narrow", Arial, Helvetica, sans-serif;
+            }
+
+            #subtitle {
+                padding: 0 100px;
+                font-size: 100%;
+                margin-bottom: 1px;
+                float: right;
+                font-color: blue;
+                list-style-type: disc;
+            }
+
+            #bluetext {
+                color: #365F91;
+                font-size: 100%;
+                margin-top: 10px;
+            }
+
+            /* end text formatting */
+            /* General */
+            body {
+            	position:relative;
+            	background:#f8fbee;
+            	padding-top:40px;
+            }
+
+            .menu {
+            	position:absolute !important;
+            }
+
+            nav ul {
+            	z-index:1;
+            }
+
+            .contact {
+            	z-index:0;
+            }
+
+            a.top {
+                float: right;
+            }
+
+            .title {
+                font-size: 75px;
+                font-weight: bold;
+                margin-bottom: -40px;
+                max-width: 1100px;
+                text-shadow: 2px 2px 2px grey;
+                padding-top: 0;
+            }
+
+            .section {
+                font-size: 100%;
+                font-weight: bold;
+                color: #365F91;
+                padding: 5px 0;
+                display: block;
+            }
+            
+            .borders {
+                border-bottom: solid black 1pt;
+            }
+
+            .job {
+                font-size: 120%;
+                font-weight: bold;
+                margin-bottom: 0;
+            }
+            
+            .sub-section {
+                padding:0;
+            }
+
+            #body {
+                margin-top: 0;
+                font-size: 100%;
+                max-width: 1000px;
+            }
+
+            div {
+                margin: 0;
+            }
+
+            .printable, .printabl-webkit, .printable-moz {
+                display: none;
+            }
+
+            .centre-horz {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            #content {
+                margin-left: auto;
+                margin-right: auto;
+                width: 70%;
+                min-width: 420px;
+                max-width: 1100px;
+                word-wrap: normal;
+                background: white;
+                padding: 0 50px;
+                padding-bottom: 50px;
+                border-width: 2px;
+                border-color: black;
+                border-style: solid;
+                clear: all;
+                overflow: hidden;
+            }
+
+            #resume {
+                width: 100%;
+                max-width: 1100px;
+                float: left;
+            }
+
+            #page-wrap {
+                position: relative;
+                float: right;
+            }
+
+            #sidebar {
+                position: fixed;
+                float: right;
+                bottom: 5%;
+                right: 5%;
+                display: inline-block;
+                padding: 5px 15px;
+                z-index: 100;
+            }
+
+            /* end general */
+            /* arrow box */
+            .arrow-box {
+                position: relative;
+                border: 4px solid;
+            }
+
+            .arrow-box:after, .arrow-box:before {
+                bottom: 100%;
+                left: 20%;
+                border: solid transparent;
+                content: " ";
+                height: 0;
+                width: 0;
+                position: absolute;
+                pointer-events: none;
+            }
+
+            .arrow-box:after {
+                border-color: transparent;
+                border-width: 10px;
+                margin-left: -10px;
+            }
+
+            .arrow-box:before {
+                border-color: transparent;
+                border-bottom-color: #BADA55;
+                border-width: 16px;
+                margin-left: -16px;
+            }
+
+            .arrow-box.left:before, .arrow-box.left:after {
+                left: 20%;
+            }
+
+            .arrow-box.centre:before, .arrow-box.centre:after {
+                left: 50%;
+            }
+
+            .arrow-box.green-white {
+                background: white;
+                border-color: #BADA55;
+            }
+
+            .arrow-box.green-white:after {
+                border-bottom-color: white;
+            }
+
+            .arrow-box.green-white:before {
+                border-bottom-color: #BADA55;
+            }
+
+            .arrow-box.menu {
+                background: ##94ae44;
+                border-color: #94ae44;
+            }
+
+            .arrow-box.menu:after {
+                border-bottom-color: ##94ae44;
+            }
+
+            .arrow-box.menu:before {
+                border-bottom-color: #94ae44;
+            }
+
+            /* end arrow box */
+            /* Expanding Mobile Navigation */
+            section {
+                margin-top: 0;
+                margin: 0;
+                max-width: 1100px;
+                width: 100%;
+            }
+
+            input[type=checkbox] {
+                -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+                filter: alpha(opacity=0);
+                opacity: 0;
+                width: 0%;
+                height: 0%;
+            }
+
+            label {
+                margin: 0;
+                padding: 0;
+            }
+            
+            .expanding:before {
+              content: "";
+              position: relative;
+              float:left;
+              width: 0;
+              height: 0;
+              border-top:0;
+              border-left: 8px solid black;
+              border-top: 8px solid transparent;
+              border-bottom: 8px solid transparent;
+              display:none;
+            }
+
+            /* Toggled State */
+            input[type=checkbox]:checked ~ section {
+                max-height: 100%;
+            }
+            
+            input[type=checkbox]:checked ~ label > .expanding:before {
+              border-left: 8px solid transparent;
+              border-top: 8px solid black;
+              border-right: 8px solid transparent;
+              top:4px;
+            }
+
+            /* Smartphones (portrait and landscape) ----------- */
+            @media only screen and (min-device-width : 320px) and (max-device-width: 1224px) {
+                nav ul, #sidebar {
+                    /* hide other navigation */
+                    display: none;
+                }
+                nav ul.contact, .expanding:before {
+                    /* still show contact */
+                    display: inline;
+                }
+                section {
+                    /* hide data using height */
+                    max-height: 0;
+                    overflow: hidden;
+                }
+                input[type=checkbox] {
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+                    filter: alpha(opacity=0);
+                    opacity: 0;
+                }
+                label {
+                    cursor: pointer;
+                    background-colour: #f8fbee;
+                }
+                #sidebar {
+                    display: none;
+                }
+            }
+            
+            /* Desktops and laptops ----------- */
+            @media only screen 
+            and (min-width : 1224px) {
+                /* Styles */
+            }
+            /* end expanding mobile navigation */
+                        
+            /* Tables */
+            table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            td {
+                padding: 2px 4% 2px 4%;
+                width: 50%;
+            }
+
+            /* end tables */
+            /* Navigation Menu */
+            nav {
+                background-color: #BADA55;
+                -moz-border-radius: 0 20px;
+                -webkit-border-radius: 0 20px;
+                border-radius: 0 20px;
+                padding-top: 25px;
+                float: left;
+                width: 100%;
+                max-width: 1100px;
+            }
+
+            nav ul {
+                list-style: none;
+                font-weight: bold;
+                margin-bottom: 3px;
+                position: relative;
+                float: left;
+            }
+
+            nav ul:after {
+                content: "";
+                clear: both;
+                display: block;
+            }
+
+            nav li {
+                float: left;
+                position: relative;
+                display: inline-table;
+            }
+
+            nav ul.contact li {
+                float: left;
+                position: relative;
+                display: inline;
+                color: white;
+                margin-left: -15px;
+            }
+
+            nav ul.contact li a {
+                float: right;
+                position: relative;
+                display: list-item;
+                margin-left: 20px;
+                display: inline;
+                padding: 5px;
+                color: black;
+                background-color: transparent;
+                white-space: nowrap;
+            }
+
+            nav a {
+                display: inline-block;
+                padding: 5px;
+                color: #fff;
+                background-color: #BADA55;
+                white-space: nowrap;
+            }
+
+            nav ul ul {
+                background: #94ae44;
+                list-style: none;
+                position: absolute;
+                padding: 0;
+                display: none;
+                z-index: 2;
+            }
+
+            nav li ul li {
+                padding: 0 5px;
+                float: none;
+                display: block;
+            }
+
+            nav li ul li a {
+                padding: 5px 5px;
+                margin-left: -5px;
+            }
+
+            nav li:hover > ul {
+                display: block;
+            }
+
+            nav ul.contact li:hover a {
+                background: transparent;
+                text-decoration: underline;
+            }
+
+            nav li:hover a {
+                background: -moz-linear-gradient(#94ae44, #6f8233);
+                background: -o-linear-gradient(#94ae44, #6f8233);
+                background: -webkit-linear-gradient(#94ae44, #6f8233);
+                background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #94ae44), color-stop(1, #6f8233));
+                filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr=#94ae44, EndColorStr=#6f8233)";
+                background: linear-gradient(#94ae44, #6f8233);
+            }
+
+            nav li:hover ul li a {
+                background: inherit;
+            }
+
+            nav li:hover ul a {
+                text-decoration: none;
+            }
+
+            nav li ul li:hover > a {
+                background: #6f8233;
+                -moz-border-radius: 0;
+                -webkit-border-radius: 0;
+                border-radius: 0;
+                width: 100%;
+            }
+
+            nav ul ul ul {
+                position: absolute;
+                left: 100%;
+                top: 0;
+            }
+
+            /* end navigation */
+            /* Printing optimizations */
+            @media print {
+                a:link:after, a:visited:after {
+                    content: " [" attr(href) "] ";
+                }
+                .arial, .section, #body, #subtitle, #bluetext {
+                    font-size: 10pt;
+                }
+                .title {
+                    font-size: 22pt;
+                    margin: 0;
+                    padding: 0;
+                }
+                .job {
+                    font-size: 12pt;
+                }
+                #content {
+                    width: 100%;
+                    margin: 0;
+                    padding: 0;
+                    border-width: 0;
+                }
+                #resume {
+                    margin: 0;
+                }
+                .printable {
+                    display: inline !important;
+                }
+                .no-print, .no-print * {
+                    display: none !important;
+                }
+                
+                p {
+                    page-break-before:avoid;
+                }
+                
+                h3, h2 {
+                    page-break-after:avoid;
+                }
+                
+                .borders, span {
+                    page-break-inside:avoid;
+                    page-break-after:auto;
+                }
+            }
+        </style>
+	</head>
+	<body>
+		<div id='content'>
+			<a id='sidebar' href="#" class="arrow-box green-white centre no-print">To Top</a>
+			<h1 class="trebut title"><sup>Mihai</sup>Popescu</h2>
+			<nav class='no-print'>
+				<ul>
+					<li><a href="#summary">Summary</a></li>
+					<li><a href="#skills">Skills</a>
+						<ul class='menu left'>
+							<li><a href="#principles">Principles &amp; Methodologies</a>
+							<li><a href="#softskills">Soft Skills</a>
+							<li><a href="#programming">Programming</a>
+							<li><a href="#technology">Technologies</a>
+						</ul>
+					</li>
+					<li><a href="#experience">Experience</a>
+						<ul class="menu left">
+							<li><a href="#garner">Garner Distributed Workflow</a>
+							<li><a href="#moh">Ministry of Health</a>
+							<li><a href="#eui">EU &amp; I</a>
+							<li><a href="#alpha">Alpha Global IT</a>
+						</ul>
+					</li>
+					<li><a href="#education">Education</a></li>
+					<li><a href="#contact">Contact</a></li>
+				</ul>
+				<ul class="trebut contact" id='subtitle'>
+					<li><a href="http://ca.linkedin.com/in/m4popesc">Linkedin</a></li>
+				</ul>
+			</nav>
+
+			<div id='resume'>
+				<div class='borders'>
+					<input type="checkbox" id='summary' class='no-print'>
+					<label for='summary'><h2 class="trebut section expanding"><a class='dark-green' id="summary">PROFESSIONAL SUMMARY</a></h2></label>
+					<section>
+						<p class='arial' id='body'> I am a Software Developer and Technical Lead with 8 years of experience working in a variety of IT organizations ranging from start-ups to cross-functional organizations. I have extensive experience with Scala, Java, AngularJS, and *nix systems; primarily within Agile environments. I have a strong work ethic, am very passionate about the work I produce, and am highly successful both within a team as well as on an individual basis. My varied areas of expertise, diligence, willingness to learn, and thorough approach allow me to not only meet but exceed expectations.
+						<br><br>I value craftsmanship and team trust among my colleagues as these are the key components to being an effective development team. I am continuously learning by using new paradigms and technologies that expand my skill set and advance the quality of my work. Within a team I endeavor to share new technologies and paradigms as well as encourage craftsmanship and ownership.</p>
+					</section>
+				</div>
+				
+				<div class='borders'>
+					<input type="checkbox" id='skills' class='no-print'>
+					<label for='skills'><h2 class="trebut section expanding"><a class='dark-green' id="skills">AREAS OF EXPERTISE</a></h2></label>
+					<section>
+					<div class='sub-section'>
+							<input type="checkbox" id='principles' class='no-print'>
+							<label for='principles'><p class="arial expanding" id="bluetext body"><a id="principles">Principles &amp; Methodologies:</a></p></label>
+								<section>
+								<table class='arial'>
+									<tr>
+										<td><li type='square'>Functional Programming, Object Oriented Programming</li></td>
+										<td><li type='square'>Agile, Extreme programming, Waterfall</li></td>
+									</tr>
+									<tr>
+										<td><li type='square'><a class="green" href="https://en.wikipedia.org/wiki/Test-driven_development">Test Driven Development</a></li></td>
+										<td><li type='square'><a class="green" href="https://en.wikipedia.org/wiki/Domain-driven_design">Domain Driven Design</a>, <a class="green" href="https://en.wikipedia.org/wiki/SOLID_(object-oriented_design)">SOLID</a></li></td>
+									</tr>
+									<tr>
+										<td><li type='square'>Web Services, SOA</li></td>
+										<td><li type='square'>RBAC2</li></td>
+									</tr>
+								</table>
+								</section>
+						</div>
+						<div class='sub-section'>
+							<input type="checkbox" id='softskills' class='no-print'>
+							<label for='softskills'><p class="arial expanding" id="bluetext body"><a id="softskills">Soft Skills:</a></p></label>
+							<section>
+								<table class='arial'>
+									<tr>
+										<td><li type='square'>Task Design &amp; Estimation</li></td>
+										<td><li type='square'>Dev Management, Training &amp; Interviewing</li></td>
+									</tr>
+									<tr>
+										<td><li type='square'>Client Communication &amp; Support</li></td>
+										<td><li type='square'>Code Review &amp; Pairing</li></td>
+									</tr>
+								</table>
+							</section>
+						</div>
+						<div class='sub-section'>
+							<input type="checkbox" id='programming' class='no-print'>
+							<label for='programming'><p class="arial expanding" id="bluetext body"><a id="programming">Programming Languages, Scripts, and APIs:</a></p></label>
+								<section>
+								<table class='arial'>
+									<tr>
+										<td><li type='square'>Scala, Java, C#, C, C++</li></td>
+										<td><li type='square'>JSON, REST</li></td>
+									</tr>
+									<tr>
+										<td><li type='square'>Javascript, AngularJS, JSP, ASP.NET, Bootstrap</li></td>
+										<td><li type='square'>HTML, HTML5, XHTML, XML, XSD, CSS</li></td>
+									</tr>
+									<tr>
+										<td><li type='square'>Android SDK</li></td>
+										<td><li type='square'>Hadoop MapReduce, Hive, Pig, Impala</li></td>
+									</tr>
+									<tr>
+										<td><li type='square'>BASH</li></td>
+										<td><li type='square'>SQL, QUEL, RL</li></td>
+									</tr>
+								</table>
+								</section>
+						</div>
+						<div class='sub-section'>
+							<input type="checkbox" id='technology' class='no-print'>
+							<label for='technology'><p class="arial expanding" id="bluetext body"><a id="technology">Technologies:</a></p></label>
+							<section>
+								<table class='arial'>
+									<tr>
+										<td><li type='square'>Intellij, Eclipse, NetBeans, Visual Studio</li></td>
+										<td><li type='square'>JIRA, Confluence, Cruicble, Wrike, VersionOne</li></td>
+									</tr>
+									<tr>
+										<td><li type='square'>Postgresql, Oracle11g, DB2, MySQL, MSSQL</li></td>
+										<td><li type='square'>Subversion, Git</li></td>
+									</tr>
+									<tr>
+										<td><li type='square'>Hadoop Distributed File System (HDFS)</li></td>
+										<td><li type='square'>Apache Web Server, Tomcat</li></td>
+									</tr>
+									<tr>
+										<td><li type='square'>*nix systems</li></td>
+										<td><li type='square'>SNOMED CT</li></td>
+									</tr>
+								</table>
+							</section>
+						</div>
+						<br>
+					</section>
+				</div>
+				
+				<div class='borders'>
+					<input type="checkbox" id='experience' class='no-print'>
+					<label for='experience'><h2 class="trebut section expanding"><a class='dark-green' id="experience">CAREER EXPERIENCE</a></h2></label>
+					<section>
+						<div class='sub-section'>
+							<input type="checkbox" id='garner' class='no-print'>
+							<label for='garner'><h3 class="arial job expanding"><a id="garner">Garner Distributed Workflow</a>, Toronto, ON
+												<br>August 2014 - Present</h3></label>
+							<section>
+								<p class='arial' id='body'><a class='green' href="http://www.garnercorp.com/">Garner Distributed Workflow</a> is a software development shop that produces logistics and document management software for a variety of clients such as Exxon Mobil and the Yukon Environmental and Socio-economic Assessment Board<br>
+									<br>
+									<b>Technical Lead (responsible for code in three projects, one active development, two maintenance)</b> (July 2015 - Present)<br>
+									<ul>
+										<li>Continued duties as a developer.</li>
+										<li>Worked together with System Designers, Project Managers, and clients to form tasks on three projects.</li>
+										<li>Worked together with developers on those projects to manage code quality and assist with solutioning.</li>
+										<li>Worked together with other Technical Leads to improve general system designs and design new frameworks.</li>
+										<li>Interviewed several candidates for developer positions, both intermediate and senior.</li>
+										<li>Drove code quality and innovation within the team.</li>
+										<li>Managed support team and schedule for a project with 24/7 support.</li>
+										<li>Coached other developers in functional programming and domain driven design.</li>
+										<li>Held responsibility over technical decision making for all three projects.</li>
+									</ul>
+									<br>
+									<b>Software Developer</b> (August 2014 - June 2015)<br>
+									<ul>
+										<li>Scala and Java application development.</li>
+										<li>Code reviewed peers' code as well as paired with co-workers on complex tasks.</li>
+										<li>System and Database Administration.</li>
+										<li>Introduced the use of Intellij and JIRA as well as administered both.</li>
+										<li>Drove code quality and innovation within the team.</li>
+										<li>Improved application Architecture and Design.</li>
+										<li>Worked in a true Agile environment following Extreme Programming practices &amp; principles.</li>
+									</ul>
+									<br>
+									Used the following key technologies:
+									<ul>
+										<li>Scala, Java</li>
+										<li>Javascript, AngularJS</li>
+										<li>Intellij</li>
+										<li>JIRA, Confluence, Crucible</li>
+									</ul>
+								</p>
+							</section>
+
+						</div>
+
+						<div class='sub-section'>
+							<input type="checkbox" id='moh' class='no-print'>
+							<label for='moh'><h3 class="arial job expanding"><a id="moh">Ministry of Health and Long-Term Care</a>, Toronto, ON
+												<br>May 2013 - September 2013</h3></label>
+							<section>
+								<p class='arial' id='body'><a class='green' href="http://www.health.gov.on.ca/">Ministry of Health and Long-Term Care</a>,
+								 <a class='green' href="http://www.infogo.gov.on.ca/infogo/office.do?actionType=servicedirectory&amp;infoType=&amp;unitId=UNT0031257&amp;locale=en">
+								 Ontario Public Health Integrated Solutions Branch</a>, Panorama Project;
+									 Panorama is a pan-Canadian immunization, vaccine inventory, and infectious disease outbreak management integrated system.<br>
+									<br>
+									<b>Systems Officer</b> (May 2013 - September 2013)<br>
+									<ul>
+										<li>System and Database Administration.</li>
+										<li>Bash/SQL Script Development.</li>
+										<li>Designed and Developed a Configuration Management Tool for RBAC2.</li>
+										<li>Role-Based Access Control (RBAC) with Dynamic Separation of Duty: Analysis, Role Design, Implementation and Configuration.</li>
+										<li>Clinical Terms and Vocabulary Analysis and Testing.</li>
+									</ul>
+									Used the following key technologies:
+									<ul>
+										<li>Java</li>
+										<li>Eclipse</li>
+										<li>Bash</li>
+										<li>SQL</li>
+										<li>RBAC2</li>
+										<li>SNOMED CT</li>
+									</ul>
+								</p>
+							</section>
+						</div>
+						
+						<div class='sub-section'>
+							<input type="checkbox" id='eui' class='no-print'>
+							<label for='eui'><h3 class="arial job expanding"><a id="eui">Eu &amp; I</a>, Toronto, ON
+												<br>2011 JUNE - 2012 AUGUST</h3></label>
+							<section>
+								<p class='arial' id='body'><a class='green' href="http://www.eu-and-i.com/">Eu &amp; I</a>
+								 is a software consulting company located in Toronto, Ontario, Canada.<br>
+									<br>
+									<b>Software Developer</b> (2011 June - 2012 August)<br>
+									<ul>
+										<li>Involved in website, mobile app and application development.</li>
+										<li>Developed an internal Business Plan for a marketing analysis and reporting tool.</li>
+									</ul>
+									Used the following key technologies:
+									<ul>
+										<li>Java</li>
+										<li>C#</li>
+										<li>Android SDK</li>
+										<li>Eclipse</li>
+										<li>Javascript</li>
+										<li>HTML</li>
+										<li>Apache Web Server, HTTPS and Security Configuration, User Management</li>
+									</ul>
+								</p>
+							</section>
+						</div>
+						
+						<div class='sub-section'>
+							<input type="checkbox" id='alpha' class='no-print'>
+							<label for='alpha'><h3 class="arial job expanding"><a id="alpha">Alpha Global IT</a>, Toronto, ON
+												<br>2009 (May - August) and 2008 (September - December)</h3></label>
+							<section>
+								<p class='arial' id='body'><a class='green' href="http://www.alphahealthcare.ca/it/">Alpha Global IT</a>
+								 delivers Electronic Medical Records and Clinical Management Information Systems.<br>
+									<br>
+									<b>Quality Assurance Analyst</b> (2009 and 2008)<br>
+									<ul>
+										<li>Made important contributions during the CMS 3.0 compliance certification of the flag-ship product: Globe MED.</li>
+										<li>Performed quality assurance analysis, including formulating and executing test cases.</li>
+									</ul>
+									Used the following key technologies:
+									<ul>
+										<li>Jira</li>
+										<li>MSSQL, MYSQL, XML and XSD, Java 6</li>
+										<li>VersionOne</li>
+										<li>Subversion</li>
+									</ul>
+								</p>
+							</section>
+						</div>
+					</section>
+				</div>
+				
+				<div class='borders'>
+					<input type="checkbox" id='education' class='no-print'>
+					<label for='education'><h2 class="trebut section expanding"><a class='dark-green' id="education">EDUCATION &amp; PROFESSIONAL DEVELOPMENT</a></h2></label>
+					<section>
+						<h3>Education</h3>
+						<p class='arial' id='body'>
+							<span>2014 April-May, <a class='green' href="http://cloudera.com/content/cloudera/en/training.html">Cloudera University</a>,
+						 	<a class='green' href="http://university.cloudera.com/course/developer">Cloudera Developer Training for Apache Hadoop</a>.</span><br>
+							<span>2009-2014, <a class='green' href="http://www.ryerson.ca/index.html">Ryerson University</a>,
+							 <a class='green' href="http://www.scs.ryerson.ca/usoverview.php">Bachelor of Science in Computer Science with Honours</a>.</span><br>
+							<span>2008-2009, <a class='green' href="https://uwaterloo.ca/">University of Waterloo</a>,
+							 <a class='green' href="https://uwaterloo.ca/find-out-more/programs/computer-science">Bachelor of Science in Computer Science with Honours</a>.</span><br>
+							<span>2003-2007, High school Graduate with Honours at
+							 <a class='green' href="http://schoolweb.tdsb.on.ca/donmillsci/Home.aspx">Don Mills Collegiate Institute</a>, Toronto.</span><br>
+						</p>
+					</section>
+
+					<section>
+						<h3>Certifications</h3>
+						<p class='arial' id='body'>
+							<a class='green' href="http://cloudera.com/content/cloudera/en/training.html">Cloudera Certified Developer for Apache Hadoop</a>
+						</p>
+					</section>
+				</div>
+				
+				<div class='borders'>
+					<input type="checkbox" id='contact' class='no-print'>
+					<label for='contact'><h2 class="trebut section expanding"><a class='dark-green' id="contact">CONTACT</a></h2></label>
+					<section>
+						<p class='arial' id='body'>Please contact me through my <a href="http://ca.linkedin.com/in/m4popesc">Linkedin</a> account.</p>
+					</section>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>
