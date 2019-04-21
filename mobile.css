@@ -1,0 +1,78 @@
+
+/* Expanding Mobile Navigation */
+section {
+    margin-top: 0;
+    margin: 0;
+    max-width: 1100px;
+    width: 100%;
+}
+
+input[type=checkbox] {
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    filter: alpha(opacity=0);
+    opacity: 0;
+    width: 0%;
+    height: 0%;
+}
+
+label {
+    margin: 0;
+    padding: 0;
+}
+
+.expanding:before {
+    content: "";
+    position: relative;
+    float:left;
+    width: 0;
+    height: 0;
+    border-top:0;
+    border-left: 8px solid black;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    display:none;
+}
+
+/* Toggled State */
+input[type=checkbox]:checked ~ section {
+    max-height: 100%;
+}
+
+input[type=checkbox]:checked ~ label > .expanding:before {
+    border-left: 8px solid transparent;
+    border-top: 8px solid black;
+    border-right: 8px solid transparent;
+    top:4px;
+}
+
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen and (min-device-width : 320px) and (max-device-width: 1224px) {
+    section {
+        /* hide data using height */
+        max-height: 0;
+        overflow: hidden;
+    }
+    input[type=checkbox] {
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+        filter: alpha(opacity=0);
+        opacity: 0;
+    }
+    label {
+        cursor: pointer;
+        background-colour: #f8fbee;
+    }
+    #sidebar {
+        display: none;
+    }
+}
+
+/* Desktops and laptops ----------- */
+@media only screen
+and (min-width : 1224px) {
+    /* Styles */
+}
+/* end expanding mobile navigation */

@@ -1,0 +1,19 @@
+.skills {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    flex-flow: row wrap;
+}
+
+.skill-header {
+}
+
+.skill-line {
+    border-bottom: solid #BADA55 2pt;
+    width: 80%;
+}
+
+.skill {
+    flex: 2 1;
+    min-width: 250px;
+}
