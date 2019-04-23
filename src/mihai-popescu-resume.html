@@ -3,15 +3,20 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+    <meta name="HandheldFriendly" content="true" />
+    <meta name="MobileOptimized" content="320" />
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, width=device-width, user-scalable=no" />
     <meta http-equiv=Content-Type content="text/html; charset=windows-1252">
-    <title>Mihai_Popescu-Resume</title>
+    <title>Mihai Popescu's Resume</title>
     <link rel="stylesheet" type="text/css" href="resume.css">
     <link rel="stylesheet" type="text/css" href="jobs.css">
-    <link rel="stylesheet" type="text/css" href="mobile.css">
     <link rel="stylesheet" type="text/css" href="navigation.css">
     <link rel="stylesheet" type="text/css" href="skills.css">
+    <link rel="stylesheet" type="text/css" href="mobile.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
           integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+    <script type="text/javascript" src="resume.js"></script>
     <!--<xml>
         <o:DocumentProperties>
           <o:Author>Mihai Popescu</o:Author>
@@ -24,18 +29,23 @@
 <body>
 <div class='content'>
     <div class="nav no-print">
-        <div class="root-nav">
-            <a class="nav-item" href="#summary">Blog</a>
-            <a class="nav-item" href="#skills">Resume</a>
-            <a class="nav-item" href="#contact">About Me</a>
+        <div class="mobile-menu">
+            <div class="mobile-name">
+                <a href="#" class="mobile-name-title">
+                    <span class="trebut">Mihai Popescu</span>
+                </a>
+            </div>
+            <div>
+                <a href="javascript:;" onclick="toggleHamburger()" class="hamburger">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
         </div>
-        <div class="nav-items">
-            <a class="nav-item" href="#summary">Summary</a>
-            <a class="nav-item" href="#skills">Skills</a>
-            <a class="nav-item" href="#experience">Experience</a>
-            <a class="nav-item" href="#education">Education</a>
-            <a class="nav-item" href="#contact">Contact</a>
-        </div>
+        <a class="nav-item" href="#summary">Summary</a>
+        <a class="nav-item" href="#skills">Skills</a>
+        <a class="nav-item" href="#experience">Experience</a>
+        <a class="nav-item" href="#education">Education</a>
+        <a class="nav-item" href="#contact">Contact</a>
     </div>
 
     <div class="name">
@@ -56,10 +66,8 @@
 
     <div class='resume'>
         <div class="section">
-            <input type="checkbox" id='summary' class='no-print'>
             <div class="section-header">
-                <label for='summary'><h2 class="mono section-title expanding"><a class='dark-green' id="summary">PROFESSIONAL
-                    SUMMARY</a></h2></label>
+                <h2 class="trebut section-title expanding"><a class='dark-green' id="summary">PROFESSIONAL SUMMARY</a></h2>
             </div>
             <div class="sub-section">
                 <section>
@@ -80,18 +88,13 @@
         </div>
 
         <div class="section">
-            <input type="checkbox" id='skills' class='no-print'>
             <div class="section-header">
-                <label for='skills'><h2 class="trebut section-title expanding"><a class='dark-green' id="skills">AREAS
-                    OF
-                    EXPERTISE</a></h2></label>
+                <h2 class="trebut section-title"><a class='dark-green' id="skills">AREAS OF EXPERTISE</a></h2>
             </div>
 
             <div class="skills">
                 <div class="skill">
-                    <div class="skill-header expanding mono">
-                        Principles &amp; Methodologies:
-                    </div>
+                    <div class="skill-header mono">Principles &amp; Methodologies:</div>
                     <div class="skill-line"></div>
                     <div class="skill-content">
                         <ul>
@@ -159,19 +162,12 @@
         </div>
 
         <div class="section">
-            <input type="checkbox" id='experience' class='no-print'>
             <div class="section-header">
-                <label for='experience'><h2 class="trebut section-title expanding"><a class='dark-green'
-                                                                                      id="experience">CAREER
-                    EXPERIENCE</a></h2></label>
+                <h2 class="trebut section-title expanding"><a class='dark-green' id="experience">CAREER EXPERIENCE</a></h2>
             </div>
             <section>
                 <div class='sub-section job'>
-                    <input type="checkbox" id='garner' class='no-print'>
-                    <label for='garner'><h3 class="mono job-title expanding"><a id="garner">Garner Distributed
-                        Workflow</a>,
-                        Toronto, ON
-                        <br>August 2014 - 2017</h3></label>
+                    <h3 class="mono job-title expanding"><a id="garner">Garner Distributed Workflow</a>, Toronto, ON<br>August 2014 - 2017</h3>
                     <section>
                         <p class='mono'><a class='green' href="http://www.garnercorp.com/">Garner Distributed
                             Workflow</a> is a software development shop that produces logistics and document management
@@ -251,10 +247,7 @@
                 </div>
 
                 <div class='sub-section job'>
-                    <input type="checkbox" id='moh' class='no-print'>
-                    <label for='moh'><h3 class="mono job-title expanding"><a id="moh">Ministry of Health and Long-Term
-                        Care</a>, Toronto, ON
-                        <br>May 2013 - September 2013</h3></label>
+                    <h3 class="mono job-title expanding"><a id="moh">Ministry of Health and Long-Term Care</a>, Toronto, ON<br>May 2013 - September 2013</h3>
                     <section>
                         <p class='mono'><a class='green' href="http://www.health.gov.on.ca/">Ministry of Health and
                             Long-Term Care</a>,
@@ -294,9 +287,7 @@
                 </div>
 
                 <div class='sub-section job'>
-                    <input type="checkbox" id='eui' class='no-print'>
-                    <label for='eui'><h3 class="arial job-title expanding"><a id="eui">Eu &amp; I</a>, Toronto, ON
-                        <br>2011 JUNE - 2012 AUGUST</h3></label>
+                    <h3 class="arial job-title expanding"><a id="eui">Eu &amp; I</a>, Toronto, ON<br>2011 JUNE - 2012 AUGUST</h3>
                     <section>
                         <p class='mono'><a class='green' href="http://www.eu-and-i.com/">Eu &amp; I</a>
                             is a software consulting company located in Toronto, Ontario, Canada.<br>
@@ -308,7 +299,8 @@
                             </div>
                             <ul>
                                 <li class="mono">Involved in website, mobile app and application development.</li>
-                                <li class="mono">Developed an internal Business Plan for a marketing analysis and reporting tool.
+                                <li class="mono">Developed an internal Business Plan for a marketing analysis and
+                                    reporting tool.
                                 </li>
                             </ul>
                             <h5 class="mono">Used the following key technologies:</h5>
@@ -319,39 +311,40 @@
                                 <li class="mono">Eclipse</li>
                                 <li class="mono">Javascript</li>
                                 <li class="mono">HTML</li>
-                                <li class="mono">Apache Web Server, HTTPS and Security Configuration, User Management</li>
+                                <li class="mono">Apache Web Server, HTTPS and Security Configuration, User Management
+                                </li>
                             </ul>
                         </div>
                     </section>
                 </div>
 
                 <div class='sub-section job'>
-                    <input type="checkbox" id='alpha' class='no-print'>
-                    <label for='alpha'><h3 class="arial job-title expanding"><a id="alpha">Alpha Global IT</a>, Toronto, ON
-                        <br>2009 (May - August) and 2008 (September - December)</h3></label>
+                    <h3 class="arial job-title expanding"><a id="alpha">Alpha Global IT</a>, Toronto, ON<br>2009 (May - August) and 2008 (September - December)</h3>
                     <section>
                         <p class='mono'><a class='green' href="http://www.alphahealthcare.ca/it/">Alpha Global IT</a>
                             delivers Electronic Medical Records and Clinical Management Information Systems.<br>
                         </p>
-                            <br>
+                        <br>
                         <div class="job-role">
                             <div class="job-role-header">
-                            <h4 class="job-role-title">Quality Assurance Analyst</h4> (2009 and 2008)<br>
+                                <h4 class="job-role-title">Quality Assurance Analyst</h4> (2009 and 2008)<br>
                             </div>
-                        <ul>
-                            <li class='mono'>Made important contributions during the CMS 3.0 compliance certification of the
-                                flag-ship product: Globe MED.
-                            </li>
-                            <li class='mono'>Performed quality assurance analysis, including formulating and executing test cases.
-                            </li>
-                        </ul>
+                            <ul>
+                                <li class='mono'>Made important contributions during the CMS 3.0 compliance
+                                    certification of the
+                                    flag-ship product: Globe MED.
+                                </li>
+                                <li class='mono'>Performed quality assurance analysis, including formulating and
+                                    executing test cases.
+                                </li>
+                            </ul>
                             <h5 class='mono'>Used the following key technologies:</h5>
-                        <ul>
-                            <li class='mono'>Jira</li>
-                            <li class='mono'>MSSQL, MYSQL, XML and XSD, Java 6</li>
-                            <li class='mono'>VersionOne</li>
-                            <li class='mono'>Subversion</li>
-                        </ul>
+                            <ul>
+                                <li class='mono'>Jira</li>
+                                <li class='mono'>MSSQL, MYSQL, XML and XSD, Java 6</li>
+                                <li class='mono'>VersionOne</li>
+                                <li class='mono'>Subversion</li>
+                            </ul>
                         </div>
                     </section>
                 </div>
@@ -359,10 +352,8 @@
         </div>
 
         <div class="section">
-            <input type="checkbox" id='education' class='no-print'>
             <div class="section-header">
-                <label for='education'><h2 class="trebut section-title expanding"><a class='dark-green' id="education">EDUCATION
-                    &amp; PROFESSIONAL DEVELOPMENT</a></h2></label>
+                <h2 class="trebut section-title expanding"><a class='dark-green' id="education">EDUCATION &amp; PROFESSIONAL DEVELOPMENT</a></h2>
             </div>
             <section>
                 <h3 class='mono'>Education</h3>
@@ -389,10 +380,8 @@
         </div>
 
         <div class="section">
-            <input type="checkbox" id='contact' class='no-print'>
             <div class="section-header">
-                <label for='contact'><h2 class="trebut section-title expanding"><a class='dark-green' id="contact">CONTACT</a>
-                </h2></label>
+                <h2 class="trebut section-title expanding"><a class='dark-green' id="contact">CONTACT</a></h2>
             </div>
             <section>
                 <p class='mono'>Please contact me through <a class="green" href="http://ca.linkedin.com/in/m4popesc">Linkedin</a>

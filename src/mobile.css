@@ -46,27 +46,9 @@ input[type=checkbox]:checked ~ label > .expanding:before {
 }
 
 /* Smartphones (portrait and landscape) ----------- */
-@media only screen and (min-device-width : 320px) and (max-device-width: 1224px) {
-    section {
-        /* hide data using height */
-        max-height: 0;
-        overflow: hidden;
-    }
-    input[type=checkbox] {
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-        filter: alpha(opacity=0);
-        opacity: 0;
-    }
-    label {
-        cursor: pointer;
-        background-colour: #f8fbee;
-    }
-    #sidebar {
-        display: none;
+@media only screen and (max-device-width: 600px) {
+    .resume {
+        width: 95%;
     }
 }
 

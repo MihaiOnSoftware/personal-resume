@@ -11,6 +11,7 @@
 .job-role-header {
     display: flex;
     justify-content: flex-start;
+    flex-flow: row wrap;
     align-items: center;
 }
 
