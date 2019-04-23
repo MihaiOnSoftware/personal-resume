@@ -63,7 +63,8 @@
     }
 
     .nav {
-        border: 0;
+        border-top: 0;
+        padding-bottom: 5px;
         flex-direction: column;
         position: fixed;
         right: 0;
