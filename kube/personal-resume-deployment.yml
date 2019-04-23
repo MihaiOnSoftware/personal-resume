@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: personal-resume
+  namespace: default
+  labels:
+    app: personal-resume
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: personal-resume
+  template:
+    metadata:
+      labels:
+        app: personal-resume
+    spec:
+      containers:
+        - name: personal-resume
+          image: mihaionsoftware/personal-resume:latest
+          ports:
+            - containerPort: 80
+              name: http
