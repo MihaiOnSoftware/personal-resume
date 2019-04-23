@@ -1,0 +1,12 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: personal-resume-ingress
+spec:
+  rules:
+  - host: mihai.software
+    http:
+      paths:
+      - backend:
+          serviceName: personal-resume
+          servicePort: 80
