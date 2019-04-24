@@ -64,6 +64,9 @@ workflows:
   build-master:
     jobs:
       - test:
+          filters:
+            branches:
+              only: master
       - build:
           filters:
             branches:
