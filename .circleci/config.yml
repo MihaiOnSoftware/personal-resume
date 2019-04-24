@@ -3,11 +3,33 @@ jobs:
   build:
     docker:
       - image: circleci/buildpack-deps:stretch
+      - image: circleci/node:4.8.2
     environment:
       IMAGE_NAME: mihaionsoftware/personal-resume
     working_directory: ~/app
     steps:
       - checkout
+      - run:
+          name: update-npm
+          command: 'sudo npm install -g npm@latest'
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: install-npm-wee
+          command: npm install
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
+      - run:
+          name: test
+          command: npm test
+      - store_artifacts:
+          # Upload test summary for display in Artifacts: https://circleci.com/docs/2.0/artifacts/ 
+          path: test-results.xml
+          prefix: tests
+      - store_test_results:
+          path: test-results.xml
       - setup_remote_docker
       - run:
           name: Build Docker image
