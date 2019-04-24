@@ -9,6 +9,17 @@ spec:
   tls:
   - hosts:
     - mihai.software
+    - www.mihai.software
+    - mpopescu.com
+    - www.mpopescu.com
+    - promethean.works
+    - www.promethean.works
+    - promethean.work
+    - www.promethean.work
+    - prometheusworks.com
+    - www.prometheusworks.com
+    - sirealism.dev
+    - www.sirealism.dev
     secretName: letsencrypt-prod
   rules:
   - host: mihai.software
@@ -17,3 +28,70 @@ spec:
       - backend:
           serviceName: personal-resume
           servicePort: 80
+  - host: www.mihai.software
+    http:
+      paths:
+      - backend:
+          serviceName: personal-resume
+          servicePort: 80
+  - host: mpopescu.com
+    http:
+      paths:
+      - backend:
+          serviceName: personal-resume
+          servicePort: 80
+  - host: www.mpopescu.com
+    http:
+      paths:
+      - backend:
+          serviceName: personal-resume
+          servicePort: 80
+  - host: promethean.works
+    http:
+      paths:
+      - backend:
+          serviceName: personal-resume
+          servicePort: 80
+  - host: www.promethean.works
+    http:
+      paths:
+      - backend:
+          serviceName: personal-resume
+          servicePort: 80
+  - host: promethean.work 
+    http:
+      paths:
+      - backend:
+          serviceName: personal-resume
+          servicePort: 80
+  - host: www.promethean.work 
+    http:
+      paths:
+      - backend:
+          serviceName: personal-resume
+          servicePort: 80
+  - host: prometheusworks.com 
+    http:
+      paths:
+      - backend:
+          serviceName: personal-resume
+          servicePort: 80
+  - host: www.prometheusworks.com 
+    http:
+      paths:
+      - backend:
+          serviceName: personal-resume
+          servicePort: 80
+  - host: sirealism.dev
+    http:
+      paths:
+      - backend:
+          serviceName: personal-resume
+          servicePort: 80
+  - host: www.sirealism.dev
+    http:
+      paths:
+      - backend:
+          serviceName: personal-resume
+          servicePort: 80
+
