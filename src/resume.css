@@ -1,18 +1,3 @@
-.contact {
-  display: flex;
-  flex-direction: column;
-  flex: 1 0;
-  align-items: center;
-  justify-content: center;
-  margin-left: 3px;
-}
-.contact a {
-  margin-left: 2px;
-  color: black;
-  background-color: transparent;
-  white-space: nowrap;
-}
-
 .section-title {
   font-size: 100%;
   font-weight: bold;
