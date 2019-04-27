@@ -72,22 +72,6 @@ div {
   text-align: left;
 }
 
-.contact {
-  display: flex;
-  flex-direction: row;
-  flex: 1 0;
-  align-items: center;
-  justify-content: flex-start;
-  margin-left: 10px;
-}
-
-.contact a {
-  margin-left: 2px;
-  color: black;
-  background-color: transparent;
-  white-space: nowrap;
-}
-
 @media only screen and (max-device-width: 600px) {
   .name {
     display: none;
@@ -101,12 +85,18 @@ div {
     padding: 0;
     border-width: 0;
   }
+
   .no-print,
   .no-print * {
     display: none !important;
   }
+
   .arial {
     font-size: 10pt;
+  }
+
+  .print-break {
+      page-break-before: always;
   }
 
   p {
