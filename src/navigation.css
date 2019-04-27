@@ -47,7 +47,7 @@
 }
 
 .mobile-name-title {
-    color: #BADA55;
+    color: black;
 }
 
 .nav-item:hover {
@@ -76,6 +76,10 @@
 
     .mobile-visible {
         display: inline-block;
+    }
+
+    .mobile-invisible {
+        display: none;
     }
 
     .nav {
