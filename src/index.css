@@ -1,0 +1,21 @@
+.about {
+    display: flex;
+    justify-content: flex-start;
+    flex-flow: row wrap;
+}
+
+.about-image {
+    flex: 1 0;
+    margin: 10px;
+    min-width: 300px;
+}
+
+.oysters {
+    width: 100%;
+    height: auto;
+}
+
+.about-text {
+    flex: 2 1;
+    min-width: 300px;
+}

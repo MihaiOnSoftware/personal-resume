@@ -10,6 +10,22 @@
     text-transform: uppercase;
 }
 
+.root-nav {
+    display: flex;
+    flex: 2;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-flow: row wrap;
+}
+
+.leaf-nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    flex-flow: row wrap;
+    align-items: center;
+}
+
 .hamburger {
     margin-right: 10px;
     color: grey;
@@ -42,7 +58,7 @@
 .nav {
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
+    justify-content: space-between;
     flex-flow: row wrap;
     border-top: 1px solid #000;
     border-bottom: 1px solid #000;
@@ -70,6 +86,11 @@
         right: 0;
         top: 0;
         background-color: white;
+    }
+
+    .leaf-nav,
+    .root-nav {
+        flex-direction: column;
     }
 }
 

@@ -1,160 +1,62 @@
-/* Text formatting */
-a:link {
-    text-decoration: none;
-}
-
-.green {
-    color:#94ae44;
-}
-
-.dark-green {
-    color:#4a5722;
-}
-
-.trebut {
-    font: "Trebuchet MS", Georgia, serif;
-}
-
-.mono {
-    font-family: 'Roboto Mono', monospace;
-}
-
-.arial {
-    font: "Arial Narrow", Arial, Helvetica, sans-serif;
-}
-
-/* end text formatting */
-/* General */
-body {
-    position:relative;
-    padding-top:40px;
-}
-
 .contact {
-    display: flex;
-    flex-direction: column;
-    flex: 1 0;
-    align-items: center;
-    justify-content: center;
-    margin-left: 3px;
+  display: flex;
+  flex-direction: column;
+  flex: 1 0;
+  align-items: center;
+  justify-content: center;
+  margin-left: 3px;
 }
 .contact a {
-    margin-left: 2px;
-    color: black;
-    background-color: transparent;
-    white-space: nowrap;
-}
-
-.title {
-    font-size: 75px;
-    font-weight: bold;
-    padding-top: 0;
-    text-align: left;
-}
-
-.name {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: row;
-}
-
-.name-title {
+  margin-left: 2px;
+  color: black;
+  background-color: transparent;
+  white-space: nowrap;
 }
 
 .section-title {
-    font-size: 100%;
-    font-weight: bold;
-    padding: 5px 0;
-    text-transform: uppercase;
+  font-size: 100%;
+  font-weight: bold;
+  padding: 5px 0;
+  text-transform: uppercase;
 }
 
 .section-header {
-    flex: 100%;
+  flex: 100%;
 }
 
 .section {
-    border-bottom: solid black 1pt;
-    display: flex;
-    flex-flow: row wrap;
+  border-bottom: solid black 1pt;
+  display: flex;
+  flex-flow: row wrap;
 }
-
-
-div {
-    margin: 0;
-}
-
-.printable, .printable-webkit, .printable-moz {
-    display: none;
-}
-
-.content {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    width: 100%;
-    max-width: 1100px;
-    word-wrap: normal;
-    padding-bottom: 50px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-/* end General */
 
 @media only screen and (max-device-width: 600px) {
-    .resume {
-        width: 95%;
-    }
-
-    .name {
-        display: none;
-    }
+  .resume {
+    width: 95%;
+  }
 }
 
-/* Printing optimizations */
 @media print {
-    .arial, .section {
-        font-size: 10pt;
-    }
-    .title, .job-title {
-        font-size: 22pt;
-        margin: 0;
-        padding: 0;
-    }
-    .job {
-        font-size: 12pt;
-    }
-    .content {
-        width: 100%;
-        margin: 0;
-        padding: 0;
-        border-width: 0;
-    }
-    .no-print, .no-print * {
-        display: none !important;
-    }
+  .section {
+    font-size: 10pt;
+  }
 
-    .name {
-        display: flex;
-    }
+  .title,
+  .job-title {
+    font-size: 22pt;
+    margin: 0;
+    padding: 0;
+  }
 
-    p {
-        page-break-before:avoid;
-        page-break-inside: avoid;
-    }
+  .job {
+    font-size: 12pt;
+  }
 
-    li {
-        page-break-inside: avoid;
-    }
+  .name {
+    display: flex;
+  }
 
-    h5, h4, h3, h2 {
-        page-break-after:avoid;
-        page-break-inside:avoid;
-        margin-bottom: 1px;
-    }
-
-    section {
-        margin: 0;
-    }
+  section {
+    margin: 0;
+  }
 }
-/* end Printing optimizations */

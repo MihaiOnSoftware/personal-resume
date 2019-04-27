@@ -3,7 +3,11 @@
 function toggleHamburger() {
   navItems = document.getElementsByClassName("nav-item");
 
-  Array.prototype.forEach.call(navItems, function(element) {
+  notInvisibleNavItems = Array.prototype.filter.call(navItems, function(element) {
+    return !element.classList.contains("mobile-invisible");
+  })
+
+  Array.prototype.forEach.call(notInvisibleNavItems, function(element) {
     classes = element.classList;
     if (classes.contains("mobile-visible")) {
       classes.remove("mobile-visible");

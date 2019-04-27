@@ -1,5 +1,5 @@
 // resume.test.js
-const resume = require('../src/resume');
+const resume = require("../src/resume");
 
 describe("toggleHamburger()", () => {
   it("toggles all nav-items to be visible if not visible", () => {
@@ -10,10 +10,10 @@ describe("toggleHamburger()", () => {
 
     resume.toggleHamburger();
 
-    navItems = document.getElementsByClassName('nav-item');
+    navItems = document.getElementsByClassName("nav-item");
 
     Array.prototype.forEach.call(navItems, function(element) {
-        expect(element.classList).toContain('mobile-visible');
+      expect(element.classList).toContain("mobile-visible");
     });
   });
 
@@ -25,10 +25,29 @@ describe("toggleHamburger()", () => {
 
     resume.toggleHamburger();
 
-    navItems = document.getElementsByClassName('nav-item');
+    navItems = document.getElementsByClassName("nav-item");
 
     Array.prototype.forEach.call(navItems, function(element) {
-        expect(element.classList).not.toContain('mobile-visible');
+      expect(element.classList).not.toContain("mobile-visible");
+    });
+  });
+
+  it("won't toggle nav-items with mobile-invisible", () => {
+    document.body.innerHTML = `<div class="nav no-print">
+        <a class="nav-item">Nav Item 1</a>
+        <a class="nav-item mobile-invisible">Nav Item 2</a>
+    </div>`;
+
+    resume.toggleHamburger();
+
+    navItems = document.getElementsByClassName("nav-item");
+
+    Array.prototype.forEach.call(navItems, function(element) {
+      if (element.classList.contains("mobile-invisible")) {
+        expect(element.classList).not.toContain("mobile-visible");
+      } else {
+        expect(element.classList).toContain("mobile-visible");
+      }
     });
   });
 });
