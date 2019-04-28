@@ -82,6 +82,10 @@
   white-space: nowrap;
 }
 
+.selected {
+  color: #bada55;
+}
+
 @media only screen and (max-device-width: 600px) {
   .mobile-menu {
     display: flex;
