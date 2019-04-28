@@ -7,15 +7,15 @@
 .about-image {
     flex: 1 0;
     margin: 10px;
-    min-width: 300px;
+    min-width: 290px;
 }
 
 .oysters {
-    width: 100%;
+    width: 95%;
     height: auto;
 }
 
 .about-text {
     flex: 2 1;
-    min-width: 300px;
+    min-width: 290px;
 }
