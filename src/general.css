@@ -74,6 +74,7 @@ div {
   display: flex;
   justify-content: space-evenly;
   width: 100%;
+  flex-flow: row wrap;
 }
 
 .card {
@@ -81,6 +82,7 @@ div {
   transition: 0.3s;
   flex: 1 1;
   margin: 30px;
+  min-width: 270px;
 }
 
 .card:hover {
