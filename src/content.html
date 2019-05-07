@@ -4,11 +4,12 @@
   <head>
     <meta name="HandheldFriendly" content="true" />
     <meta name="MobileOptimized" content="320" />
+    <meta charset="UTF-8">
     <meta
       name="viewport"
       content="initial-scale=1.0, maximum-scale=1.0, width=device-width, user-scalable=no"
     />
-    <meta http-equiv="Content-Type" content="text/html; charset=windows-1252" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Mihai On Software</title>
     <link rel="stylesheet" type="text/css" href="general.css" />
     <link rel="stylesheet" type="text/css" href="navigation.css" />
@@ -108,12 +109,32 @@
         </div>
       </div>
 
-      <div><p class="mono">Sorry it's so empty right now... more content coming soon I promise!</p></div>
-      <div>
-          <ul>
-              <li><a href="content/presentations/mvc-hexagon/presentation.html" class="green">Growing your MVC into a Hexagon</a></li>
-              <li><a href="content/presentations/pairing-techniques/presentation.html" class="green">Techniques for Paired Programming</a></li>
-          </ul>
+      <div class="cards-list">
+        <div class="card">
+          <div class="card-content">
+            <h2><a href="content/presentations/pairing-techniques/presentation.html" class="green">
+              Techniques for Paired Programming 🍐
+            </a></h2>
+            <p class="mono">Pair Programming is two people writing, debugging, 
+              or exploring code together. Sounds simple right? It is, but it's also hard. 
+              Pairing is a skill like any other and it takes some practice to get good at it. 
+              Usually though, devs are either dropped or drop themselves straight into pairing 
+              with no guidelines to help with learning or resolving issues.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-content">
+            <h2><a href="content/presentations/mvc-hexagon/presentation.html" class="green">
+              Growing your MVC into a Hexagon 🐙
+            </a></h2>
+            <p class="mono">Ahh MVC! The starting point of most web apps. 
+              But where do you go when it fails you? 
+              More importantly, how do you make your current living system grow into a new shape
+              without stopping feature work? We'll explore some common MVC issues, 
+              what a Functional Hexagon is, and how to grow your MVC into a new, more hexagonal, 
+              shape without a big rewrite in the sky.</p>
+          </div>
+        </div>
       </div>
     </div>
   </body>
