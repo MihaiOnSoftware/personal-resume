@@ -15,7 +15,7 @@
   flex-flow: row wrap;
 }
 
-@media only screen and (max-device-width: 600px) {
+@media only screen and (max-device-width: 615px) {
   .resume {
     width: 95%;
   }

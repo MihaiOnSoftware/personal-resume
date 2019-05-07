@@ -17,5 +17,16 @@
 
 .about-text {
     flex: 2 1;
-    min-width: 290px;
+    margin: 10px;
+    min-width: 270px;
 }
+
+@media only screen and (max-device-width: 615px) {
+    .about-text {
+      text-align: center;
+      align-content: center;
+    }
+    .oysters {
+        width: 100%;
+    }
+  }

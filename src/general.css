@@ -17,6 +17,7 @@ a:link {
 
 .mono {
   font-family: "Roboto Mono", monospace;
+  line-height: 130%;
 }
 
 .arial {
@@ -72,9 +73,12 @@ div {
   text-align: left;
 }
 
-@media only screen and (max-device-width: 600px) {
+@media only screen and (max-device-width: 615px) {
   .name {
     display: none;
+  }
+  .content {
+    align-items: center;
   }
 }
 

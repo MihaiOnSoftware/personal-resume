@@ -86,7 +86,7 @@
   color: #bada55;
 }
 
-@media only screen and (max-device-width: 600px) {
+@media only screen and (max-device-width: 615px) {
   .mobile-menu {
     display: flex;
   }
