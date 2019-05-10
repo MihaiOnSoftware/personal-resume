@@ -1,5 +1,5 @@
 // resume.test.js
-const resume = require("../src/hamburger");
+const hamburger = require("../src/hamburger");
 
 describe("toggleHamburger()", () => {
   const hamburgerDoc = `
@@ -14,7 +14,7 @@ describe("toggleHamburger()", () => {
         <a class="nav-item">Nav Item 2</a>
     </div>`;
 
-    resume.toggleHamburger(hamburger());
+    hamburger.toggleHamburger(hamburger());
 
     navItems = document.getElementsByClassName("nav-item");
 
@@ -33,7 +33,7 @@ describe("toggleHamburger()", () => {
         <a class="nav-item mobile-visible">Nav Item 2</a>
     </div>`;
 
-    resume.toggleHamburger(hamburger());
+    hamburger.toggleHamburger(hamburger());
 
     navItems = document.getElementsByClassName("nav-item");
 
@@ -50,7 +50,7 @@ describe("toggleHamburger()", () => {
     </div>
     `;
 
-    resume.toggleHamburger(hamburger());
+    hamburger.toggleHamburger(hamburger());
 
     navItems = document.getElementsByClassName("nav-item");
 
@@ -71,7 +71,7 @@ describe("toggleHamburger()", () => {
     </div>
     `;
 
-    resume.toggleHamburger(hamburger());
+    hamburger.toggleHamburger(hamburger());
 
     navItems = document.getElementsByClassName("nav-item");
     hamburgerIcon = hamburger().getElementsByTagName('i')[0]
