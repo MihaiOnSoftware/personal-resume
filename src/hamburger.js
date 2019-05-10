@@ -1,5 +1,3 @@
-// resume.js
-
 function toggleHamburger(hamburger) {
   hamburgerIcon = hamburger.getElementsByTagName("i")[0];
   hamburgerOpen = hamburgerIcon.classList.contains("fa-times");
