@@ -1,4 +1,3 @@
-// resume.test.js
 const hamburger = require("../src/hamburger");
 
 describe("toggleHamburger()", () => {
