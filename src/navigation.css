@@ -1,13 +1,16 @@
 /* Navigation Menu */
 
-.nav-item {
+.nav-item, .mobile-name-title {
   display: inline-block;
-  padding: 5px;
-  color: grey;
   white-space: nowrap;
   font-weight: bold;
-  margin-bottom: 3px;
   text-transform: uppercase;
+}
+
+.nav-item {
+  padding: 5px;
+  margin-bottom: 3px;
+  color: grey;
 }
 
 .root-nav {
@@ -45,10 +48,6 @@
 .mobile-name {
   display: flex;
   margin-left: 5px;
-}
-
-.mobile-name-title {
-  color: black;
 }
 
 .nav-item:hover {

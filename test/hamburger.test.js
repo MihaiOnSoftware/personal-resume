@@ -1,5 +1,5 @@
 // resume.test.js
-const resume = require("../src/resume");
+const resume = require("../src/hamburger");
 
 describe("toggleHamburger()", () => {
   const hamburgerDoc = `
@@ -32,7 +32,7 @@ describe("toggleHamburger()", () => {
         <a class="nav-item mobile-visible">Nav Item 1</a>
         <a class="nav-item mobile-visible">Nav Item 2</a>
     </div>`;
-    
+
     resume.toggleHamburger(hamburger());
 
     navItems = document.getElementsByClassName("nav-item");
