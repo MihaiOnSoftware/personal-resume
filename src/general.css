@@ -115,7 +115,7 @@ div {
     display: none !important;
   }
 
-  .arial {
+  .arial, .mono {
     font-size: 10pt;
   }
 
