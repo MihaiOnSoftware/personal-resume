@@ -5,7 +5,7 @@
   "description": "",
   "scripts": {
     "test": "jest",
-    "lint": "eslint",
+    "lint": "eslint \"src\"",
     "format": "prettier-eslint --write \"src/**/*.*\""
   },
   "keywords": [],

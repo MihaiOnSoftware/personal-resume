@@ -1,18 +1,18 @@
 function toggleHamburger(hamburger) {
-  hamburgerIcon = hamburger.getElementsByTagName("i")[0];
-  hamburgerOpen = hamburgerIcon.classList.contains("fa-times");
+  const hamburgerIcon = hamburger.getElementsByTagName("i")[0];
+  const hamburgerOpen = hamburgerIcon.classList.contains("fa-times");
   toggleHamburgerIcon(hamburgerIcon);
 
-  navItems = document.getElementsByClassName("nav-item");
+  const navItems = document.getElementsByClassName("nav-item");
 
-  notInvisibleNavItems = Array.prototype.filter.call(navItems, function(
+  const notInvisibleNavItems = Array.prototype.filter.call(navItems, function(
     element
   ) {
     return !element.classList.contains("mobile-invisible");
   });
 
   Array.prototype.forEach.call(notInvisibleNavItems, function(element) {
-    classes = element.classList;
+    const classes = element.classList;
     if (hamburgerOpen && classes.contains("mobile-visible")) {
       classes.remove("mobile-visible");
     } else {
