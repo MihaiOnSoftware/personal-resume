@@ -1,18 +1,20 @@
 function toggleHamburger(hamburger) {
   hamburgerIcon = hamburger.getElementsByTagName("i")[0];
   hamburgerOpen = hamburgerIcon.classList.contains("fa-times");
-  toggleHamburgerIcon(hamburgerIcon)
+  toggleHamburgerIcon(hamburgerIcon);
 
   navItems = document.getElementsByClassName("nav-item");
 
-  notInvisibleNavItems = Array.prototype.filter.call(navItems, function(element) {
+  notInvisibleNavItems = Array.prototype.filter.call(navItems, function(
+    element
+  ) {
     return !element.classList.contains("mobile-invisible");
   });
 
   Array.prototype.forEach.call(notInvisibleNavItems, function(element) {
     classes = element.classList;
     if (hamburgerOpen && classes.contains("mobile-visible")) {
-      classes.remove("mobile-visible");      
+      classes.remove("mobile-visible");
     } else {
       classes.add("mobile-visible");
     }

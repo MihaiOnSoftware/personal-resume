@@ -1,6 +1,7 @@
 /* Navigation Menu */
 
-.nav-item, .mobile-name-title {
+.nav-item,
+.mobile-name-title {
   display: inline-block;
   white-space: nowrap;
   font-weight: bold;
@@ -110,7 +111,7 @@
     right: 0;
     top: 0;
     background-color: white;
-    border-bottom: 1px solid #E5E3DD;
+    border-bottom: 1px solid #e5e3dd;
   }
 
   .leaf-nav,

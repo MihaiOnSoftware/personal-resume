@@ -1,28 +1,28 @@
 .job-title {
-    font-size: 120%;
-    font-weight: 600;
-    color: grey;
-    margin-bottom: 0;
+  font-size: 120%;
+  font-weight: 600;
+  color: grey;
+  margin-bottom: 0;
 }
 
 .job-role {
 }
 
 .job-role-header {
-    display: flex;
-    justify-content: flex-start;
-    flex-flow: row wrap;
-    align-items: center;
+  display: flex;
+  justify-content: flex-start;
+  flex-flow: row wrap;
+  align-items: center;
 }
 
 .job-role-title {
-    margin-right: 5px;
-    margin-bottom: 0;
-    margin-top: 0;
+  margin-right: 5px;
+  margin-bottom: 0;
+  margin-top: 0;
 }
 
 .job {
-    padding-left: 15px;
-    border-left: 2px solid #BADA55;
-    margin-bottom: 30px;
+  padding-left: 15px;
+  border-left: 2px solid #bada55;
+  margin-bottom: 30px;
 }
