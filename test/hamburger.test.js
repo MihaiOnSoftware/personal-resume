@@ -15,7 +15,7 @@ describe("toggleHamburger()", () => {
 
     hamburgerToggle.toggleHamburger(hamburger());
 
-    navItems = document.getElementsByClassName("nav-item");
+    const navItems = document.getElementsByClassName("nav-item");
 
     Array.prototype.forEach.call(navItems, function(element) {
       expect(element.classList).toContain("mobile-visible");
@@ -34,7 +34,7 @@ describe("toggleHamburger()", () => {
 
     hamburgerToggle.toggleHamburger(hamburger());
 
-    navItems = document.getElementsByClassName("nav-item");
+    const navItems = document.getElementsByClassName("nav-item");
 
     Array.prototype.forEach.call(navItems, function(element) {
       expect(element.classList).not.toContain("mobile-visible");
@@ -51,7 +51,7 @@ describe("toggleHamburger()", () => {
 
     hamburgerToggle.toggleHamburger(hamburger());
 
-    navItems = document.getElementsByClassName("nav-item");
+    const navItems = document.getElementsByClassName("nav-item");
 
     Array.prototype.forEach.call(navItems, function(element) {
       if (element.classList.contains("mobile-invisible")) {
@@ -72,8 +72,7 @@ describe("toggleHamburger()", () => {
 
     hamburgerToggle.toggleHamburger(hamburger());
 
-    navItems = document.getElementsByClassName("nav-item");
-    hamburgerIcon = hamburger().getElementsByTagName('i')[0]
+    const hamburgerIcon = hamburger().getElementsByTagName('i')[0]
 
     expect(hamburgerIcon.className).toBe("fas fa-times")
   });
