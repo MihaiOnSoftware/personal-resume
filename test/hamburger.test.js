@@ -7,7 +7,9 @@ describe("toggleHamburger()", () => {
   </a>`;
 
   it("toggles all nav-items to be visible if not visible", () => {
-    document.body.innerHTML = hamburgerDoc + `
+    document.body.innerHTML =
+      hamburgerDoc +
+      `
     <div class="nav no-print">
         <a class="nav-item">Nav Item 1</a>
         <a class="nav-item">Nav Item 2</a>
@@ -42,7 +44,9 @@ describe("toggleHamburger()", () => {
   });
 
   it("won't toggle nav-items with mobile-invisible", () => {
-    document.body.innerHTML = hamburgerDoc + `
+    document.body.innerHTML =
+      hamburgerDoc +
+      `
     <div class="nav no-print">
         <a class="nav-item">Nav Item 1</a>
         <a class="nav-item mobile-invisible">Nav Item 2</a>
@@ -63,7 +67,9 @@ describe("toggleHamburger()", () => {
   });
 
   it("changes the hamburger into a times", () => {
-    document.body.innerHTML = hamburgerDoc + `
+    document.body.innerHTML =
+      hamburgerDoc +
+      `
     <div class="nav no-print">
         <a class="nav-item" style="display: none;">Nav Item 1</a>
         <a class="nav-item" style="display: none;">Nav Item 2</a>
@@ -72,9 +78,9 @@ describe("toggleHamburger()", () => {
 
     hamburgerToggle.toggleHamburger(hamburger());
 
-    const hamburgerIcon = hamburger().getElementsByTagName('i')[0]
+    const hamburgerIcon = hamburger().getElementsByTagName("i")[0];
 
-    expect(hamburgerIcon.className).toBe("fas fa-times")
+    expect(hamburgerIcon.className).toBe("fas fa-times");
   });
 
   function hamburger() {
