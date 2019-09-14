@@ -71,7 +71,9 @@ workflows:
   version: 2
   build-master:
     jobs:
-      - test
+      - test:
+          requires:
+            - build
       - build
       - deploy:
           requires:
