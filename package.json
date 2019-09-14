@@ -13,6 +13,8 @@
   "author": "Mihai Popescu",
   "license": "ISC",
   "devDependencies": {
+    "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^5.0.4",
     "eslint": "^5.16.0",
     "eslint-plugin-jest": "^22.4.1",
     "jest": "^24.7.1",
