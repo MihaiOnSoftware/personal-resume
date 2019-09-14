@@ -1,10 +1,11 @@
 const time = require("../../src/faq/time");
+const moment = require("moment");
 
 describe("loclaMihaiTime", () => {
   it("returns the time given a Date object", () => {
-    const date = new Date("Fri Sep 6 13:40:18 EDT 2019");
+    const date = moment("2019-09-06 13:40:00");
     const result = time.localMihaiTime(date);
-    expect(result).toEqual("13:40");
+    expect(result).toEqual("13:55");
   });
 });
 

@@ -1,26 +1,32 @@
-function localMihaiTime(timeProvider) {
-  return timeProvider.getHours() + ":" + timeProvider.getMinutes();
-}
+(function() {
+  const moment = require("moment");
 
-function addLocalMihaiTime(localMihaiTime) {
-  const time = localMihaiTime;
-  const timeElement = document.getElementsByClassName("data-local-mihai-time");
+  function localMihaiTime(timeProvider) {
+    const latenessTax = 15;
+    timeProvider.add(latenessTax, "minutes");
+    return timeProvider.hours() + ":" + timeProvider.minutes();
+  }
 
-  Array.prototype.forEach.call(timeElement, element => {
-    element.textContent = time;
-  });
-}
+  function addLocalMihaiTime(localMihaiTime) {
+    const time = localMihaiTime;
+    const timeElement = document.getElementsByClassName(
+      "data-local-mihai-time"
+    );
 
-if (typeof module !== "undefined" && module.exports) {
+    Array.prototype.forEach.call(timeElement, element => {
+      element.textContent = time;
+    });
+  }
+
   module.exports.localMihaiTime = localMihaiTime;
   module.exports.addLocalMihaiTime = addLocalMihaiTime;
-} else {
+
   document.addEventListener(
     "DOMContentLoaded",
     function() {
-      const time = localMihaiTime(new Date());
+      const time = localMihaiTime(moment());
       addLocalMihaiTime(time);
     },
     false
   );
-}
+})();

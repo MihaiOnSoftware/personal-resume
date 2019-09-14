@@ -1,6 +1,6 @@
 version: 2.1
 jobs:
-  test:
+  build:
     docker:
       - image: circleci/node:latest
     working_directory: ~/app
@@ -8,7 +8,7 @@ jobs:
       - checkout
       - run:
           name: update-npm
-          command: 'sudo /usr/local/bin/npm install -g npm@latest'
+          command: "sudo /usr/local/bin/npm install -g npm@latest"
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
@@ -19,10 +19,18 @@ jobs:
           paths:
             - ./node_modules
       - run:
+          name: build
+          command: npm run build
+  test:
+    docker:
+      - image: circleci/node:latest
+    working_directory: ~/app
+    steps:
+      - checkout
+      - run:
           name: test
           command: npm test
       - store_artifacts:
-          # Upload test summary for display in Artifacts: https://circleci.com/docs/2.0/artifacts/ 
           path: test-results.xml
           prefix: tests
       - store_test_results:
@@ -64,9 +72,11 @@ workflows:
   build-master:
     jobs:
       - test
+      - build
       - deploy:
           requires:
             - test
+            - build
           filters:
             branches:
               only: master

@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest",
     "lint": "eslint \"src\" \"test\"",
-    "format": "prettier-eslint --write \"src/**/*.*\" \"test/**/*.*\""
+    "format": "prettier-eslint --write \"src/**/*.*\" \"test/**/*.*\"",
+    "build": "webpack"
   },
   "keywords": [],
   "author": "Mihai Popescu",
@@ -15,6 +16,11 @@
     "eslint": "^5.16.0",
     "eslint-plugin-jest": "^22.4.1",
     "jest": "^24.7.1",
-    "prettier-eslint-cli": "^4.7.1"
+    "prettier-eslint-cli": "^4.7.1",
+    "webpack": "^4.39.3",
+    "webpack-cli": "^3.3.8"
+  },
+  "dependencies": {
+    "moment": "^2.24.0"
   }
 }
