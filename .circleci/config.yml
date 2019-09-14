@@ -18,15 +18,23 @@ jobs:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
             - ./node_modules
+      - restore_cache:
+          key: webpack-build-{{ .Environment.CIRCLE_SHA1 }}
       - run:
           name: build
           command: npm run build
+      - save_cache:
+          key: webpack-build-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - ./dist
   test:
     docker:
       - image: circleci/node:latest
     working_directory: ~/app
     steps:
       - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
       - run:
           name: test
           command: npm test
@@ -43,6 +51,8 @@ jobs:
     working_directory: ~/app
     steps:
       - checkout
+      - restore_cache:
+          key: webpack-build-{{ .Environment.CIRCLE_SHA1 }}
       - setup_remote_docker
       - run:
           name: Build Docker image
