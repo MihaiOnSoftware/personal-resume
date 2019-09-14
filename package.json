@@ -7,7 +7,8 @@
     "test": "jest",
     "lint": "eslint \"src\" \"test\"",
     "format": "prettier-eslint --write \"src/**/*.*\" \"test/**/*.*\"",
-    "build": "webpack"
+    "build": "webpack",
+    "watch": "webpack --watch"
   },
   "keywords": [],
   "author": "Mihai Popescu",

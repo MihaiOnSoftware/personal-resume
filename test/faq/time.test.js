@@ -2,10 +2,16 @@ const time = require("../../src/faq/time");
 const moment = require("moment");
 
 describe("loclaMihaiTime", () => {
-  it("returns the time given a Date object", () => {
+  it("returns the time +15 min given a moment object", () => {
     const date = moment("2019-09-06 13:40:00");
     const result = time.localMihaiTime(date);
     expect(result).toEqual("13:55");
+  });
+
+  it("can handle returning on the hour", () => {
+    const date = moment("2019-09-06 13:45:00");
+    const result = time.localMihaiTime(date);
+    expect(result).toEqual("14:00");
   });
 });
 

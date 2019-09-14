@@ -4,7 +4,7 @@
   function localMihaiTime(timeProvider) {
     const latenessTax = 15;
     timeProvider.add(latenessTax, "minutes");
-    return timeProvider.hours() + ":" + timeProvider.minutes();
+    return timeProvider.format("H:mm");
   }
 
   function addLocalMihaiTime(localMihaiTime) {
