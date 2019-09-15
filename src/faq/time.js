@@ -9,9 +9,9 @@
 
   function addLocalMihaiTime(localMihaiTime, dom) {
     const time = localMihaiTime;
-    const timeElement = dom.getElementsByClassName("data-local-mihai-time");
+    const timeElements = dom.querySelectorAll("[data-local-mihai-time]");
 
-    Array.prototype.forEach.call(timeElement, element => {
+    Array.prototype.forEach.call(timeElements, element => {
       element.textContent = time;
     });
   }
