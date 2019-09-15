@@ -5,6 +5,7 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 module.exports = {
   entry: {
     "faq/time": "./src/faq/time.js",
+    hamburger: "./src/hamburger.js",
   },
   plugins: [
     new CleanWebpackPlugin(),

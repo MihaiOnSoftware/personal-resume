@@ -6,13 +6,14 @@
 
     const navItems = document.getElementsByClassName("nav-item");
 
-    const notInvisibleNavItems = Array.prototype.filter.call(navItems, function(
-      element
-    ) {
-      return !element.classList.contains("mobile-invisible");
-    });
+    const notInvisibleNavItems = Array.prototype.filter.call(
+      navItems,
+      element => {
+        return !element.classList.contains("mobile-invisible");
+      }
+    );
 
-    Array.prototype.forEach.call(notInvisibleNavItems, function(element) {
+    Array.prototype.forEach.call(notInvisibleNavItems, element => {
       const classes = element.classList;
       if (hamburgerOpen && classes.contains("mobile-visible")) {
         classes.remove("mobile-visible");
@@ -29,7 +30,11 @@
     hamburgerIcon.classList.toggle("fa-times");
   }
 
-  if (typeof module !== "undefined") {
-    module.exports.toggleHamburger = toggleHamburger;
-  }
+  module.exports.toggleHamburger = toggleHamburger;
+
+  Array.prototype.forEach.call(
+    document.getElementsByClassName("hamburger"),
+    element =>
+      element.addEventListener("click", () => toggleHamburger(element), false)
+  );
 })();
