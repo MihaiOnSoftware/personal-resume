@@ -32,9 +32,11 @@
 
   module.exports.toggleHamburger = toggleHamburger;
 
-  Array.prototype.forEach.call(
-    document.getElementsByClassName("hamburger"),
-    element =>
-      element.addEventListener("click", () => toggleHamburger(element), false)
+  document.addEventListener("DOMContentLoaded", () =>
+    Array.prototype.forEach.call(
+      document.getElementsByClassName("hamburger"),
+      element =>
+        element.addEventListener("click", () => toggleHamburger(element), false)
+    )
   );
 })();

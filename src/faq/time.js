@@ -21,7 +21,7 @@
 
   document.addEventListener(
     "DOMContentLoaded",
-    function() {
+    () => {
       const time = localMihaiTime(moment());
       addLocalMihaiTime(time, document);
     },
