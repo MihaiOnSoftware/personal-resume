@@ -4,14 +4,12 @@
   function localMihaiTime(timeProvider) {
     const latenessTax = 15;
     timeProvider.add(latenessTax, "minutes");
-    return timeProvider.format("H:mm");
+    return timeProvider.format("HH:mm");
   }
 
-  function addLocalMihaiTime(localMihaiTime) {
+  function addLocalMihaiTime(localMihaiTime, dom) {
     const time = localMihaiTime;
-    const timeElement = document.getElementsByClassName(
-      "data-local-mihai-time"
-    );
+    const timeElement = dom.getElementsByClassName("data-local-mihai-time");
 
     Array.prototype.forEach.call(timeElement, element => {
       element.textContent = time;
@@ -25,7 +23,7 @@
     "DOMContentLoaded",
     function() {
       const time = localMihaiTime(moment());
-      addLocalMihaiTime(time);
+      addLocalMihaiTime(time, document);
     },
     false
   );

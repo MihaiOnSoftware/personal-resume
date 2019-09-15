@@ -4,9 +4,9 @@ const moment = require("moment");
 describe("time", () => {
   describe("loclaMihaiTime", () => {
     it("returns the time +15 min given a moment object", () => {
-      const date = moment("2019-09-06 13:40:00");
+      const date = moment("2019-09-06 03:40:00");
       const result = time.localMihaiTime(date);
-      expect(result).toEqual("13:55");
+      expect(result).toEqual("03:55");
     });
 
     it("can handle returning on the hour", () => {
@@ -20,7 +20,7 @@ describe("time", () => {
     document.body.innerHTML = `
         <p id="first" class="data-not-local-mihai-time"></p>
         <p id="second" class="data-local-mihai-time"></p>`;
-    time.addLocalMihaiTime("13:40");
+    time.addLocalMihaiTime("13:40", document);
     const first = document.getElementById("first");
     const second = document.getElementById("second");
     expect(first.textContent).toEqual("");
