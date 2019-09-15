@@ -6,7 +6,7 @@ describe("weather", () => {
 
   const mockWeatherApi = {
     description: Promise.resolve(description),
-    iconUrl: Promise.resolve(iconUrl)
+    iconUrl: Promise.resolve(iconUrl),
   };
 
   const weatherDescriptionElement = `<div class="weather-description"><p>${description}</p></div>`;
@@ -36,7 +36,7 @@ describe("weather", () => {
   describe("addWeather", () => {
     const fakeWeather = {
       description: Promise.resolve(weatherDescriptionElement),
-      icon: Promise.resolve(weatherIconElement)
+      icon: Promise.resolve(weatherIconElement),
     };
 
     it("adds the weather description element to the dom", async () => {
@@ -77,8 +77,8 @@ describe("weather", () => {
           id: 300,
           main: "Drizzle",
           description: "light intensity drizzle",
-          icon: "09d"
-        }
+          icon: "09d",
+        },
       ],
       base: "stations",
       main: {
@@ -86,7 +86,7 @@ describe("weather", () => {
         pressure: 1012,
         humidity: 81,
         temp_min: 279.15,
-        temp_max: 281.15
+        temp_max: 281.15,
       },
       visibility: 10000,
       wind: { speed: 4.1, deg: 80 },
@@ -98,15 +98,15 @@ describe("weather", () => {
         message: 0.0103,
         country: "GB",
         sunrise: 1485762037,
-        sunset: 1485794875
+        sunset: 1485794875,
       },
       id: 2643743,
       name: "London",
-      cod: 200
+      cod: 200,
     };
     const fakeFetcher = () =>
       Promise.resolve({
-        json: () => Promise.resolve(exampleOwaResult)
+        json: () => Promise.resolve(exampleOwaResult),
       });
 
     it("gets the current weather description", () => {

@@ -18,7 +18,7 @@
 
     return {
       description: weatherDescriptionElement.then(stripNewlines),
-      icon: weatherIconElement.then(stripNewlines)
+      icon: weatherIconElement.then(stripNewlines),
     };
   };
 
@@ -54,7 +54,7 @@
       description: currentNorthYorkWeather.then(weather => weather.description),
       iconUrl: iconId.then(
         iconId => `http://openweathermap.org/img/wn/${iconId}.png`
-      )
+      ),
     };
   };
 
@@ -64,7 +64,7 @@
 
   document.addEventListener(
     "DOMContentLoaded",
-    async () => {
+    () => {
       const weatherData = weather(openWeatherApi(fetch));
       const weatherElements = document.getElementsByClassName("weather");
       Array.prototype.forEach.call(weatherElements, element =>

@@ -1,5 +1,8 @@
 // .eslintrc.js
 module.exports = {
-    plugins: ["jest"],
-    extends: ["plugin:jest/recommended"],
-  };
+  plugins: ["jest"],
+  parserOptions: {
+    ecmaVersion: 8
+  },
+  extends: ["plugin:jest/recommended"]
+};
