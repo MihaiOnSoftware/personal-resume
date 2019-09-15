@@ -1,0 +1,19 @@
+.weather {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex-flow: row wrap;
+  width: 75%;
+}
+
+.weather-description {
+  flex: 1 1;
+}
+
+.weather-icon {
+  flex: 1 1;
+}
+
+.weather-image {
+  height: 100%;
+}

@@ -13,6 +13,7 @@
     <title>Mihai On Software</title>
     <link rel="stylesheet" type="text/css" href="../general.css" />
     <link rel="stylesheet" type="text/css" href="../navigation.css" />
+    <link rel="stylesheet" type="text/css" href="weather.css" />
     <link
       rel="stylesheet"
       href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
@@ -22,6 +23,7 @@
 
     <script type="text/javascript" src="../hamburger.js"></script>
     <script src="time.js"></script>
+    <script src="weather.js"></script>
   </head>
   <body>
     <div class="content">
@@ -33,7 +35,6 @@
           <div>
             <a
               href="javascript:;"
-              onclick="toggleHamburger(this)"
               class="hamburger"
             >
               <i class="fa fa-bars"></i>
@@ -86,7 +87,7 @@
           </li>
           <li>
             <h3 class="mono green">What's the wheather like outside?</h3>
-            <p class="mono">Cloudy ☁️</p>
+            <div class="mono weather"></p>
           </li>
           <li>
             <h3 class="mono green">How are you doing?</h3>
