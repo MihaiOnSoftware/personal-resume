@@ -20,6 +20,8 @@ spec:
     - www.prometheusworks.com
     - sirealism.dev
     - www.sirealism.dev
+    - prometheus.codes
+    - www.prometheus.codes
     secretName: letsencrypt-prod
   rules:
   - host: mihai.software
@@ -94,4 +96,16 @@ spec:
       - backend:
           serviceName: personal-resume
           servicePort: 80
-
+  - host: prometheus.codes
+    http:
+      paths:
+      - backend:
+          serviceName: personal-resume
+          servicePort: 80
+  - host: www.prometheus.codes
+    http:
+      paths:
+      - backend:
+          serviceName: personal-resume
+          servicePort: 80
+ 
