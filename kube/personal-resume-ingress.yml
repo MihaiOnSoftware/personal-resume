@@ -5,24 +5,13 @@ metadata:
   annotations:  
     kubernetes.io/ingress.class: nginx
     certmanager.k8s.io/cluster-issuer: letsencrypt-prod
+    version: 1.0.0
 spec:
   tls:
   - hosts:
     - mihai.software
     - www.mihai.software
-    - mpopescu.com
-    - www.mpopescu.com
-    - promethean.works
-    - www.promethean.works
-    - promethean.work
-    - www.promethean.work
-    - prometheusworks.com
-    - www.prometheusworks.com
-    - sirealism.dev
-    - www.sirealism.dev
-    - prometheus.codes
-    - www.prometheus.codes
-    secretName: letsencrypt-prod
+    secretName: letsencrypt-prod-2
   rules:
   - host: mihai.software
     http:
@@ -36,76 +25,3 @@ spec:
       - backend:
           serviceName: personal-resume
           servicePort: 80
-  - host: mpopescu.com
-    http:
-      paths:
-      - backend:
-          serviceName: personal-resume
-          servicePort: 80
-  - host: www.mpopescu.com
-    http:
-      paths:
-      - backend:
-          serviceName: personal-resume
-          servicePort: 80
-  - host: promethean.works
-    http:
-      paths:
-      - backend:
-          serviceName: personal-resume
-          servicePort: 80
-  - host: www.promethean.works
-    http:
-      paths:
-      - backend:
-          serviceName: personal-resume
-          servicePort: 80
-  - host: promethean.work 
-    http:
-      paths:
-      - backend:
-          serviceName: personal-resume
-          servicePort: 80
-  - host: www.promethean.work 
-    http:
-      paths:
-      - backend:
-          serviceName: personal-resume
-          servicePort: 80
-  - host: prometheusworks.com 
-    http:
-      paths:
-      - backend:
-          serviceName: personal-resume
-          servicePort: 80
-  - host: www.prometheusworks.com 
-    http:
-      paths:
-      - backend:
-          serviceName: personal-resume
-          servicePort: 80
-  - host: sirealism.dev
-    http:
-      paths:
-      - backend:
-          serviceName: personal-resume
-          servicePort: 80
-  - host: www.sirealism.dev
-    http:
-      paths:
-      - backend:
-          serviceName: personal-resume
-          servicePort: 80
-  - host: prometheus.codes
-    http:
-      paths:
-      - backend:
-          serviceName: personal-resume
-          servicePort: 80
-  - host: www.prometheus.codes
-    http:
-      paths:
-      - backend:
-          serviceName: personal-resume
-          servicePort: 80
- 
