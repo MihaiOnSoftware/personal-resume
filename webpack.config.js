@@ -10,17 +10,18 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin(),
-    new CopyWebpackPlugin(
-      [
+    new CopyWebpackPlugin({
+      patterns: [
         {
           from: "**/*.html",
+	  context: "./src",
         },
         {
           from: "**/*.css",
+	  context: "./src",
         },
       ],
-      { context: "./src" }
-    ),
+    }),
   ],
   devtool: "inline-source-map",
   output: {
