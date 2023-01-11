@@ -1,3 +1,4 @@
-FROM nginx:latest
+FROM node:14
 
-COPY dist/ /usr/share/nginx/html/
+npm install
+npm run build
