@@ -1,0 +1,32 @@
+.about {
+  display: flex;
+  justify-content: flex-start;
+  flex-flow: row wrap;
+}
+
+.about-image {
+  flex: 1 0;
+  margin: 10px;
+  min-width: 290px;
+}
+
+.oysters {
+  width: 95%;
+  height: auto;
+}
+
+.about-text {
+  flex: 2 1;
+  margin: 10px;
+  min-width: 270px;
+}
+
+@media only screen and (max-device-width: 615px) {
+  .about-text {
+    text-align: center;
+    align-content: center;
+  }
+  .oysters {
+    width: 100%;
+  }
+}
