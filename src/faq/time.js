@@ -25,6 +25,6 @@
       const time = localMihaiTime(moment());
       addLocalMihaiTime(time, document);
     },
-    false
+    false,
   );
 })();

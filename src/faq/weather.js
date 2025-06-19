@@ -2,7 +2,7 @@
   const weather = weatherApi => {
     const weatherDescriptionElement = weatherApi.description.then(
       description =>
-        `<div class="weather-description"><p>` + description + `</p></div>`
+        `<div class="weather-description"><p>` + description + `</p></div>`,
     );
 
     const weatherIconElement = weatherApi.description.then(description => {
@@ -12,7 +12,7 @@
           iconUrl +
           `" alt="` +
           description +
-          ` icon"/></div>`
+          ` icon"/></div>`,
       );
     });
 
@@ -31,12 +31,12 @@
       document.getElementsByClassName("weather"),
       weatherElement => {
         weather.description.then(descriptionElement =>
-          weatherElement.insertAdjacentHTML("beforeend", descriptionElement)
+          weatherElement.insertAdjacentHTML("beforeend", descriptionElement),
         );
         weather.icon.then(iconElement =>
-          weatherElement.insertAdjacentHTML("beforeend", iconElement)
+          weatherElement.insertAdjacentHTML("beforeend", iconElement),
         );
-      }
+      },
     );
   };
 
@@ -53,7 +53,7 @@
     return {
       description: currentNorthYorkWeather.then(weather => weather.description),
       iconUrl: iconId.then(
-        iconId => `http://openweathermap.org/img/wn/${iconId}.png`
+        iconId => `http://openweathermap.org/img/wn/${iconId}.png`,
       ),
     };
   };
@@ -68,9 +68,9 @@
       const weatherData = weather(openWeatherApi(fetch));
       const weatherElements = document.getElementsByClassName("weather");
       Array.prototype.forEach.call(weatherElements, element =>
-        addWeather(weatherData, element)
+        addWeather(weatherData, element),
       );
     },
-    true
+    true,
   );
 })();
