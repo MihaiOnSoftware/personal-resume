@@ -137,7 +137,6 @@ describe("navigation", () => {
             expect(hamburgerContainer).toBeTruthy();
 
             // Verify mobile menu has proper flex structure
-            const computedStyle = window.getComputedStyle ? window.getComputedStyle(mobileMenu) : null;
             expect(mobileMenu.classList).toContain("mobile-menu");
         });
     });
