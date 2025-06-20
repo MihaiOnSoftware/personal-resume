@@ -5,6 +5,23 @@
   text-transform: uppercase;
 }
 
+.name-title {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.print-button {
+  background: none;
+  border: none;
+  font-size: 30px;
+  cursor: pointer;
+  margin-left: auto;
+  align-self: center;
+  margin-right: 30px;
+}
+
 .section-header {
   flex: 100%;
 }
