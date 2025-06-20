@@ -16,13 +16,13 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
     integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
 
-  <script type="text/javascript" src="hamburger.js"></script>
   <script type="text/javascript" src="navigation.js"></script>
 </head>
 
 <body>
+  <div class="mobile-menu-backdrop"></div>
+  <div class="nav no-print" style="display: none" data-current-page="Contact"></div>
   <div class="content">
-
     <div class="name">
       <div class="name-title">
         <p class="trebut title">Contact</p>
@@ -61,13 +61,6 @@
       </p>
     </div>
   </div>
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      navigation.renderNavigation({
-        currentPage: 'Contact'
-      });
-    });
-  </script>
 </body>
 
 </html>

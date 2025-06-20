@@ -1,4 +1,4 @@
-(function() {
+(function () {
   const moment = require("moment");
 
   function localMihaiTime(timeProvider) {
@@ -11,7 +11,7 @@
     const time = localMihaiTime;
     const timeElements = dom.querySelectorAll("[data-local-mihai-time]");
 
-    Array.prototype.forEach.call(timeElements, element => {
+    Array.prototype.forEach.call(timeElements, (element) => {
       element.textContent = time;
     });
   }
