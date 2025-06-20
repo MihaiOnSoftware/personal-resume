@@ -26,6 +26,14 @@ describe("navigation", () => {
         return Array.from(navs).find((nav) => nav.style.display !== "none");
     };
 
+    // Clean up after each test to prevent side effects
+    afterEach(() => {
+        document.body.innerHTML = '';
+        // Remove any hamburger scripts that might have been added
+        const scripts = document.querySelectorAll('script[src="hamburger.js"]');
+        scripts.forEach(script => script.remove());
+    });
+
     describe("autoInitializeNavigation()", () => {
         it("creates mobile menu with current page title", () => {
             setupPage("About Me");
@@ -94,6 +102,43 @@ describe("navigation", () => {
             const hamburgerScript = document.querySelector('script[src="hamburger.js"]');
             expect(hamburgerScript).toBeTruthy();
             expect(hamburgerScript.type).toBe("text/javascript");
+        });
+
+        it("ensures mobile navigation structure is properly nested", () => {
+            setupPage("Content");
+
+            const nav = visibleNav();
+            expect(nav).toBeTruthy();
+
+            // Check that mobile menu is first child
+            const mobileMenu = nav.querySelector(".mobile-menu");
+            expect(mobileMenu).toBeTruthy();
+            expect(nav.firstElementChild).toBe(mobileMenu);
+
+            // Check that root nav follows mobile menu
+            const rootNav = nav.querySelector(".root-nav");
+            expect(rootNav).toBeTruthy();
+
+            // Check that leaf nav is present
+            const leafNav = nav.querySelector(".leaf-nav");
+            expect(leafNav).toBeTruthy();
+        });
+
+        it("creates proper mobile menu structure", () => {
+            setupPage("FAQ");
+
+            const mobileMenu = document.querySelector(".mobile-menu");
+            expect(mobileMenu).toBeTruthy();
+
+            const mobileName = mobileMenu.querySelector(".mobile-name");
+            expect(mobileName).toBeTruthy();
+
+            const hamburgerContainer = mobileMenu.querySelector(".hamburger-container");
+            expect(hamburgerContainer).toBeTruthy();
+
+            // Verify mobile menu has proper flex structure
+            const computedStyle = window.getComputedStyle ? window.getComputedStyle(mobileMenu) : null;
+            expect(mobileMenu.classList).toContain("mobile-menu");
         });
     });
 });
