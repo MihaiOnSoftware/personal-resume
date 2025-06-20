@@ -3,11 +3,14 @@ const navigation = require("../src/navigation");
 describe("navigation", () => {
     const contentDiv = '<div class="content"></div>';
 
-    const hiddenNavFor = (page, leafNavItems = "") => {
+    const hiddenNavFor = (page, leafNavItems = "", rootNavItems = "") => {
         const leafNav = leafNavItems
             ? `<div class="leaf-nav">${leafNavItems}</div>`
             : "";
-        return `<div class="nav no-print" style="display: none;" data-current-page="${page}">${leafNav}</div>`;
+        const rootNav = rootNavItems
+            ? `<div class="root-nav">${rootNavItems}</div>`
+            : "";
+        return `<div class="nav no-print" style="display: none;" data-current-page="${page}">${rootNav}${leafNav}</div>`;
     };
 
     const resumeSubNav = `
@@ -16,8 +19,8 @@ describe("navigation", () => {
         <a class="nav-item small-text mobile-invisible trebut" href="#experience">Experience</a>
     `;
 
-    const setupPage = (page, leafNavItems = "") => {
-        document.body.innerHTML = contentDiv + hiddenNavFor(page, leafNavItems);
+    const setupPage = (page, leafNavItems = "", rootNavItems = "") => {
+        document.body.innerHTML = contentDiv + hiddenNavFor(page, leafNavItems, rootNavItems);
         navigation.autoInitializeNavigation();
     };
 
@@ -70,9 +73,10 @@ describe("navigation", () => {
             setupPage("About Me");
 
             const socialLinks = document.querySelectorAll(".contact a");
-            expect(socialLinks).toHaveLength(4);
+            expect(socialLinks).toHaveLength(3);
             expect(socialLinks[0].href).toContain("linkedin");
-            expect(socialLinks[1].href).toContain("twitter");
+            expect(socialLinks[1].href).toContain("github");
+            expect(socialLinks[2].href).toContain("mailto");
         });
 
         it("includes leaf navigation items when provided", () => {
@@ -138,6 +142,54 @@ describe("navigation", () => {
 
             // Verify mobile menu has proper flex structure
             expect(mobileMenu.classList).toContain("mobile-menu");
+        });
+
+        it("reuses existing root-nav and adds navigation items to the left", () => {
+            const existingRootNavContent = '<div class="existing-item">Existing Content</div>';
+            setupPage("About Me", "", existingRootNavContent);
+
+            const rootNav = visibleNav().querySelector(".root-nav");
+            expect(rootNav).toBeTruthy();
+
+            // Should have 5 nav items + 1 existing item = 6 total children
+            expect(rootNav.children).toHaveLength(6);
+
+            // First 5 children should be the nav items (added to the left)
+            const navItems = Array.from(rootNav.children).slice(0, 5);
+            expect(navItems.every(item => item.classList.contains("nav-item"))).toBe(true);
+
+            // Last child should be the existing content
+            const existingItem = rootNav.children[5];
+            expect(existingItem.classList).toContain("existing-item");
+            expect(existingItem.textContent).toBe("Existing Content");
+        });
+
+        it("creates root-nav when it doesn't exist", () => {
+            setupPage("Content"); // No existing root-nav content
+
+            const rootNav = visibleNav().querySelector(".root-nav");
+            expect(rootNav).toBeTruthy();
+
+            const navItems = rootNav.querySelectorAll(".nav-item");
+            expect(navItems).toHaveLength(5);
+        });
+
+        it("preserves order of navigation items when adding to existing root-nav", () => {
+            const existingRootNavContent = '<span class="marker">END</span>';
+            setupPage("Resume", "", existingRootNavContent);
+
+            const rootNav = visibleNav().querySelector(".root-nav");
+            const allChildren = Array.from(rootNav.children);
+
+            // Navigation items should be in their original order at the beginning
+            expect(allChildren[0].textContent).toBe("About Me");
+            expect(allChildren[1].textContent).toBe("Resume");
+            expect(allChildren[2].textContent).toBe("Content");
+            expect(allChildren[3].textContent).toBe("Contact");
+            expect(allChildren[4].textContent).toBe("FAQ");
+
+            // Existing content should be at the end
+            expect(allChildren[5].textContent).toBe("END");
         });
     });
 });
