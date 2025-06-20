@@ -3,7 +3,7 @@ const hamburgerToggle = require("../src/hamburger");
 describe("hamburger", () => {
   const hamburgerDoc = `
     <a href="javascript:;" class="hamburger">
-      <i class="fa fa-bars"></i>
+      <i class="fas fa-bars"></i>
     </a>`;
 
   beforeEach(() => {
@@ -141,7 +141,7 @@ describe("hamburger", () => {
 
       const hamburgerIcon = hamburger.getElementsByTagName("i")[0];
 
-      expect(hamburgerIcon.className).toBe("fa-bars fa");
+      expect(hamburgerIcon.className).toBe("fas fa-bars");
     });
   });
 
@@ -175,9 +175,9 @@ describe("hamburger", () => {
 
     it("does nothing when hamburger is already closed", () => {
       document.body.innerHTML = `
-        <a href="javascript:;" class="hamburger">
-          <i class="fa fa-bars"></i>
-        </a>
+          <a href="javascript:;" class="hamburger">
+            <i class="fas fa-bars"></i>
+          </a>
         <div class="nav no-print">
             <a class="nav-item">Nav Item 1</a>
         </div>

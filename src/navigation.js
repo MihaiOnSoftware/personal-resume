@@ -11,7 +11,7 @@
         <a href="http://ca.linkedin.com/in/m4popesc"><i class="fab fa-linkedin fa-2x"></i></a>
         <a href="https://twitter.com/mihaionsoftware"><i class="fab fa-twitter-square fa-2x"></i></a>
         <a href="https://github.com/MihaiOnSoftware"><i class="fab fa-github-square fa-2x"></i></a>
-        <a href="mailto:mihai@mihai.software"><i class="fa fa-envelope fa-2x"></i></a>
+        <a href="mailto:mihai@mihai.software"><i class="fas fa-envelope fa-2x"></i></a>
     `;
 
     function elem(tag, className = "", attrs = {}) {
