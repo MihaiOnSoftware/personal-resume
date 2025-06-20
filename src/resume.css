@@ -41,7 +41,15 @@
     display: flex;
   }
 
+  .mono {
+    line-height: 125%;
+  }
+
   section {
+    margin: 0;
+  }
+
+  body {
     margin: 0;
   }
 }
