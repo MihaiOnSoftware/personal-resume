@@ -1,0 +1,14 @@
+{
+    "personal": {
+        "name": "Mihai Popescu",
+        "role": "Software Developer and Engineering Manager",
+        "description": "Experienced software developer with expertise in Ruby on Rails, React, AWS, and team management. Passionate about pair programming, test-driven development, and building high-performing teams.",
+        "interests": [
+            "D&D DM",
+            "reading sci-fi and fantasy novels",
+            "guitar",
+            "gaming",
+            "over 900 books on Goodreads"
+        ]
+    }
+}

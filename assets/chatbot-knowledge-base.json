@@ -1,0 +1,89 @@
+{
+    "personal": {
+        "name": "Mihai Popescu",
+        "role": "Software Developer and Engineering Manager",
+        "description": "Experienced software developer with expertise in Ruby on Rails, React, AWS, and team management. Passionate about pair programming, test-driven development, and building high-performing teams.",
+        "interests": [
+            "D&D DM",
+            "reading sci-fi and fantasy novels",
+            "guitar",
+            "gaming",
+            "over 900 books on Goodreads"
+        ]
+    },
+    "experience": {
+        "summary": "Experienced software developer and engineering manager that has worked in a variety of software organizations ranging from start-ups to large, cross-functional enterprises.",
+        "achievements": [
+            "Significantly improving the performance and reliability of Nulogy's flagship product",
+            "Building and managing two key teams at Nulogy through the pandemic, remote transition, and recession",
+            "Rolling out two completely new products while maintaining existing critical systems",
+            "Introducing a culture of pair programming at Shopify and building a pair programming workshop",
+            "Being an early adopter of AI tools at Nulogy and helping to build a body of knowledge on how to use them effectively"
+        ],
+        "companies": [
+            "Nulogy",
+            "Shopify"
+        ]
+    },
+    "skills": {
+        "languages": [
+            "Ruby",
+            "Javascript",
+            "Typescript",
+            "Scala",
+            "BASH",
+            "SQL",
+            "HTML",
+            "CSS"
+        ],
+        "frameworks": [
+            "Rails",
+            "React"
+        ],
+        "tools": [
+            "Cursor",
+            "Github Copilot",
+            "Various AI chatbots",
+            "Ruby Mine",
+            "VS Code",
+            "Vim",
+            "JIRA",
+            "Confluence"
+        ],
+        "infrastructure": [
+            "AWS",
+            "BuildKite",
+            "Helm",
+            "Terraform",
+            "Docker",
+            "Kubernetes"
+        ],
+        "methodologies": [
+            "Functional Programming",
+            "Object Oriented Programming",
+            "Agile",
+            "Extreme programming",
+            "Pair Programming",
+            "Test Driven Development",
+            "Domain Driven Design",
+            "SOLID"
+        ]
+    },
+    "content": [
+        {
+            "topic": "Techniques for Paired Programming",
+            "description": "Pair Programming is two people writing, debugging, or exploring code together. Pairing is a skill that takes practice to get good at.",
+            "url": "content/presentations/pairing-techniques/summary.html"
+        },
+        {
+            "topic": "Growing your MVC into a Functional Hexagon",
+            "description": "Exploring common MVC issues, what a Functional Hexagon is, and how to grow your MVC into a new, more hexagonal shape without a big rewrite.",
+            "url": "content/presentations/mvc-hexagon/presentation.html"
+        },
+        {
+            "topic": "Pair Programming Explained",
+            "description": "Blog post about pair programming being a complex practice requiring skill to master, helping teams share in the benefits of pair programming.",
+            "url": "content/blogs/pairing/external-blog.html"
+        }
+    ]
+}

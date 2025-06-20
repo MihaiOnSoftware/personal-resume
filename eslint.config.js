@@ -19,6 +19,7 @@ module.exports = [
                 window: "readonly",
                 document: "readonly",
                 fetch: "readonly",
+                setTimeout: "readonly",
             },
         },
         rules: {
