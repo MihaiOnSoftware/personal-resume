@@ -7,6 +7,7 @@ module.exports = {
     "faq/time": "./src/faq/time.js",
     "faq/weather": "./src/faq/weather.js",
     hamburger: "./src/hamburger.js",
+    navigation: "./src/navigation.js",
   },
   plugins: [
     new CleanWebpackPlugin(),
@@ -14,11 +15,11 @@ module.exports = {
       patterns: [
         {
           from: "**/*.html",
-	  context: "./src",
+          context: "./src",
         },
         {
           from: "**/*.css",
-	  context: "./src",
+          context: "./src",
         },
       ],
     }),
