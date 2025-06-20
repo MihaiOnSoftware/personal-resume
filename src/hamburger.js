@@ -1,5 +1,5 @@
 (function () {
-  const HAMBURGER_HTML = '<a class="hamburger" href="javascript:;"><i class="fa fa-bars"></i></a>';
+  const HAMBURGER_HTML = '<a class="hamburger" href="javascript:;"><i class="fas fa-bars"></i></a>';
 
   const getBackdrop = () => document.querySelector('.mobile-menu-backdrop');
 
@@ -12,8 +12,6 @@
 
   const toggleIcon = (icon) => {
     icon.classList.toggle("fa-bars");
-    icon.classList.toggle("fa");
-    icon.classList.toggle("fas");
     icon.classList.toggle("fa-times");
   };
 
