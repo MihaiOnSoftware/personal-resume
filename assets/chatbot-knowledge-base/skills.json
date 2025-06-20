@@ -1,0 +1,46 @@
+{
+    "skills": {
+        "languages": [
+            "Ruby",
+            "Javascript",
+            "Typescript",
+            "Scala",
+            "BASH",
+            "SQL",
+            "HTML",
+            "CSS"
+        ],
+        "frameworks": [
+            "Rails",
+            "React"
+        ],
+        "tools": [
+            "Cursor",
+            "Github Copilot",
+            "Various AI chatbots",
+            "Ruby Mine",
+            "VS Code",
+            "Vim",
+            "JIRA",
+            "Confluence"
+        ],
+        "infrastructure": [
+            "AWS",
+            "BuildKite",
+            "Helm",
+            "Terraform",
+            "Docker",
+            "Kubernetes"
+        ],
+        "methodologies": [
+            "Functional Programming",
+            "Object Oriented Programming",
+            "Agile",
+            "Extreme programming",
+            "Pair Programming",
+            "Test Driven Development",
+            "Domain Driven Design",
+            "SOLID"
+        ]
+    }
+}

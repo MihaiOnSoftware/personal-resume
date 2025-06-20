@@ -1,0 +1,16 @@
+{
+    "experience": {
+        "summary": "Experienced software developer and engineering manager that has worked in a variety of software organizations ranging from start-ups to large, cross-functional enterprises.",
+        "achievements": [
+            "Significantly improving the performance and reliability of Nulogy's flagship product",
+            "Building and managing two key teams at Nulogy through the pandemic, remote transition, and recession",
+            "Rolling out two completely new products while maintaining existing critical systems",
+            "Introducing a culture of pair programming at Shopify and building a pair programming workshop",
+            "Being an early adopter of AI tools at Nulogy and helping to build a body of knowledge on how to use them effectively"
+        ],
+        "companies": [
+            "Nulogy",
+            "Shopify"
+        ]
+    }
+}
