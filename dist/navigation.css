@@ -60,6 +60,10 @@
   margin-left: 5px;
 }
 
+.desktop-invisible {
+  display: none;
+}
+
 .nav-item:hover {
   color: #bada55;
   transition: 0.25s;
@@ -169,6 +173,12 @@
 /* Prevent body scroll when menu is open */
 body.mobile-menu-open {
   overflow: hidden;
+}
+
+@media print {
+  .mobile-menu-backdrop {
+    display: none;
+  }
 }
 
 /* end navigation */
