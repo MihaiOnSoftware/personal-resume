@@ -8,10 +8,9 @@
     ];
 
     const SOCIAL_LINKS_HTML = `
-        <a href="http://ca.linkedin.com/in/m4popesc"><i class="fab fa-linkedin fa-2x"></i></a>
-        <a href="https://twitter.com/mihaionsoftware"><i class="fab fa-twitter-square fa-2x"></i></a>
-        <a href="https://github.com/MihaiOnSoftware"><i class="fab fa-github-square fa-2x"></i></a>
-        <a href="mailto:mihai@mihai.software"><i class="fas fa-envelope fa-2x"></i></a>
+        <a class="hover-green" href="http://ca.linkedin.com/in/m4popesc"><i class="fab fa-linkedin fa-2x"></i></a>
+        <a class="hover-green" href="https://github.com/MihaiOnSoftware"><i class="fab fa-github-square fa-2x"></i></a>
+        <a class="hover-green" href="mailto:mihai@mihai.software"><i class="fas fa-envelope fa-2x"></i></a>
     `;
 
     function elem(tag, className = "", attrs = {}) {
@@ -40,8 +39,9 @@
         return mobileMenu;
     }
 
-    function createRootNav(currentPage) {
-        const rootNav = elem("div", "root-nav");
+    function populateRootNav(rootNav, currentPage) {
+        // Get reference to the first existing child (if any)
+        const firstChild = rootNav.firstChild;
 
         NAV_ITEMS.forEach((item) => {
             const isSelected = item.page === currentPage;
@@ -54,10 +54,9 @@
                 navItem.href = item.href;
             }
 
-            rootNav.appendChild(navItem);
+            // Insert before the first existing child (or at the end if no children)
+            rootNav.insertBefore(navItem, firstChild);
         });
-
-        return rootNav;
     }
 
     function createContactSection() {
@@ -96,7 +95,14 @@
         );
 
         const leafNav = navContainer.querySelector(".leaf-nav");
-        navContainer.insertBefore(createRootNav(currentPage), leafNav || null);
+        let rootNav = navContainer.querySelector(".root-nav");
+
+        if (!rootNav) {
+            rootNav = elem("div", "root-nav");
+            navContainer.insertBefore(rootNav, leafNav || null);
+        }
+
+        populateRootNav(rootNav, currentPage);
 
         if (!leafNav) {
             navContainer.appendChild(elem("div", "leaf-nav"));
