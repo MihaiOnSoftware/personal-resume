@@ -20,7 +20,7 @@ describe("hamburger", () => {
 
       const navItems = document.getElementsByClassName("nav-item");
 
-      Array.prototype.forEach.call(navItems, element => {
+      Array.prototype.forEach.call(navItems, (element) => {
         expect(element.classList).toContain("mobile-visible");
       });
     });
@@ -39,7 +39,7 @@ describe("hamburger", () => {
 
       const navItems = document.getElementsByClassName("nav-item");
 
-      Array.prototype.forEach.call(navItems, element => {
+      Array.prototype.forEach.call(navItems, (element) => {
         expect(element.classList).not.toContain("mobile-visible");
       });
     });
@@ -58,14 +58,18 @@ describe("hamburger", () => {
 
       const navItems = Array.from(document.getElementsByClassName("nav-item"));
 
-      const invisibleItems = navItems.filter(el => el.classList.contains("mobile-invisible"));
-      const visibleItems = navItems.filter(el => !el.classList.contains("mobile-invisible"));
+      const invisibleItems = navItems.filter((el) =>
+        el.classList.contains("mobile-invisible"),
+      );
+      const visibleItems = navItems.filter(
+        (el) => !el.classList.contains("mobile-invisible"),
+      );
 
-      invisibleItems.forEach(element => {
+      invisibleItems.forEach((element) => {
         expect(element.classList).not.toContain("mobile-visible");
       });
 
-      visibleItems.forEach(element => {
+      visibleItems.forEach((element) => {
         expect(element.classList).toContain("mobile-visible");
       });
     });

@@ -22,7 +22,7 @@ describe("weather", () => {
     it("correctly forms the weather description", () => {
       return weather
         .weather(mockWeatherApi)
-        .description.then(result =>
+        .description.then((result) =>
           expect(result).toBe(weatherDescriptionElement),
         );
     });
@@ -30,7 +30,7 @@ describe("weather", () => {
     it("correctly forms the weather icon", () => {
       return weather
         .weather(mockWeatherApi)
-        .icon.then(result => expect(result).toBe(weatherIconElement));
+        .icon.then((result) => expect(result).toBe(weatherIconElement));
     });
   });
   describe("addWeather", () => {
@@ -61,9 +61,8 @@ describe("weather", () => {
       weather.addWeather(fakeWeather, weatherElement);
       await fakeWeather.icon.resolve;
 
-      const weatherIcon = weatherElement.getElementsByClassName(
-        "weather-icon",
-      )[0].firstChild;
+      const weatherIcon =
+        weatherElement.getElementsByClassName("weather-icon")[0].firstChild;
       expect(weatherIcon.getAttribute("src")).toBe(iconUrl);
       expect(weatherIcon.getAttribute("alt")).toBe(description + " icon");
     });
@@ -112,13 +111,13 @@ describe("weather", () => {
     it("gets the current weather description", () => {
       return weather
         .openWeatherApi(fakeFetcher)
-        .description.then(result => expect(result).toBe(description));
+        .description.then((result) => expect(result).toBe(description));
     });
 
     it("gets the current weather icon", () => {
       return weather
         .openWeatherApi(fakeFetcher)
-        .iconUrl.then(result => expect(result).toBe(iconUrl));
+        .iconUrl.then((result) => expect(result).toBe(iconUrl));
     });
   });
 });
