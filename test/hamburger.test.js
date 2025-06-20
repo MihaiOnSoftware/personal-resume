@@ -56,14 +56,17 @@ describe("hamburger", () => {
 
       hamburgerToggle.toggleHamburger(hamburger());
 
-      const navItems = document.getElementsByClassName("nav-item");
+      const navItems = Array.from(document.getElementsByClassName("nav-item"));
 
-      Array.prototype.forEach.call(navItems, element => {
-        if (element.classList.contains("mobile-invisible")) {
-          expect(element.classList).not.toContain("mobile-visible");
-        } else {
-          expect(element.classList).toContain("mobile-visible");
-        }
+      const invisibleItems = navItems.filter(el => el.classList.contains("mobile-invisible"));
+      const visibleItems = navItems.filter(el => !el.classList.contains("mobile-invisible"));
+
+      invisibleItems.forEach(element => {
+        expect(element.classList).not.toContain("mobile-visible");
+      });
+
+      visibleItems.forEach(element => {
+        expect(element.classList).toContain("mobile-visible");
       });
     });
 

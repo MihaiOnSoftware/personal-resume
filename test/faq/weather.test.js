@@ -23,7 +23,7 @@ describe("weather", () => {
       return weather
         .weather(mockWeatherApi)
         .description.then(result =>
-          expect(result).toBe(weatherDescriptionElement)
+          expect(result).toBe(weatherDescriptionElement),
         );
     });
 
@@ -48,7 +48,7 @@ describe("weather", () => {
       await fakeWeather.description.resolve;
 
       const weatherDescription = weatherElement.getElementsByClassName(
-        "weather-description"
+        "weather-description",
       )[0].firstChild;
       expect(weatherDescription.textContent).toBe(description);
     });
@@ -62,7 +62,7 @@ describe("weather", () => {
       await fakeWeather.icon.resolve;
 
       const weatherIcon = weatherElement.getElementsByClassName(
-        "weather-icon"
+        "weather-icon",
       )[0].firstChild;
       expect(weatherIcon.getAttribute("src")).toBe(iconUrl);
       expect(weatherIcon.getAttribute("alt")).toBe(description + " icon");

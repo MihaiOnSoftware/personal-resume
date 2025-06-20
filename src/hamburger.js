@@ -10,7 +10,7 @@
       navItems,
       element => {
         return !element.classList.contains("mobile-invisible");
-      }
+      },
     );
 
     Array.prototype.forEach.call(notInvisibleNavItems, element => {
@@ -36,7 +36,7 @@
     Array.prototype.forEach.call(
       document.getElementsByClassName("hamburger"),
       element =>
-        element.addEventListener("click", () => toggleHamburger(element), false)
-    )
+        element.addEventListener("click", () => toggleHamburger(element), false),
+    ),
   );
 })();
