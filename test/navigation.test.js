@@ -50,14 +50,12 @@ describe("navigation", () => {
             expect(resume.classList).toContain("selected");
         });
 
-        it("creates hamburger menu", () => {
+        it("creates hamburger container for hamburger script to populate", () => {
             setupPage("Contact");
 
-            const hamburger = document.querySelector(".hamburger");
-            const icon = hamburger.querySelector("i");
-
-            expect(hamburger.href).toBe("javascript:;");
-            expect(icon.classList).toContain("fa-bars");
+            const hamburgerContainer = document.querySelector(".mobile-menu div:last-child");
+            expect(hamburgerContainer).toBeTruthy();
+            expect(hamburgerContainer.classList).toContain("hamburger-container");
         });
 
         it("creates social contact icons", () => {
@@ -88,6 +86,14 @@ describe("navigation", () => {
             );
             expect(aboutMeItem.textContent).toBe("About Me");
             expect(aboutMeItem.hasAttribute("href")).toBe(false);
+        });
+
+        it("loads hamburger script after navigation is created", () => {
+            setupPage("About Me");
+
+            const hamburgerScript = document.querySelector('script[src="hamburger.js"]');
+            expect(hamburgerScript).toBeTruthy();
+            expect(hamburgerScript.type).toBe("text/javascript");
         });
     });
 });

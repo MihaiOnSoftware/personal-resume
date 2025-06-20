@@ -18,13 +18,19 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
     integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
 
-  <script type="text/javascript" src="hamburger.js"></script>
   <script type="text/javascript" src="navigation.js"></script>
 </head>
 
 <body>
+  <div class="nav no-print" style="display: none" data-current-page="Resume">
+    <div class="leaf-nav">
+      <a class="nav-item small-text mobile-invisible trebut" href="#summary">Summary</a>
+      <a class="nav-item small-text mobile-invisible trebut" href="#skills">Skills</a>
+      <a class="nav-item small-text mobile-invisible trebut" href="#experience">Experience</a>
+      <a class="nav-item small-text mobile-invisible trebut" href="#education">Education</a>
+    </div>
+  </div>
   <div class="content">
-
     <div class="name">
       <div class="name-title">
         <p class="trebut title">Mihai Popescu</p>
@@ -42,40 +48,41 @@
           <p class="mono">
             I am an experienced software developer and engineering manager
             that has worked in a variety of software organizations ranging
-            from start-ups to large, cross-functional enterprises.
-            This includes extensive experience with Ruby on Rails, AWS,
-            and React systems as well as establishing high-performing teams
-            that I care deeply about.
-            I am passionate for the work that I produce, which has allowed me
-            to develop a strong work ethic and instilled in me a willingness
-            to always learn. This, combined with my varied areas of expertise,
-            diligence, and thorough approach allow me to consistently exceed
-            expectations.
+            from start-ups to large, cross-functional enterprises. This
+            includes extensive experience with Ruby on Rails, AWS, and React
+            systems as well as establishing high-performing teams that I care
+            deeply about. I am passionate for the work that I produce, which
+            has allowed me to develop a strong work ethic and instilled in me
+            a willingness to always learn. This, combined with my varied areas
+            of expertise, diligence, and thorough approach allow me to
+            consistently exceed expectations.
             <br /><br />
-            I value the craft and team trust among my colleagues,
-            as I believe these are the key components to being an effective
-            development team. I am continuously learning by using new paradigms
-            and technologies that expand my skill set and advance the quality
-            of my work. Within a team I endeavor to share new technologies and
-            paradigms as well as encourage growth, ownership, and collaboration.
+            I value the craft and team trust among my colleagues, as I believe
+            these are the key components to being an effective development
+            team. I am continuously learning by using new paradigms and
+            technologies that expand my skill set and advance the quality of
+            my work. Within a team I endeavor to share new technologies and
+            paradigms as well as encourage growth, ownership, and
+            collaboration.
             <br /><br />
             Some of my most notable achievements include:
+          </p>
+
           <ul>
             <li type="square" class="mono">
-              Building and managing two key teams at Nulogy through the pandemic,
-              remote transition, and recession.
+              Building and managing two key teams at Nulogy through the
+              pandemic, remote transition, and recession.
             </li>
             <li type="square" class="mono">
-              Rolling out two completely new products while maintaining existing
-              critical systems, all while dealing with the unique challenges
-              of remote work.
+              Rolling out two completely new products while maintaining
+              existing critical systems, all while dealing with the unique
+              challenges of remote work.
             </li>
             <li type="square" class="mono">
-              Introducing a culture of pair programming at Shopify and building
-              a pair programming workshop to onboard new developers.
+              Introducing a culture of pair programming at Shopify and
+              building a pair programming workshop to onboard new developers.
             </li>
           </ul>
-          </p>
         </div>
       </div>
 
@@ -88,9 +95,7 @@
 
         <div class="skills">
           <div class="skill">
-            <div class="skill-header mono">
-              Idioms:
-            </div>
+            <div class="skill-header mono">Idioms:</div>
             <div class="skill-line"></div>
             <div class="skill-content">
               <ul>
@@ -117,40 +122,46 @@
             </div>
           </div>
           <div class="skill">
-            <div class="skill-header mono">
-              Team Skills:
-            </div>
+            <div class="skill-header mono">Team Skills:</div>
             <div class="skill-line"></div>
             <div class="skill-content">
               <ul>
-                <li type="square" class="mono">Task Design &amp; Estimation</li>
-                <li type="square" class="mono">Team Management &amp; Growth</li>
-                <li type="square" class="mono">Training &amp; Interviewing</li>
-                <li type="square" class="mono">Client Communication &amp; Support</li>
-                <li type="square" class="mono">Code Review &amp; Pair Programming</li>
+                <li type="square" class="mono">
+                  Task Design &amp; Estimation
+                </li>
+                <li type="square" class="mono">
+                  Team Management &amp; Growth
+                </li>
+                <li type="square" class="mono">
+                  Training &amp; Interviewing
+                </li>
+                <li type="square" class="mono">
+                  Client Communication &amp; Support
+                </li>
+                <li type="square" class="mono">
+                  Code Review &amp; Pair Programming
+                </li>
               </ul>
             </div>
           </div>
           <div class="skill">
-            <div class="skill-header mono">
-              Languages and APIs:
-            </div>
+            <div class="skill-header mono">Languages and APIs:</div>
             <div class="skill-line"></div>
             <div class="skill-content">
               <ul>
                 <li type="square" class="mono">Ruby, Scala, Java</li>
                 <li type="square" class="mono">Rails, Spring</li>
                 <li type="square" class="mono">JSON, REST</li>
-                <li type="square" class="mono">Javascript, Typescript, React</li>
+                <li type="square" class="mono">
+                  Javascript, Typescript, React
+                </li>
                 <li type="square" class="mono">HTML, CSS, Bootstrap</li>
                 <li type="square" class="mono">BASH, SQL</li>
               </ul>
             </div>
           </div>
           <div class="skill">
-            <div class="skill-header mono">
-              Tools:
-            </div>
+            <div class="skill-header mono">Tools:</div>
             <div class="skill-line"></div>
             <div class="skill-content">
               <ul>
@@ -158,7 +169,9 @@
                   Intellij, Eclipse, NetBeans, Visual Studio, VS Code
                 </li>
                 <li type="square" class="mono">JIRA, Confluence, Crucible</li>
-                <li type="square" class="mono">Snowflake, Postgresql, MySQL, Neo4j</li>
+                <li type="square" class="mono">
+                  Snowflake, Postgresql, MySQL, Neo4j
+                </li>
                 <li type="square" class="mono">Git, Subversion</li>
                 <li type="square" class="mono">AWS, BuildKite</li>
               </ul>
@@ -176,14 +189,16 @@
 
         <div class="sub-section job">
           <h3 class="mono job-title">
-            <a id="shopify">Nulogy Inc.</a>, Toronto, ON<br />January 2020 - Present
+            <a id="shopify">Nulogy Inc.</a>, Toronto, ON<br />January 2020 -
+            Present
           </h3>
           <p class="mono">
-            <a class="green" href="https://nulogy.com/">Nulogy</a> is an award-winning
-            provider of supply chain collaboration solutions. Their cloud-based multi-enterprise
-            platform synchronizes consumer brands with their external supply chain partners
-            to respond seamlessly to a volatile retail and consumer environment,
-            while reducing waste and costs, and accelerating brand growth.
+            <a class="green" href="https://nulogy.com/">Nulogy</a> is an
+            award-winning provider of supply chain collaboration solutions.
+            Their cloud-based multi-enterprise platform synchronizes consumer
+            brands with their external supply chain partners to respond
+            seamlessly to a volatile retail and consumer environment, while
+            reducing waste and costs, and accelerating brand growth.
             <br />
           </p>
           <br />
@@ -198,45 +213,44 @@
                 teams through the pandemic and recession.
               </li>
               <li class="mono">
-                Building and growing high performing teams that delivered
-                new products while maintaining existing systems.
+                Building and growing high performing teams that delivered new
+                products while maintaining existing systems.
               </li>
               <li class="mono">
                 Coaching and mentoring team members including their transition
-                to more senior roles; one notably from an intermediate position
-                into a leadership role.
+                to more senior roles; one notably from an intermediate
+                position into a leadership role.
               </li>
               <li class="mono">
                 Managing the team that maintains Nulogy's Integrations
-                platform which has a daily throughput of approximately
-                90 thousand messages.
+                platform which has a daily throughput of approximately 90
+                thousand messages.
               </li>
               <li class="mono">
-                Reducing the number of critical incidents on my teams
-                from 27 per year to 6.
+                Reducing the number of critical incidents on my teams from 27
+                per year to 6.
               </li>
               <li class="mono">
-                Managing the team that built the new Connect platform
-                on top of Nulogy's Integrations platform.
+                Managing the team that built the new Connect platform on top
+                of Nulogy's Integrations platform.
               </li>
               <li class="mono">
-                Managing the team building Nulogy's new Data Platform
-                from the ground up using Snowflake.
+                Managing the team building Nulogy's new Data Platform from the
+                ground up using Snowflake.
               </li>
               <li class="mono">
                 Planning, prioritizing, and managing project work assigned to
                 or generated by all of my teams.
               </li>
               <li class="mono">
-                Collaborating closely with Product Managers and other departments
-                to ensure alignment between all stakeholders.
+                Collaborating closely with Product Managers and other
+                departments to ensure alignment between all stakeholders.
               </li>
               <li class="mono">
-                Managing customer communications and expectations, often on a daily basis.
+                Managing customer communications and expectations, often on a
+                daily basis.
               </li>
-              <li class="mono">
-                Handling audits and grant applications.
-              </li>
+              <li class="mono">Handling audits and grant applications.</li>
               <li class="mono">
                 Handling vendor or consultant vetting and management.
               </li>
@@ -250,8 +264,8 @@
               </li>
               <li class="mono">
                 Introducing and organizing mob programming within the team
-                which drastically reduced knowledge silos and merged
-                system specific "sub-teams" that had formed.
+                which drastically reduced knowledge silos and merged system
+                specific "sub-teams" that had formed.
               </li>
               <li class="mono">
                 Introducing new tools and processes to help the teams work
@@ -265,7 +279,8 @@
                 Driving code quality and innovation within the team.
               </li>
               <li class="mono">
-                Working with the team to create a collaborative and safe environment.
+                Working with the team to create a collaborative and safe
+                environment.
               </li>
               <li class="mono">
                 Getting a lot done with few people and resources while still
@@ -282,13 +297,16 @@
             <li class="mono">Ruby, Rails, Javascript, React</li>
             <li class="mono">Github, RubyMine, VS Code</li>
             <li class="mono">AWS, Snowflake, Terraform, BuildKite</li>
-            <li class="mono">Jira, Confluence, Miro, Slack, Zoom, Nave, Lattice</li>
+            <li class="mono">
+              Jira, Confluence, Miro, Slack, Zoom, Nave, Lattice
+            </li>
           </ul>
         </div>
 
         <div class="sub-section job">
           <h3 class="mono job-title">
-            <a id="shopify">Shopify</a>, Toronto, ON<br />April 2018 - January 2020
+            <a id="shopify">Shopify</a>, Toronto, ON<br />April 2018 - January
+            2020
           </h3>
           <p class="mono">
             <a class="green" href="https://www.shopify.ca/">Shopify</a> is a
@@ -395,9 +413,7 @@
                 Attended regular agile coffee sessions to help other teams
                 become more agile and work through issues.
               </li>
-              <li class="mono">
-                Facilitated Scrum rituals for other teams.
-              </li>
+              <li class="mono">Facilitated Scrum rituals for other teams.</li>
               <li class="mono">
                 Worked with the team to implement new architectures and grow
                 the software in new ways.
@@ -494,9 +510,7 @@
               (August 2014 - June 2015)<br />
             </div>
             <ul>
-              <li class="mono">
-                Scala and Java application development.
-              </li>
+              <li class="mono">Scala and Java application development.</li>
               <li class="mono">
                 Code reviewed peers' code as well as paired with co-workers on
                 complex tasks.
@@ -690,19 +704,6 @@
       </div>
     </div>
   </div>
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      navigation.renderNavigation({
-        currentPage: 'Resume',
-        additionalLeafNavItems: `
-            <a class="nav-item small-text mobile-invisible trebut" href="#summary">Summary</a>
-            <a class="nav-item small-text mobile-invisible trebut" href="#skills">Skills</a>
-            <a class="nav-item small-text mobile-invisible trebut" href="#experience">Experience</a>
-            <a class="nav-item small-text mobile-invisible trebut" href="#education">Education</a>
-          `
-      });
-    });
-  </script>
 </body>
 
 </html>

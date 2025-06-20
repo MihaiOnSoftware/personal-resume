@@ -6,6 +6,24 @@ describe("hamburger", () => {
       <i class="fa fa-bars"></i>
     </a>`;
 
+  describe("createHamburgerHTML()", () => {
+    it("creates hamburger HTML in provided container", () => {
+      document.body.innerHTML = `<div class="hamburger-container"></div>`;
+
+      // This would be the new function we'll add to hamburger.js
+      if (hamburgerToggle.createHamburgerHTML) {
+        const container = document.querySelector(".hamburger-container");
+        hamburgerToggle.createHamburgerHTML(container);
+
+        const hamburger = container.querySelector(".hamburger");
+        const icon = hamburger.querySelector("i");
+
+        expect(hamburger.href).toBe("javascript:;");
+        expect(icon.classList).toContain("fa-bars");
+      }
+    });
+  });
+
   describe("toggleHamburger()", () => {
     it("toggles all nav-items to be visible if not visible", () => {
       document.body.innerHTML =

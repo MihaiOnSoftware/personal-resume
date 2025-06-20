@@ -1,4 +1,6 @@
 (function () {
+  const HAMBURGER_HTML = '<a class="hamburger" href="javascript:;"><i class="fa fa-bars"></i></a>';
+
   function toggleHamburger(hamburger) {
     const hamburgerIcon = hamburger.getElementsByTagName("i")[0];
     const hamburgerOpen = hamburgerIcon.classList.contains("fa-times");
@@ -30,17 +32,23 @@
     hamburgerIcon.classList.toggle("fa-times");
   }
 
-  module.exports.toggleHamburger = toggleHamburger;
+  function addHamburgerEventListener(container) {
+    const hamburger = container.querySelector(".hamburger");
+    hamburger.addEventListener("click", () => toggleHamburger(hamburger), false);
+  }
 
-  document.addEventListener("DOMContentLoaded", () =>
-    Array.prototype.forEach.call(
-      document.getElementsByClassName("hamburger"),
-      (element) =>
-        element.addEventListener(
-          "click",
-          () => toggleHamburger(element),
-          false,
-        ),
-    ),
-  );
+  function createHamburgerHTML(container) {
+    container.innerHTML = HAMBURGER_HTML;
+    addHamburgerEventListener(container);
+  }
+
+  module.exports.toggleHamburger = toggleHamburger;
+  module.exports.createHamburgerHTML = createHamburgerHTML;
+
+  function autoInitializeHamburgers() {
+    const containers = document.querySelectorAll(".hamburger-container");
+    containers.forEach(container => createHamburgerHTML(container));
+  }
+
+  autoInitializeHamburgers();
 })();
