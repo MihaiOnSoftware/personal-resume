@@ -1,0 +1,51 @@
+# Dependencies
+node_modules
+npm-debug.log*
+
+# Build outputs (will be copied from builder stage)
+dist/
+
+# Development files
+.git
+.gitignore
+*.md
+README.md
+DOCKER.md
+CHATBOT_README.md
+
+# Test files
+test/
+coverage/
+*.test.js
+
+# Development tools
+.eslintrc*
+.prettierrc*
+eslint.config.js
+jest.config.js
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Docker files
+Dockerfile*
+.dockerignore
+
+# Scripts (not needed in container)
+scripts/
+
+# Temporary files
+tmp/
+temp/ 

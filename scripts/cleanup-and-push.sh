@@ -21,35 +21,15 @@ fi
 
 # Note: Using DO_REGISTRY_TOKEN for both registry login and API calls
 
-# Extract registry name from URL (e.g., "my-registry" from "registry.digitalocean.com/my-registry")
-REGISTRY_NAME=$(echo "$DO_REGISTRY_URL" | sed 's|registry.digitalocean.com/||')
+# Set up variables for build and push
 IMAGE_NAME="personal-resume"
 COMMIT_HASH=$(git rev-parse --short HEAD)
 REGISTRY_IMAGE="${DO_REGISTRY_URL}/${IMAGE_NAME}"
 
 echo "=== Cleaning up old images from DigitalOcean registry ==="
 
-# List existing tags and delete old ones (keep only the 2 most recent)
-echo "Fetching existing image tags..."
-TAGS_RESPONSE=$(curl -s -X GET \
-  -H "Authorization: Bearer $DO_REGISTRY_TOKEN" \
-  -H "Content-Type: application/json" \
-  "https://api.digitalocean.com/v2/registry/$REGISTRY_NAME/repositories/$IMAGE_NAME/tags")
-
-# Extract tag names (excluding 'latest' and current commit)
-OLD_TAGS=$(echo "$TAGS_RESPONSE" | jq -r '.tags[]?.name' | grep -v "latest" | grep -v "$COMMIT_HASH" | head -n -1)
-
-if [ -n "$OLD_TAGS" ]; then
-    echo "Deleting old image tags to free up space..."
-    for tag in $OLD_TAGS; do
-        echo "Deleting tag: $tag"
-        curl -s -X DELETE \
-          -H "Authorization: Bearer $DO_REGISTRY_TOKEN" \
-          "https://api.digitalocean.com/v2/registry/$REGISTRY_NAME/repositories/$IMAGE_NAME/tags/$tag" || echo "Failed to delete $tag (may not exist)"
-    done
-else
-    echo "No old tags to delete"
-fi
+# Use the dedicated cleanup script
+./scripts/cleanup-registry.sh
 
 echo ""
 echo "=== Building new Docker image ==="
