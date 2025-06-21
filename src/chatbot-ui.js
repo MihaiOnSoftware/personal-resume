@@ -43,7 +43,7 @@
       </div>
     `;
 
-    const WELCOME_MESSAGE = "👋 Hi there! I'm an AI assistant that can answer questions about Mihai Popescu. I know about his experience, skills, projects, and can tell you about his recent GitHub activity. What would you like to know?";
+    const WELCOME_MESSAGE = "👋 Hi there! I'm an AI chatbot that can answer questions about Mihai Popescu. I know about his experience, skills, projects, and can tell you about his recent GitHub activity. What would you like to know?";
 
     // Global state (like hamburger.js simple state)
     let isOpen = false;
