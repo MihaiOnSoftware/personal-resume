@@ -6,7 +6,7 @@
         githubUsername: 'MihaiOnSoftware',
         openaiModel: 'gpt-3.5-turbo',
         maxTokens: 150,
-        temperature: 0.2,
+        temperature: 0.3,
         githubKeywords: ['github', 'repository', 'repo', 'repositories', 'code', 'commits', 'contributions', 'followers', 'following', 'projects', 'website', 'site', 'development', 'built', 'features', 'technologies', 'build', 'develop'],
 
         // GitHub API configuration
@@ -94,8 +94,7 @@ ${githubContext || "No recent GitHub activity data available"}
 RESPONSE RULES:
 - Keep responses conversational and concise (1-2 sentences)
 - READ THE COMMIT MESSAGES CAREFULLY - if you see "claude-4-sonnet supported" or similar AI tool mentions, that means AI tools WERE used
-- If asked about personal details not in the context, say "That's not included in Mihai's public information"
-- Be accurate based on what you actually see in the data`;
+- If asked about personal details check the About Me page first, if not available in the context say "That's not included in Mihai's public information"`;
         }
 
         messageRequiresGithubStats(message) {
