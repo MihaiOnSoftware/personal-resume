@@ -8,7 +8,7 @@ WORKDIR /app
 ARG GITHUB_TOKEN
 ARG GITHUB_OWNER=MihaiOnSoftware
 ARG GITHUB_REPO=personal-resume
-ARG GITHUB_COMMIT_LIMIT
+ARG GITHUB_COMMIT_LIMIT=500
 
 # Set environment variables for the build process
 ENV GITHUB_TOKEN=$GITHUB_TOKEN
@@ -22,6 +22,8 @@ RUN npm ci --include=dev
 
 # Copy source code and build
 COPY . .
+
+RUN echo "GITHUB_COMMIT_LIMIT: $GITHUB_COMMIT_LIMIT"
 RUN npm run build
 
 # Stage 2: Production stage
