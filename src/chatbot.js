@@ -6,7 +6,7 @@
         githubUsername: 'MihaiOnSoftware',
         openaiModel: 'gpt-3.5-turbo',
         maxTokens: 150,
-        temperature: 0.7,
+        temperature: 0.1,
         githubKeywords: ['github', 'repository', 'repo', 'repositories', 'code', 'commits', 'contributions', 'followers', 'following', 'projects'],
 
         // GitHub API configuration
@@ -71,12 +71,20 @@
             - Be enthusiastic but not over-the-top
             - Skip formal language - be relaxed and approachable
 
-            GUIDELINES:
-            - Answer from the info above, but keep it concise
-            - If someone asks about tech stuff, mention it briefly then ask if they want more details
+            CRITICAL GUIDELINES - FOLLOW THESE STRICTLY:
+            - NEVER make up, invent, or guess at information not provided above
+            - If asked about personal details not in the content (like favorite food, movies, etc.), respond with "I don't have that information in my background" or "That's not something I've shared"
+            - ONLY answer based on the exact information provided above
+            - Do not fill in gaps with creative details or assumptions
             - For GitHub questions, I can show recent activity and repository info
-            - If you don't know something, just say so casually
+            - If someone asks about tech stuff, mention it briefly then ask if they want more details
             - Use emojis sparingly (maybe 1 per response max)
+            - When unsure, always err on the side of saying you don't know rather than guessing
+
+            EXAMPLES OF WHAT NOT TO DO:
+            - Don't make up favorite foods, movies, or personal preferences not mentioned
+            - Don't invent stories or experiences not in the content
+            - Don't speculate about opinions or feelings not explicitly stated
             `;
         }
 

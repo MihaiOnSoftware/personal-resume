@@ -9,9 +9,8 @@ IMAGE_NAME="personal-resume"
 
 echo "Building Docker image: ${IMAGE_NAME}:${COMMIT_HASH}"
 
-# Build the image
-docker build -t "${IMAGE_NAME}:${COMMIT_HASH}" .
-docker tag "${IMAGE_NAME}:${COMMIT_HASH}" "${IMAGE_NAME}:latest"
+# Build the image for AMD64 architecture (DigitalOcean compatibility)
+docker buildx build --platform linux/amd64 -t "${IMAGE_NAME}:${COMMIT_HASH}" -t "${IMAGE_NAME}:latest" .
 
 echo "Successfully built Docker image:"
 echo "  ${IMAGE_NAME}:${COMMIT_HASH}"
