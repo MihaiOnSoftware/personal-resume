@@ -42,6 +42,41 @@ describe('Chatbot', () => {
                     updated_at: '2021-09-29T21:05:54Z',
                 },
             ],
+            // Raw repository data (before filtering) - includes Nulogy repos
+            repositoriesRaw: [
+                {
+                    name: 'VRO',
+                    description: 'VRO mod for X4 foundations',
+                    language: 'JavaScript',
+                    stargazers_count: 2,
+                    updated_at: '2023-04-14T22:21:23Z',
+                    html_url: 'https://github.com/MihaiOnSoftware/VRO',
+                },
+                {
+                    name: 'grow-hex-rails',
+                    description: 'An example Rails app grown into hexagonal architecture',
+                    language: 'Ruby',
+                    stargazers_count: 5,
+                    updated_at: '2021-09-29T21:05:54Z',
+                    html_url: 'https://github.com/MihaiOnSoftware/grow-hex-rails',
+                },
+                {
+                    name: 'nulogy-internal-project',
+                    description: 'Internal Nulogy project',
+                    language: 'Ruby',
+                    stargazers_count: 0,
+                    updated_at: '2023-05-01T10:00:00Z',
+                    html_url: 'https://github.com/nulogy/internal-project',
+                },
+                {
+                    name: 'barcodeapi-server',
+                    description: 'Barcode API server for Nulogy',
+                    language: 'Ruby',
+                    stargazers_count: 1,
+                    updated_at: '2023-04-20T14:30:00Z',
+                    html_url: 'https://github.com/nulogy/barcodeapi-server',
+                },
+            ],
             events: [
                 {
                     type: 'PushEvent',
@@ -54,6 +89,33 @@ describe('Chatbot', () => {
                     repo: { name: 'MihaiOnSoftware/grow-hex-rails' },
                     created_at: '2023-04-13T15:30:00Z',
                     payload: { ref_type: 'branch', ref: 'feature/improvements' },
+                },
+            ],
+            // Raw events data (before filtering) - includes Nulogy events
+            eventsRaw: [
+                {
+                    type: 'PushEvent',
+                    repo: { name: 'MihaiOnSoftware/VRO' },
+                    created_at: '2023-04-14T20:00:00Z',
+                    payload: { commits: [{ message: 'Update documentation' }] },
+                },
+                {
+                    type: 'CreateEvent',
+                    repo: { name: 'MihaiOnSoftware/grow-hex-rails' },
+                    created_at: '2023-04-13T15:30:00Z',
+                    payload: { ref_type: 'branch', ref: 'feature/improvements' },
+                },
+                {
+                    type: 'PushEvent',
+                    repo: { name: 'nulogy/barcodeapi-server' },
+                    created_at: '2023-04-15T09:00:00Z',
+                    payload: { commits: [{ message: 'Fix API endpoint' }] },
+                },
+                {
+                    type: 'CreateEvent',
+                    repo: { name: 'nulogy/internal-project' },
+                    created_at: '2023-04-12T16:45:00Z',
+                    payload: { ref_type: 'branch', ref: 'feature/new-feature' },
                 },
             ],
         },
@@ -90,15 +152,20 @@ describe('Chatbot', () => {
             profileFails = false,
             reposFails = false,
             eventsFails = false,
+            includeNulogyData = false,
         } = options;
+
+        // Use raw data (with Nulogy) or filtered data based on test needs
+        const reposData = includeNulogyData ? TEST_DATA.github.repositoriesRaw : TEST_DATA.github.repositories;
+        const eventsData = includeNulogyData ? TEST_DATA.github.eventsRaw : TEST_DATA.github.events;
 
         return {
             'https://api.github.com/users/MihaiOnSoftware':
                 profileFails ? createErrorResponse(404) : createSuccessResponse(TEST_DATA.github.profile),
             'https://api.github.com/users/MihaiOnSoftware/repos?sort=updated&per_page=10':
-                reposFails ? createErrorResponse(403) : createSuccessResponse(TEST_DATA.github.repositories),
+                reposFails ? createErrorResponse(403) : createSuccessResponse(reposData),
             'https://api.github.com/users/MihaiOnSoftware/events?per_page=5':
-                eventsFails ? createErrorResponse(403) : createSuccessResponse(TEST_DATA.github.events),
+                eventsFails ? createErrorResponse(403) : createSuccessResponse(eventsData),
         };
     };
 
@@ -305,6 +372,82 @@ describe('Chatbot', () => {
 
             const response = await chatbot.processMessage('Tell me about your GitHub projects');
             expect(response).toBe('Hello! I am Mihai.');
+        });
+
+        test('should filter out Nulogy repositories from GitHub data', async () => {
+            // Mock with raw data that includes Nulogy repos
+            global.fetch = createFetchMock(createGitHubMocks({ includeNulogyData: true }));
+
+            await chatbot.processMessage('What are your latest GitHub projects?');
+
+            const systemMessage = getSystemMessage();
+
+            // Should include personal repos
+            expect(systemMessage.content).toContain('VRO');
+            expect(systemMessage.content).toContain('grow-hex-rails');
+
+            // Should NOT include Nulogy repos
+            expect(systemMessage.content).not.toContain('nulogy-internal-project');
+            expect(systemMessage.content).not.toContain('barcodeapi-server');
+            expect(systemMessage.content).not.toContain('nulogy/');
+        });
+
+        test('should filter out Nulogy events from GitHub activity', async () => {
+            // Mock with raw data that includes Nulogy events
+            global.fetch = createFetchMock(createGitHubMocks({ includeNulogyData: true }));
+
+            await chatbot.processMessage('Tell me about your recent GitHub activity');
+
+            const systemMessage = getSystemMessage();
+
+            // Should include personal repo activity
+            expect(systemMessage.content).toContain('VRO');
+            expect(systemMessage.content).toContain('grow-hex-rails');
+
+            // Should NOT include Nulogy activity
+            expect(systemMessage.content).not.toContain('barcodeapi-server');
+            expect(systemMessage.content).not.toContain('internal-project');
+            expect(systemMessage.content).not.toContain('nulogy/');
+        });
+
+        test('should handle case where all repos are filtered out', async () => {
+            // Mock with only Nulogy repos
+            const onlyNulogyRepos = TEST_DATA.github.repositoriesRaw.filter(repo =>
+                repo.html_url.includes('nulogy/')
+            );
+
+            global.fetch = createFetchMock({
+                'https://api.github.com/users/MihaiOnSoftware/repos?sort=updated&per_page=10':
+                    createSuccessResponse(onlyNulogyRepos),
+            });
+
+            await chatbot.processMessage('What are your GitHub projects?');
+
+            const systemMessage = getSystemMessage();
+
+            // Should not crash and should not include repositories section
+            expect(systemMessage.content).not.toContain('RECENT REPOSITORIES');
+            expect(systemMessage.content).not.toContain('nulogy/');
+        });
+
+        test('should handle case where all events are filtered out', async () => {
+            // Mock with only Nulogy events
+            const onlyNulogyEvents = TEST_DATA.github.eventsRaw.filter(event =>
+                event.repo.name.includes('nulogy/')
+            );
+
+            global.fetch = createFetchMock({
+                'https://api.github.com/users/MihaiOnSoftware/events?per_page=5':
+                    createSuccessResponse(onlyNulogyEvents),
+            });
+
+            await chatbot.processMessage('What is your recent GitHub activity?');
+
+            const systemMessage = getSystemMessage();
+
+            // Should not crash and should not include activity section
+            expect(systemMessage.content).not.toContain('RECENT ACTIVITY');
+            expect(systemMessage.content).not.toContain('nulogy/');
         });
     });
 }); 
