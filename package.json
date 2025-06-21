@@ -10,7 +10,9 @@
     "build": "webpack",
     "watch": "webpack --watch",
     "start": "node server.js",
-    "dev": "npm run build && npm start"
+    "dev": "npm run build && npm start",
+    "chat": "node scripts/chat-cli.js",
+    "test-chatbot": "node scripts/test-chatbot.js"
   },
   "keywords": [],
   "author": "Mihai Popescu",
