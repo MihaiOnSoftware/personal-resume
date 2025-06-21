@@ -253,53 +253,47 @@
                 return '\n            NOTE: No recent public GitHub activity to display.';
             }
 
-            const commitStats = this.calculateCommitStats(activities);
-
-            if (commitStats.totalCommits === 0) {
-                return '\n            RECENT ACTIVITY: No commits in recent public activity.';
-            }
+            const activityStats = this.calculateActivityStats(activities);
 
             return `\n            RECENT ACTIVITY SUMMARY:
-            - Total commits in recent activity: ${commitStats.totalCommits}
-            - Active repositories: ${commitStats.activeRepos}
-            - Most recent activity: ${commitStats.mostRecentDate}`;
+            - Recent actions: ${activityStats.totalActions}
+            - Active repositories: ${activityStats.activeRepos}
+            - Most recent activity: ${activityStats.mostRecentDate}
+            - Activity types: ${activityStats.activityTypes.join(', ')}`;
         }
 
-        calculateCommitStats(activities) {
+        calculateActivityStats(activities) {
             const stats = {
-                totalCommits: 0,
+                totalActions: 0,
                 activeRepos: new Set(),
+                activityTypes: new Set(),
                 mostRecentDate: null,
             };
 
             activities.forEach(activity => {
-                this.processActivityForStats(activity, stats);
+                stats.totalActions++;
+
+                // Track activity types
+                const activityType = activity.type.replace('Event', '');
+                stats.activityTypes.add(activityType);
+
+                // Track active repositories
+                const repoName = activity.repo.replace('MihaiOnSoftware/', '');
+                stats.activeRepos.add(repoName);
+
+                // Track most recent date
+                const activityDate = new Date(activity.created_at);
+                if (!stats.mostRecentDate || activityDate > stats.mostRecentDate) {
+                    stats.mostRecentDate = activityDate;
+                }
             });
 
             return {
-                totalCommits: stats.totalCommits,
+                totalActions: stats.totalActions,
                 activeRepos: stats.activeRepos.size,
+                activityTypes: Array.from(stats.activityTypes),
                 mostRecentDate: stats.mostRecentDate ? stats.mostRecentDate.toLocaleDateString() : 'Unknown',
             };
-        }
-
-        processActivityForStats(activity, stats) {
-            // Count commits from push events
-            if (activity.type === 'PushEvent') {
-                const commitMatch = activity.action.match(/Pushed (\d+) commit/);
-                const commitCount = commitMatch ? parseInt(commitMatch[1], 10) : 0;
-                stats.totalCommits += commitCount;
-            }
-
-            // Track active repositories
-            const repoName = activity.repo.replace('MihaiOnSoftware/', '');
-            stats.activeRepos.add(repoName);
-
-            // Track most recent date
-            const activityDate = new Date(activity.created_at);
-            if (!stats.mostRecentDate || activityDate > stats.mostRecentDate) {
-                stats.mostRecentDate = activityDate;
-            }
         }
 
 
