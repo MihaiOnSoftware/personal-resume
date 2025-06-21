@@ -4,6 +4,16 @@ FROM node:18-alpine AS builder
 
 WORKDIR /app
 
+# Accept GitHub token as build argument for commit history generation
+ARG GITHUB_TOKEN
+ARG GITHUB_OWNER=MihaiOnSoftware
+ARG GITHUB_REPO=personal-resume
+
+# Set environment variables for the build process
+ENV GITHUB_TOKEN=$GITHUB_TOKEN
+ENV GITHUB_OWNER=$GITHUB_OWNER
+ENV GITHUB_REPO=$GITHUB_REPO
+
 # Copy package files and install ALL dependencies (including dev dependencies for build)
 COPY package*.json ./
 RUN npm ci --include=dev

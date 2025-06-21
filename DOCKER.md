@@ -16,6 +16,11 @@ Copy `.env.example` to `.env` and configure the following variables:
 # OpenAI API Key for the chatbot
 OPENAI_API_KEY=your_openai_api_key_here
 
+# GitHub Token for commit history generation (required for build)
+GITHUB_TOKEN=your_github_token_here
+GITHUB_OWNER=MihaiOnSoftware  # Optional, defaults to MihaiOnSoftware
+GITHUB_REPO=personal-resume   # Optional, defaults to personal-resume
+
 # DigitalOcean Container Registry credentials
 # The registry token is also used for API calls to manage images
 DO_REGISTRY_TOKEN=your_do_registry_token_here
@@ -41,8 +46,12 @@ DO_REGISTRY_URL=registry.digitalocean.com/your-registry-name
 ### `scripts/build-docker.sh`
 Builds the Docker image with git commit hash tagging:
 ```bash
+# Make sure to set your GitHub token first for commit history
+export GITHUB_TOKEN=your_github_token_here
 ./scripts/build-docker.sh
 ```
+
+**Note**: The build script requires a `GITHUB_TOKEN` environment variable to generate commit history for the chatbot. Without it, the commit history feature will not work in the container.
 
 ### `scripts/push-docker.sh`
 Pushes the built image to DigitalOcean Container Registry:
@@ -93,4 +102,6 @@ registry.digitalocean.com/your-registry-name/personal-resume:latest
 - **Storage quota exceeded**: Use `scripts/cleanup-and-push.sh` instead of separate build/push
 - **API authentication failed**: Verify your `DO_REGISTRY_TOKEN` has read/write permissions
 - **Registry login failed**: Check your `DO_REGISTRY_TOKEN` and `DO_REGISTRY_EMAIL`
-- **Image not found**: Ensure the `DO_REGISTRY_URL` matches your actual registry name 
+- **Image not found**: Ensure the `DO_REGISTRY_URL` matches your actual registry name
+- **Commit history missing in container**: Make sure `GITHUB_TOKEN` is set when building the Docker image
+- **"Could not generate commit history" during build**: Check that your GitHub token has access to the repository and isn't expired 
