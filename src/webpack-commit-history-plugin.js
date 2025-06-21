@@ -33,25 +33,57 @@ class CommitHistoryPlugin {
             'User-Agent': 'personal-resume-build',
         };
 
-        const [repoData, commits, branches] = await Promise.all([
+        const commitLimit = parseInt(process.env.GITHUB_COMMIT_LIMIT || '20', 10);
+
+        const [repoData, allCommits, branches] = await Promise.all([
             this.fetchGitHubData(`https://api.github.com/repos/${owner}/${repo}`, headers),
-            this.fetchGitHubData(`https://api.github.com/repos/${owner}/${repo}/commits?per_page=100`, headers),
+            this.fetchAllCommits(owner, repo, headers, commitLimit),
             this.fetchGitHubData(`https://api.github.com/repos/${owner}/${repo}/branches`, headers),
         ]);
 
-        const formattedCommits = commits.slice(0, 20).map(this.formatCommit);
+        const formattedCommits = allCommits.map(this.formatCommit);
 
         return {
             repository_stats: {
-                total_commits: commits.length,
-                first_commit: this.formatCommitSummary(commits[commits.length - 1]),
-                latest_commit: this.formatCommitSummary(commits[0]),
+                total_commits: allCommits.length,
+                first_commit: this.formatCommitSummary(allCommits[allCommits.length - 1]),
+                latest_commit: this.formatCommitSummary(allCommits[0]),
                 branches: branches.map(branch => branch.name),
                 created_at: repoData.created_at,
                 updated_at: repoData.updated_at,
             },
             commit_history: formattedCommits,
         };
+    }
+
+    async fetchAllCommits(owner, repo, headers, limit) {
+        const allCommits = [];
+        let page = 1;
+
+        while (allCommits.length < limit) {
+            const commits = await this.fetchCommitsPage(owner, repo, headers, page);
+
+            if (this.isLastPage(commits)) {
+                allCommits.push(...commits);
+                break;
+            }
+
+            allCommits.push(...commits);
+            page++;
+        }
+
+        return allCommits.slice(0, limit);
+    }
+
+    async fetchCommitsPage(owner, repo, headers, page) {
+        return this.fetchGitHubData(
+            `https://api.github.com/repos/${owner}/${repo}/commits?per_page=100&page=${page}`,
+            headers
+        );
+    }
+
+    isLastPage(commits) {
+        return commits.length === 0 || commits.length < 100;
     }
 
     async fetchGitHubData(url, headers) {
@@ -71,7 +103,6 @@ class CommitHistoryPlugin {
     }
 
     formatCommitSummary(commit) {
-        if (!commit) return 'Unknown';
         const sha = commit.sha.substring(0, 7);
         const message = commit.commit.message.split('\n')[0];
         return `${sha} - ${message}`;

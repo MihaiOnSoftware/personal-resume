@@ -60,6 +60,27 @@ describe('CommitHistoryPlugin', () => {
             .mockResolvedValueOnce(createMockResponse(TEST_DATA.github.branches));
     };
 
+    const createCommits = (count, prefix = 'commit') => {
+        return Array.from({ length: count }, (_, i) => ({
+            sha: `${prefix}${i.toString().padStart(3, '0')}1234567890`,
+            commit: {
+                message: `${prefix} ${i + 1}`,
+                author: {
+                    name: 'Test User',
+                    date: '2023-11-15T10:00:00Z',
+                },
+            },
+        }));
+    };
+
+    const setupPaginationMocks = (page1Commits, page2Commits) => {
+        mockFetch
+            .mockResolvedValueOnce(createMockResponse(TEST_DATA.github.repository))
+            .mockResolvedValueOnce(createMockResponse(page1Commits))
+            .mockResolvedValueOnce(createMockResponse(TEST_DATA.github.branches))
+            .mockResolvedValueOnce(createMockResponse(page2Commits));
+    };
+
     beforeEach(() => {
         process.env.GITHUB_TOKEN = TEST_DATA.env.GITHUB_TOKEN;
         process.env.GITHUB_OWNER = TEST_DATA.env.GITHUB_OWNER;
@@ -115,7 +136,7 @@ describe('CommitHistoryPlugin', () => {
 
             const expectedCalls = [
                 'https://api.github.com/repos/TestOwner/test-repo',
-                'https://api.github.com/repos/TestOwner/test-repo/commits?per_page=100',
+                'https://api.github.com/repos/TestOwner/test-repo/commits?per_page=100&page=1',
                 'https://api.github.com/repos/TestOwner/test-repo/branches',
             ];
 
@@ -167,6 +188,47 @@ describe('CommitHistoryPlugin', () => {
 
             expect(mockFetch).toHaveBeenCalledWith(
                 'https://api.github.com/repos/MihaiOnSoftware/personal-resume',
+                expect.objectContaining({ headers: expect.any(Object) })
+            );
+        });
+
+        test('should respect GITHUB_COMMIT_LIMIT environment variable', async () => {
+            process.env.GITHUB_COMMIT_LIMIT = '50';
+
+            const manyCommits = createCommits(60);
+
+            mockFetch
+                .mockResolvedValueOnce(createMockResponse(TEST_DATA.github.repository))
+                .mockResolvedValueOnce(createMockResponse(manyCommits))
+                .mockResolvedValueOnce(createMockResponse(TEST_DATA.github.branches));
+
+            const plugin = new CommitHistoryPlugin();
+            const result = await plugin.fetchGitHubCommitHistory();
+
+            expect(result.commit_history).toHaveLength(50);
+            expect(result.repository_stats.total_commits).toBe(50);
+        });
+
+        test('should fetch multiple pages when commit limit exceeds 100', async () => {
+            process.env.GITHUB_COMMIT_LIMIT = '150';
+
+            const page1Commits = createCommits(100, 'page1');
+            const page2Commits = createCommits(50, 'page2');
+
+            setupPaginationMocks(page1Commits, page2Commits);
+
+            const plugin = new CommitHistoryPlugin();
+            const result = await plugin.fetchGitHubCommitHistory();
+
+            expect(result.commit_history).toHaveLength(150);
+            expect(result.repository_stats.total_commits).toBe(150);
+
+            expect(mockFetch).toHaveBeenCalledWith(
+                'https://api.github.com/repos/TestOwner/test-repo/commits?per_page=100&page=1',
+                expect.objectContaining({ headers: expect.any(Object) })
+            );
+            expect(mockFetch).toHaveBeenCalledWith(
+                'https://api.github.com/repos/TestOwner/test-repo/commits?per_page=100&page=2',
                 expect.objectContaining({ headers: expect.any(Object) })
             );
         });
