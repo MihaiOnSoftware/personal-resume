@@ -97,19 +97,15 @@ describe('Chatbot', () => {
         BASE_URL: 'https://api.github.com/users/MihaiOnSoftware',
         get PROFILE() { return this.BASE_URL; },
         get REPOS() { return `${this.BASE_URL}/repos?sort=updated&per_page=10`; },
-        EVENTS: (since) => `${GITHUB_API.BASE_URL}/events?per_page=100&since=${since}`,
+        get EVENTS() { return `${this.BASE_URL}/events?per_page=100`; },
     };
 
-    const MOCK_DATES = {
-        CURRENT: new Date('2024-06-21T12:00:00.000Z'),
-        THIRTY_DAYS_AGO: new Date('2024-05-22T12:00:00.000Z'),
-        get THIRTY_DAYS_AGO_ISO() { return this.THIRTY_DAYS_AGO.toISOString(); },
-    };
+
 
     const GITHUB_MOCK_DATA = {
         [GITHUB_API.PROFILE]: createSuccessResponse(TEST_DATA.github.profile),
         [GITHUB_API.REPOS]: createSuccessResponse(TEST_DATA.github.repositories),
-        [GITHUB_API.EVENTS(MOCK_DATES.THIRTY_DAYS_AGO_ISO)]: createSuccessResponse(TEST_DATA.github.events),
+        [GITHUB_API.EVENTS]: createSuccessResponse(TEST_DATA.github.events),
     };
 
     function createFetchMock(overrides = {}) {
@@ -147,7 +143,7 @@ describe('Chatbot', () => {
     const expectGitHubApiCalled = () => {
         expect(fetch).toHaveBeenCalledWith(GITHUB_API.PROFILE);
         expect(fetch).toHaveBeenCalledWith(GITHUB_API.REPOS);
-        expect(fetch).toHaveBeenCalledWith(GITHUB_API.EVENTS(MOCK_DATES.THIRTY_DAYS_AGO_ISO));
+        expect(fetch).toHaveBeenCalledWith(GITHUB_API.EVENTS);
     };
 
     const expectSystemMessageContains = (...expectedContent) => {
@@ -162,15 +158,11 @@ describe('Chatbot', () => {
     };
 
     beforeEach(() => {
-        jest.useFakeTimers();
-        jest.setSystemTime(MOCK_DATES.CURRENT);
-
         chatbot = new Chatbot();
         global.fetch = createFetchMock();
     });
 
     afterEach(() => {
-        jest.useRealTimers();
         jest.restoreAllMocks();
     });
 
@@ -223,7 +215,7 @@ describe('Chatbot', () => {
             global.fetch = createFetchMock({
                 [GITHUB_API.PROFILE]: createErrorResponse(404),
                 [GITHUB_API.REPOS]: createErrorResponse(403),
-                [GITHUB_API.EVENTS(MOCK_DATES.THIRTY_DAYS_AGO_ISO)]: createErrorResponse(403),
+                [GITHUB_API.EVENTS]: createErrorResponse(403),
             });
 
             const response = await chatbot.processMessage('Tell me about your GitHub');
@@ -295,7 +287,7 @@ describe('Chatbot', () => {
 
             expectSystemMessageContains(
                 'REPOSITORY DEVELOPMENT HISTORY', 'Total commits: 42',
-                'Add chatbot functionality', 'RECENT COMMITS'
+                'Add chatbot functionality', 'RECENT COMMITS',
             );
         });
 
@@ -311,7 +303,7 @@ describe('Chatbot', () => {
             expectSystemMessageContains(
                 'RECENT REPOSITORIES', 'VRO', 'JavaScript',
                 'RECENT ACTIVITY SUMMARY', 'Recent actions: 2', 'Active repositories: 2',
-                'Most recent activity:', 'Activity types:'
+                'Most recent activity:', 'Activity types:',
             );
         });
 
@@ -326,27 +318,24 @@ describe('Chatbot', () => {
             ];
 
             global.fetch = createFetchMock({
-                [GITHUB_API.EVENTS(MOCK_DATES.THIRTY_DAYS_AGO_ISO)]:
-                    createSuccessResponse(nonPushEvents),
+                [GITHUB_API.EVENTS]: createSuccessResponse(nonPushEvents),
             });
 
             await chatbot.processMessage('Tell me about your recent GitHub activity');
 
             expectSystemMessageContains(
-                'RECENT ACTIVITY SUMMARY', 'Recent actions: 1', 'Activity types: Watch'
+                'RECENT ACTIVITY SUMMARY', 'Recent actions: 1', 'Activity types: Watch',
             );
         });
 
         test('should display note when no recent activity is available', async () => {
             global.fetch = createFetchMock({
-                [GITHUB_API.EVENTS(MOCK_DATES.THIRTY_DAYS_AGO_ISO)]:
-                    createSuccessResponse([]),
+                [GITHUB_API.EVENTS]: createSuccessResponse([]),
             });
 
             await chatbot.processMessage('Tell me about your recent GitHub activity');
 
             const systemMessage = getSystemMessage();
-
 
             expect(systemMessage.content).toContain('No recent public GitHub activity to display');
             expect(systemMessage.content).not.toContain('RECENT ACTIVITY SUMMARY');

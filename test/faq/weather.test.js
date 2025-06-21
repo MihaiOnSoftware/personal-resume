@@ -72,13 +72,13 @@ describe("weather", () => {
     const serverWeatherResult = {
       description: "light intensity drizzle",
       iconId: "09d",
-      iconUrl: "http://openweathermap.org/img/wn/09d.png"
+      iconUrl: "http://openweathermap.org/img/wn/09d.png",
     };
 
     const fakeFetcher = jest.fn(() =>
       Promise.resolve({
         json: () => Promise.resolve(serverWeatherResult),
-      })
+      }),
     );
 
     beforeEach(() => {

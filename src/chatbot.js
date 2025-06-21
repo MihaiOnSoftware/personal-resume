@@ -13,8 +13,6 @@
             repoLimit: 10,
             eventLimit: 100,
             displayRepoLimit: 5,
-            displayActivityLimit: 10,
-            activityPeriodDays: 30
         },
     };
 
@@ -155,15 +153,10 @@ RESPONSE RULES:
             return repos ? repos.map(this.transformRepo) : [];
         }
 
-        getDateDaysAgo(days) {
-            const date = new Date();
-            date.setDate(date.getDate() - days);
-            return date.toISOString();
-        }
+
 
         async fetchGitHubEvents() {
-            const sinceParam = this.getDateDaysAgo(CHATBOT_CONFIG.github.activityPeriodDays);
-            const url = this.buildGitHubUrl(`/events?per_page=${CHATBOT_CONFIG.github.eventLimit}&since=${sinceParam}`);
+            const url = this.buildGitHubUrl(`/events?per_page=${CHATBOT_CONFIG.github.eventLimit}`);
             const events = await this.fetchGitHubData(url, 'Error fetching GitHub events:');
 
             return events ? events.map(this.transformEvent.bind(this)).filter(event => event.repo) : [];

@@ -58,6 +58,16 @@ module.exports = [
         rules: {
             ...require("eslint-plugin-jest").configs.recommended.rules,
             "comma-dangle": ["error", "always-multiline"],
+            "jest/expect-expect": [
+                "error",
+                {
+                    "assertFunctionNames": [
+                        "expect",
+                        "expectGitHubApiCalled",
+                        "expectSystemMessageContains"
+                    ]
+                }
+            ],
         },
     },
 ]; 

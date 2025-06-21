@@ -260,8 +260,8 @@ describe('Server Integration Tests', () => {
             const mockWeatherResponse = {
                 weather: [{
                     description: 'clear sky',
-                    icon: '01d'
-                }]
+                    icon: '01d',
+                }],
             };
 
             global.fetch.mockResolvedValueOnce({
@@ -276,12 +276,12 @@ describe('Server Integration Tests', () => {
             expect(response.body).toEqual({
                 description: 'clear sky',
                 iconId: '01d',
-                iconUrl: 'http://openweathermap.org/img/wn/01d.png'
+                iconUrl: 'http://openweathermap.org/img/wn/01d.png',
             });
 
             // Verify the OpenWeatherMap API was called correctly
             expect(global.fetch).toHaveBeenCalledWith(
-                'https://api.openweathermap.org/data/2.5/weather?id=6091104&appid=test-weather-key'
+                'https://api.openweathermap.org/data/2.5/weather?id=6091104&appid=test-weather-key',
             );
         });
 
