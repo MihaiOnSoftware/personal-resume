@@ -84,7 +84,7 @@ describe('Chatbot', () => {
                         ok: true,
                         text: () => Promise.resolve('<html><body><h2>Experience</h2><p>Ruby, Rails, React</p></body></html>'),
                     });
-                } else if (url.includes('openai.com')) {
+                } else if (url === '/api/chat') {
                     return Promise.resolve({
                         ok: true,
                         json: () => Promise.resolve({
@@ -103,7 +103,7 @@ describe('Chatbot', () => {
 
         test('should process messages and return AI response', async () => {
             const { processMessage } = require('../src/chatbot');
-            const response = await processMessage('Hello', 'test-api-key');
+            const response = await processMessage('Hello');
 
             expect(response).toBe('Hello! I am Mihai.');
 
@@ -113,8 +113,8 @@ describe('Chatbot', () => {
 
         test('should include conversation history in subsequent messages', async () => {
             const { processMessage } = require('../src/chatbot');
-            await processMessage('Hello', 'test-api-key');
-            await processMessage('How are you?', 'test-api-key');
+            await processMessage('Hello');
+            await processMessage('How are you?');
 
             const { getHistory } = require('../src/chatbot');
             expect(getHistory()).toHaveLength(4); // 2 user + 2 bot messages
@@ -122,7 +122,7 @@ describe('Chatbot', () => {
 
         test('should include GitHub stats for relevant messages', async () => {
             const { processMessage } = require('../src/chatbot');
-            const response = await processMessage('How many GitHub repositories?', 'test-api-key');
+            const response = await processMessage('How many GitHub repositories?');
 
             expect(response).toBe('Hello! I am Mihai.');
         });
@@ -141,7 +141,7 @@ describe('Chatbot', () => {
                     });
                 } else if (url.includes('github.com/users/mihaip')) {
                     return Promise.resolve({ ok: false, status: 404 });
-                } else if (url.includes('openai.com')) {
+                } else if (url === '/api/chat') {
                     return Promise.resolve({
                         ok: true,
                         json: () => Promise.resolve({
@@ -153,7 +153,7 @@ describe('Chatbot', () => {
             });
 
             const { processMessage } = require('../src/chatbot');
-            const response = await processMessage('Tell me about your GitHub', 'test-api-key');
+            const response = await processMessage('Tell me about your GitHub');
 
             expect(response).toBe('GitHub info not available.');
         });
@@ -176,7 +176,7 @@ describe('Chatbot', () => {
             });
 
             const { processMessage } = require('../src/chatbot');
-            const response = await processMessage('Hello', 'test-api-key');
+            const response = await processMessage('Hello');
 
             expect(response).toContain('sorry');
         });
@@ -193,14 +193,18 @@ describe('Chatbot', () => {
                         ok: true,
                         text: () => Promise.resolve('<html><body><h1>Test</h1></body></html>'),
                     });
-                } else if (url.includes('openai.com')) {
-                    return Promise.resolve({ ok: false, status: 429 });
+                } else if (url === '/api/chat') {
+                    return Promise.resolve({
+                        ok: false,
+                        status: 429,
+                        json: () => Promise.resolve({ error: 'Server error: 429' })
+                    });
                 }
                 return Promise.reject(new Error(`Unknown URL: ${url}`));
             });
 
             const { processMessage } = require('../src/chatbot');
-            const response = await processMessage('Hello', 'test-api-key');
+            const response = await processMessage('Hello');
 
             expect(response).toContain('high demand');
         });
@@ -221,7 +225,7 @@ describe('Chatbot', () => {
                         ok: true,
                         text: () => Promise.resolve('<html><body><h1>Test</h1></body></html>'),
                     });
-                } else if (url.includes('openai.com')) {
+                } else if (url === '/api/chat') {
                     return Promise.resolve({
                         ok: true,
                         json: () => Promise.resolve({
@@ -236,7 +240,7 @@ describe('Chatbot', () => {
         test('should clear conversation history', async () => {
             const { processMessage, clearHistory, getHistory } = require('../src/chatbot');
             // Add some history first
-            await processMessage('Hello', 'test-api-key');
+            await processMessage('Hello');
             expect(getHistory()).toHaveLength(2);
 
             clearHistory();
@@ -246,7 +250,7 @@ describe('Chatbot', () => {
 
         test('should return conversation history copy', async () => {
             const { processMessage, getHistory } = require('../src/chatbot');
-            await processMessage('Hello', 'test-api-key');
+            await processMessage('Hello');
 
             const history = getHistory();
 
@@ -279,7 +283,7 @@ describe('Chatbot', () => {
                         ok: true,
                         text: () => Promise.resolve(mockContentFiles[url]),
                     });
-                } else if (url.includes('openai.com')) {
+                } else if (url === '/api/chat') {
                     return Promise.resolve({
                         ok: true,
                         json: () => Promise.resolve({
@@ -309,7 +313,7 @@ describe('Chatbot', () => {
 
         test('should load content files when processing first message', async () => {
             const { processMessage } = require('../src/chatbot');
-            await processMessage('Tell me about yourself', 'test-api-key');
+            await processMessage('Tell me about yourself');
 
             // Should have loaded the index file and all content files during initialization
             expect(fetch).toHaveBeenCalledWith('html-files-index.json');
@@ -320,16 +324,16 @@ describe('Chatbot', () => {
 
         test('should include content from HTML and markdown files in AI system prompt', async () => {
             const { processMessage } = require('../src/chatbot');
-            await processMessage('What is your experience?', 'test-api-key');
+            await processMessage('What is your experience?');
 
-            // Find the OpenAI API call
-            const openaiCall = global.fetch.mock.calls.find(call =>
-                call[0].includes('openai.com')
+            // Find the API call
+            const apiCall = global.fetch.mock.calls.find(call =>
+                call[0] === '/api/chat'
             );
 
-            expect(openaiCall).toBeTruthy();
+            expect(apiCall).toBeTruthy();
 
-            const requestBody = JSON.parse(openaiCall[1].body);
+            const requestBody = JSON.parse(apiCall[1].body);
             const systemMessage = requestBody.messages.find(msg => msg.role === 'system');
 
             // Should include content from all HTML files
@@ -362,7 +366,7 @@ describe('Chatbot', () => {
                     });
                 } else if (url === 'missing.html') {
                     return Promise.resolve({ ok: false, status: 404 });
-                } else if (url.includes('openai.com')) {
+                } else if (url === '/api/chat') {
                     return Promise.resolve({
                         ok: true,
                         json: () => Promise.resolve({
@@ -374,7 +378,7 @@ describe('Chatbot', () => {
             });
 
             const { processMessage } = require('../src/chatbot');
-            const response = await processMessage('Hello', 'test-api-key');
+            const response = await processMessage('Hello');
 
             // Should still work even if some HTML files are missing
             expect(response).toBe('Response with available content only');
@@ -399,13 +403,13 @@ describe('Chatbot', () => {
 
         test('should combine HTML content with GitHub stats when relevant', async () => {
             const { processMessage } = require('../src/chatbot');
-            await processMessage('How many GitHub repositories do you have?', 'test-api-key');
+            await processMessage('How many GitHub repositories do you have?');
 
-            const openaiCall = global.fetch.mock.calls.find(call =>
-                call[0].includes('openai.com')
+            const apiCall = global.fetch.mock.calls.find(call =>
+                call[0] === '/api/chat'
             );
 
-            const requestBody = JSON.parse(openaiCall[1].body);
+            const requestBody = JSON.parse(apiCall[1].body);
             const systemMessage = requestBody.messages.find(msg => msg.role === 'system');
 
             // Should include both HTML content and GitHub stats

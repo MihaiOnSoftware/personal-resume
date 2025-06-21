@@ -54,27 +54,47 @@ The chatbot requires an OpenAI API key. Configure it using environment variables
 ```bash
 # Create a .env file in the project root
 OPENAI_API_KEY=your_openai_api_key_here
-
-# Or set it when building
-OPENAI_API_KEY=your_key npm run build
 ```
 
-**Important**: 
+**Security**: 
 - Get your API key from [OpenAI Platform](https://platform.openai.com/api-keys)
-- The API key is injected at build time using webpack's DefinePlugin
+- The API key is kept secure on the server-side only
+- Client-side code never has access to the API key
+- All OpenAI requests go through a secure server proxy at `/api/chat`
 - Never commit your actual API key to version control
 - Use the provided `.env.example` file as a template
 
-If no API key is provided, the chatbot will display a helpful configuration message to users.
+### 2. Server Setup
+The chatbot now includes a secure Express server:
 
-### 2. Integration into Existing Pages
+```bash
+# Install dependencies
+npm install
+
+# Build the client-side code
+npm run build
+
+# Start the server
+npm start
+
+# Or build and start together
+npm run dev
+```
+
+The server provides:
+- Static file serving for the website
+- Secure API proxy at `/api/chat` for OpenAI requests
+- Health check endpoint at `/api/health`
+- CORS support for development
+
+### 3. Integration into Existing Pages
 The chatbot is automatically integrated into your website pages:
 
 - `src/index.html` - Main page
 - `src/resume.html` - Resume page
 - Other pages can be updated similarly
 
-### 3. Build Process
+### 4. Build Process
 ```bash
 npm run build    # Build the project
 npm test        # Run all tests
@@ -128,6 +148,13 @@ window.chatbotUI.sendProgrammaticMessage("What are your skills?");
 - Knowledge base initialization
 - Message processing logic
 
+### Server Tests
+- API endpoint functionality (`/api/chat`, `/api/health`)
+- OpenAI API proxy behavior
+- Error handling and validation
+- CORS configuration
+- Request/response format validation
+
 ### Integration Tests
 - API request structure validation
 - System prompt inclusion
@@ -137,6 +164,13 @@ window.chatbotUI.sendProgrammaticMessage("What are your skills?");
 - Component rendering
 - User interactions
 - Message display and formatting
+
+### Test Environments
+- **Client tests**: Run in jsdom environment for DOM manipulation
+- **Server tests**: Run in Node.js environment for HTTP testing
+- **Mocking**: Comprehensive mocking of external APIs (OpenAI, GitHub)
+
+**Coverage**: 66 tests covering all major functionality with separate test environments for client and server code.
 
 ## Performance Considerations
 

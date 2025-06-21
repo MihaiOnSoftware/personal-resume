@@ -29,7 +29,15 @@ npm install
 # Build the project
 npm run build
 
+# Start the server (serves static files and provides API proxy)
+npm start
+
+# Or build and start in one command
+npm run dev
+
 # Run tests
 npm test
 ```
+
+The server will start on port 3000 by default. The chatbot uses a secure server-side proxy to handle OpenAI API requests, keeping your API key safe.
 
