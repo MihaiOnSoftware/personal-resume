@@ -266,12 +266,16 @@ describe('Chatbot', () => {
         test('should include GitHub stats for relevant questions', async () => {
             const response = await chatbot.processMessage('How many GitHub repositories?');
 
-            expectGitHubApiCalled();
+            expectGitHubApiCalled(true);
             expect(response).toBe('Hello! I am Mihai.');
         });
 
         test('should handle GitHub API failures gracefully', async () => {
-            global.fetch = createFetchMock(createGitHubMocks({ profileFails: true }));
+            global.fetch = createFetchMock(createGitHubMocks({
+                profileFails: true,
+                reposFails: true,
+                eventsFails: true,
+            }));
 
             const response = await chatbot.processMessage('Tell me about your GitHub');
             expect(response).toBe('Hello! I am Mihai.');
@@ -347,38 +351,28 @@ describe('Chatbot', () => {
             expect(systemMessage.content).toContain('13'); // public_repos from TEST_DATA
         });
 
-        test('should fetch enhanced GitHub data including repositories and recent activity', async () => {
-            await chatbot.processMessage('What are your latest GitHub projects?');
-
-            expectGitHubApiCalled(true);
-        });
-
-        test('should format enhanced GitHub data in context', async () => {
+        test('should format GitHub data with commit statistics in context', async () => {
             await chatbot.processMessage('Tell me about your GitHub activity');
 
             const systemMessage = getSystemMessage();
+
+            // Should include repositories
             expect(systemMessage.content).toContain('RECENT REPOSITORIES');
             expect(systemMessage.content).toContain('VRO');
             expect(systemMessage.content).toContain('JavaScript');
-            expect(systemMessage.content).toContain('RECENT ACTIVITY');
-            expect(systemMessage.content).toContain('Pushed 1 commit');
+
+            // Should include activity statistics
+            expect(systemMessage.content).toContain('RECENT ACTIVITY SUMMARY');
+            expect(systemMessage.content).toContain('Total commits in recent activity: 1');
+            expect(systemMessage.content).toContain('Active repositories: 2');
+            expect(systemMessage.content).toContain('Most recent activity:');
         });
 
-        test('should handle enhanced GitHub API failures gracefully', async () => {
-            global.fetch = createFetchMock(createGitHubMocks({
-                reposFails: true,
-                eventsFails: true,
-            }));
-
-            const response = await chatbot.processMessage('Tell me about your GitHub projects');
-            expect(response).toBe('Hello! I am Mihai.');
-        });
-
-        test('should filter out Nulogy repositories from GitHub data', async () => {
-            // Mock with raw data that includes Nulogy repos
+        test('should filter out Nulogy repositories and events from GitHub data', async () => {
+            // Mock with raw data that includes Nulogy repos and events
             global.fetch = createFetchMock(createGitHubMocks({ includeNulogyData: true }));
 
-            await chatbot.processMessage('What are your latest GitHub projects?');
+            await chatbot.processMessage('What are your latest GitHub projects and activity?');
 
             const systemMessage = getSystemMessage();
 
@@ -386,27 +380,14 @@ describe('Chatbot', () => {
             expect(systemMessage.content).toContain('VRO');
             expect(systemMessage.content).toContain('grow-hex-rails');
 
-            // Should NOT include Nulogy repos
+            // Should include activity statistics (but not specific Nulogy activity)
+            expect(systemMessage.content).toContain('RECENT ACTIVITY SUMMARY');
+            expect(systemMessage.content).toContain('Total commits');
+            expect(systemMessage.content).toContain('Active repositories');
+
+            // Should NOT include Nulogy repos or activity
             expect(systemMessage.content).not.toContain('nulogy-internal-project');
             expect(systemMessage.content).not.toContain('barcodeapi-server');
-            expect(systemMessage.content).not.toContain('nulogy/');
-        });
-
-        test('should filter out Nulogy events from GitHub activity', async () => {
-            // Mock with raw data that includes Nulogy events
-            global.fetch = createFetchMock(createGitHubMocks({ includeNulogyData: true }));
-
-            await chatbot.processMessage('Tell me about your recent GitHub activity');
-
-            const systemMessage = getSystemMessage();
-
-            // Should include personal repo activity
-            expect(systemMessage.content).toContain('VRO');
-            expect(systemMessage.content).toContain('grow-hex-rails');
-
-            // Should NOT include Nulogy activity
-            expect(systemMessage.content).not.toContain('barcodeapi-server');
-            expect(systemMessage.content).not.toContain('internal-project');
             expect(systemMessage.content).not.toContain('nulogy/');
         });
 
@@ -445,9 +426,49 @@ describe('Chatbot', () => {
 
             const systemMessage = getSystemMessage();
 
-            // Should not crash and should not include activity section
-            expect(systemMessage.content).not.toContain('RECENT ACTIVITY');
+            // Should include a note about no recent activity instead of hallucinating
+            expect(systemMessage.content).toContain('No recent public GitHub activity to display');
             expect(systemMessage.content).not.toContain('nulogy/');
+        });
+
+        test('should display note when no commits in recent activity', async () => {
+            // Mock with non-push events only
+            const nonPushEvents = [
+                {
+                    type: 'WatchEvent',
+                    repo: { name: 'MihaiOnSoftware/some-repo' },
+                    created_at: '2023-04-14T20:00:00Z',
+                    payload: {},
+                },
+            ];
+
+            global.fetch = createFetchMock({
+                'https://api.github.com/users/MihaiOnSoftware/events?per_page=5':
+                    createSuccessResponse(nonPushEvents),
+            });
+
+            await chatbot.processMessage('Tell me about your recent commits');
+
+            const systemMessage = getSystemMessage();
+
+            // Should indicate no commits
+            expect(systemMessage.content).toContain('No commits in recent public activity');
+        });
+
+        test('should display note when no recent activity is available', async () => {
+            // Mock with empty events array
+            global.fetch = createFetchMock({
+                'https://api.github.com/users/MihaiOnSoftware/events?per_page=5':
+                    createSuccessResponse([]),
+            });
+
+            await chatbot.processMessage('Tell me about your recent GitHub activity');
+
+            const systemMessage = getSystemMessage();
+
+            // Should include the helpful note
+            expect(systemMessage.content).toContain('No recent public GitHub activity to display');
+            expect(systemMessage.content).not.toContain('RECENT ACTIVITY SUMMARY');
         });
     });
 }); 
