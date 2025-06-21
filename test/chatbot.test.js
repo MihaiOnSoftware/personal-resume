@@ -351,7 +351,7 @@ describe('Chatbot', () => {
             expect(systemMessage.content).toContain('13'); // public_repos from TEST_DATA
         });
 
-        test('should format GitHub data with commit statistics in context', async () => {
+        test('should format GitHub data with activity statistics in context', async () => {
             await chatbot.processMessage('Tell me about your GitHub activity');
 
             const systemMessage = getSystemMessage();
@@ -363,9 +363,10 @@ describe('Chatbot', () => {
 
             // Should include activity statistics
             expect(systemMessage.content).toContain('RECENT ACTIVITY SUMMARY');
-            expect(systemMessage.content).toContain('Total commits in recent activity: 1');
+            expect(systemMessage.content).toContain('Recent actions: 2');
             expect(systemMessage.content).toContain('Active repositories: 2');
             expect(systemMessage.content).toContain('Most recent activity:');
+            expect(systemMessage.content).toContain('Activity types:');
         });
 
 
@@ -374,7 +375,7 @@ describe('Chatbot', () => {
 
 
 
-        test('should display note when no commits in recent activity', async () => {
+        test('should display activity summary for non-push events', async () => {
             // Mock with non-push events only
             const nonPushEvents = [
                 {
@@ -390,12 +391,14 @@ describe('Chatbot', () => {
                     createSuccessResponse(nonPushEvents),
             });
 
-            await chatbot.processMessage('Tell me about your recent commits');
+            await chatbot.processMessage('Tell me about your recent GitHub activity');
 
             const systemMessage = getSystemMessage();
 
-            // Should indicate no commits
-            expect(systemMessage.content).toContain('No commits in recent public activity');
+            // Should show activity summary even for non-push events
+            expect(systemMessage.content).toContain('RECENT ACTIVITY SUMMARY');
+            expect(systemMessage.content).toContain('Recent actions: 1');
+            expect(systemMessage.content).toContain('Activity types: Watch');
         });
 
         test('should display note when no recent activity is available', async () => {
