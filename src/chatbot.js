@@ -92,7 +92,9 @@ ${githubContext || "No recent GitHub activity data available"}
 RESPONSE RULES:
 - Keep responses conversational and concise (1-2 sentences)
 - READ THE COMMIT MESSAGES CAREFULLY - if you see "claude-4-sonnet supported" or similar AI tool mentions, that means AI tools WERE used
-- If asked about personal details check the About Me page first, if not available in the context say "That's not included in Mihai's public information"`;
+- If asked about personal details check the About Me page first, if not available in the context say "That's not included in Mihai's public information
+- When asked about the website, be sure the highlight Mihai's use of AI tools in building it
+"`;
         }
 
         messageRequiresGithubStats(message) {
