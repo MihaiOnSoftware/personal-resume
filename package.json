@@ -44,7 +44,8 @@
         "displayName": "client",
         "testEnvironment": "jsdom",
         "testMatch": [
-          "<rootDir>/test/!(server)*.test.js"
+          "<rootDir>/test/!(server)*.test.js",
+          "<rootDir>/test/**/!(server)*.test.js"
         ]
       },
       {

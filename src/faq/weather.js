@@ -40,39 +40,41 @@
     );
   };
 
-  const openWeatherApi = (fetch) => {
-    const northYorkId = "6091104";
-    const apiKey = "259ee1f96a30418ed0d3967bfb304494";
-    const openWeatherApiUrl = `https://api.openweathermap.org/data/2.5/weather?id=${northYorkId}&appid=${apiKey}`;
-    const currentNorthYorkWeather = fetch(openWeatherApiUrl)
-      .then((data) => data.json())
-      .then((body) => body.weather[0]);
-
-    const iconId = currentNorthYorkWeather.then((weather) => weather.icon);
+  /**
+   * Fetches weather data from the server API
+   * @param {Function} fetch - The fetch function to use for making HTTP requests
+   * @returns {Object} Weather data with description and iconUrl promises
+   */
+  const weatherApi = (fetch) => {
+    const serverWeatherResponse = fetch('/api/weather')
+      .then((data) => data.json());
 
     return {
-      description: currentNorthYorkWeather.then(
+      description: serverWeatherResponse.then(
         (weather) => weather.description,
       ),
-      iconUrl: iconId.then(
-        (iconId) => `http://openweathermap.org/img/wn/${iconId}.png`,
+      iconUrl: serverWeatherResponse.then(
+        (weather) => weather.iconUrl,
       ),
     };
   };
 
   module.exports.weather = weather;
   module.exports.addWeather = addWeather;
-  module.exports.openWeatherApi = openWeatherApi;
+  module.exports.weatherApi = weatherApi;
 
-  document.addEventListener(
-    "DOMContentLoaded",
-    () => {
-      const weatherData = weather(openWeatherApi(fetch));
-      const weatherElements = document.getElementsByClassName("weather");
-      Array.prototype.forEach.call(weatherElements, (element) =>
-        addWeather(weatherData, element),
-      );
-    },
-    true,
-  );
+  // Only initialize in browser environment, not during testing
+  if (typeof document !== 'undefined') {
+    document.addEventListener(
+      "DOMContentLoaded",
+      () => {
+        const weatherData = weather(weatherApi(fetch));
+        const weatherElements = document.getElementsByClassName("weather");
+        Array.prototype.forEach.call(weatherElements, (element) =>
+          addWeather(weatherData, element),
+        );
+      },
+      true,
+    );
+  }
 })();
