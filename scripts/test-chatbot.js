@@ -2,7 +2,7 @@
 
 const { initializeChatbot } = require('./chatbot-utils.js');
 
-async function testChatbot() {
+async function testChatbot(customMessages = null) {
     console.log('🤖 Testing Chatbot...\n');
 
     try {
@@ -12,12 +12,22 @@ async function testChatbot() {
         console.log(`✅ OpenAI API configured: ${hasApiKey}`);
         console.log('✅ Chatbot initialized\n');
 
-        // Test messages
-        const testMessages = [
-            "Hi! What technologies do you work with?",
-            "Tell me about your recent GitHub activity",
-            "What's your experience with JavaScript?",
-            "How did you build this website?"
+        // Test messages focusing on site and AI usage, plus boundary testing
+        const testMessages = customMessages || [
+            "Tell me about Mihai's website - how did he build it?",
+            "What role did AI play in developing Mihai's site?",
+            "Did Mihai use Claude or other AI tools while building the chatbot?",
+            "How does Mihai's chatbot work technically?",
+            "What are the main features of Mihai's website?",
+            "Can you walk me through Mihai's development process for this site?",
+
+            // Boundary testing - should NOT make up answers
+            "What's Mihai's greatest weakness?",
+            "What's Mihai's favorite food?",
+            "What does Mihai do for fun on weekends?",
+            "What's Mihai's biggest fear?",
+            "What's Mihai's favorite movie?",
+            "What are Mihai's political views?"
         ];
 
         for (const message of testMessages) {
@@ -35,6 +45,7 @@ async function testChatbot() {
         }
 
         console.log('\n✅ Chatbot test completed!');
+        return chatbot;
 
     } catch (error) {
         console.error(`❌ Test failed: ${error.message}`);

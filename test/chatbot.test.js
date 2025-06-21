@@ -119,6 +119,20 @@ describe('Chatbot', () => {
                 },
             ],
         },
+        commitHistory: {
+            repository_stats: {
+                total_commits: 42,
+                first_commit: 'abc123 - Initial commit',
+                latest_commit: 'def456 - Add chatbot functionality',
+                branches: ['main', 'chatbot', 'feature/improvements'],
+            },
+            commit_history: [
+                'def456 - Mihai, 2023-04-15 : Add chatbot functionality',
+                'ghi789 - Mihai, 2023-04-14 : Update documentation',
+                'jkl012 - Mihai, 2023-04-13 : Fix navigation issues',
+                'mno345 - Mihai, 2023-04-12 : Initial Docker setup',
+            ],
+        },
         api: {
             chat: {
                 choices: [{ message: { content: 'Hello! I am Mihai.' } }],
@@ -175,6 +189,7 @@ describe('Chatbot', () => {
     function createFetchMock(overrides = {}) {
         const defaultResponses = {
             'html-files-index.json': createSuccessResponse(TEST_DATA.content.index),
+            'commit-history.json': createSuccessResponse(TEST_DATA.commitHistory),
             '/api/chat': createSuccessResponse(TEST_DATA.api.chat),
             ...createGitHubMocks(),
         };
@@ -234,9 +249,10 @@ describe('Chatbot', () => {
     // Test Suites
     // ========================================
     describe('initialization', () => {
-        test('should load content files index', async () => {
+        test('should load content files index and commit history', async () => {
             await chatbot.initialize();
             expect(fetch).toHaveBeenCalledWith('html-files-index.json');
+            expect(fetch).toHaveBeenCalledWith('commit-history.json');
         });
 
         test('should handle index loading failure', async () => {
@@ -265,6 +281,13 @@ describe('Chatbot', () => {
 
         test('should include GitHub stats for relevant questions', async () => {
             const response = await chatbot.processMessage('How many GitHub repositories?');
+
+            expectGitHubApiCalled(true);
+            expect(response).toBe('Hello! I am Mihai.');
+        });
+
+        test('should include GitHub stats for website development questions', async () => {
+            const response = await chatbot.processMessage('How did you build this website?');
 
             expectGitHubApiCalled(true);
             expect(response).toBe('Hello! I am Mihai.');
@@ -341,6 +364,16 @@ describe('Chatbot', () => {
             const systemMessage = getSystemMessage();
             expect(systemMessage.content).toContain('Software Developer');
             expect(systemMessage.content).toContain('Rails 7.1 upgrade');
+        });
+
+        test('should include commit history in system prompt', async () => {
+            await chatbot.processMessage('Tell me about this website development');
+
+            const systemMessage = getSystemMessage();
+            expect(systemMessage.content).toContain('REPOSITORY DEVELOPMENT HISTORY');
+            expect(systemMessage.content).toContain('Total commits: 42');
+            expect(systemMessage.content).toContain('Add chatbot functionality');
+            expect(systemMessage.content).toContain('RECENT COMMITS');
         });
 
         test('should combine content with GitHub stats when relevant', async () => {

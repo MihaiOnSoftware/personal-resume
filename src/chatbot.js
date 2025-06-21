@@ -6,8 +6,8 @@
         githubUsername: 'MihaiOnSoftware',
         openaiModel: 'gpt-3.5-turbo',
         maxTokens: 150,
-        temperature: 0.1,
-        githubKeywords: ['github', 'repository', 'repo', 'repositories', 'code', 'commits', 'contributions', 'followers', 'following', 'projects'],
+        temperature: 0.2,
+        githubKeywords: ['github', 'repository', 'repo', 'repositories', 'code', 'commits', 'contributions', 'followers', 'following', 'projects', 'website', 'site', 'development', 'built', 'features', 'technologies', 'build', 'develop'],
 
         // GitHub API configuration
         github: {
@@ -55,37 +55,47 @@
             return this.loadAllContentFiles(contentFiles);
         }
 
-        createSystemPrompt(contentData, githubContext = '') {
+        async loadCommitHistory() {
+            const response = await fetch('commit-history.json');
+            const data = await response.json();
+            return this.formatCommitHistoryForContext(data);
+        }
+
+        formatCommitHistoryForContext(data) {
+            const { repository_stats, commit_history } = data;
+            const recentCommits = commit_history.slice(0, 20); // Show last 20 commits
+
             return `
-            You are Mihai Popescu, a software developer, chatting casually about yourself. Keep responses short and conversational.
-
-            Here is your complete website content and professional information:
-            ${contentData}
-
-            ${githubContext}
-
-            TONE & STYLE:
-            - Talk like you're having a casual conversation with a friend
-            - Keep answers brief (1-2 sentences max unless asked for details)
-            - Use "I" naturally - you ARE Mihai
-            - Be enthusiastic but not over-the-top
-            - Skip formal language - be relaxed and approachable
-
-            CRITICAL GUIDELINES - FOLLOW THESE STRICTLY:
-            - NEVER make up, invent, or guess at information not provided above
-            - If asked about personal details not in the content (like favorite food, movies, etc.), respond with "I don't have that information in my background" or "That's not something I've shared"
-            - ONLY answer based on the exact information provided above
-            - Do not fill in gaps with creative details or assumptions
-            - For GitHub questions, I can show recent activity and repository info
-            - If someone asks about tech stuff, mention it briefly then ask if they want more details
-            - Use emojis sparingly (maybe 1 per response max)
-            - When unsure, always err on the side of saying you don't know rather than guessing
-
-            EXAMPLES OF WHAT NOT TO DO:
-            - Don't make up favorite foods, movies, or personal preferences not mentioned
-            - Don't invent stories or experiences not in the content
-            - Don't speculate about opinions or feelings not explicitly stated
+            REPOSITORY DEVELOPMENT HISTORY:
+            - Total commits: ${repository_stats.total_commits}
+            - First commit: ${repository_stats.first_commit}
+            - Latest commit: ${repository_stats.latest_commit}
+            - Branches: ${repository_stats.branches.length}
+            
+            RECENT COMMITS (last 20):
+            ${recentCommits.join('\n            ')}
             `;
+        }
+
+        createSystemPrompt(contentData, githubContext = '') {
+            return `You are an AI assistant helping visitors learn about Mihai Popescu, a software developer.
+
+CRITICAL RULE: For questions about "this website", "this site", or "how it was built", use ONLY the DEVELOPMENT HISTORY section below. For questions about "Mihai's skills" or "his experience", use the WEBSITE CONTENT section.
+
+=== DEVELOPMENT HISTORY (for website tech questions) ===
+${this.commitHistory}
+
+=== WEBSITE CONTENT (for professional experience questions) ===
+${contentData}
+
+=== GITHUB ACTIVITY ===
+${githubContext || "No recent GitHub activity data available"}
+
+RESPONSE RULES:
+- Keep responses conversational and concise (1-2 sentences)
+- READ THE COMMIT MESSAGES CAREFULLY - if you see "claude-4-sonnet supported" or similar AI tool mentions, that means AI tools WERE used
+- If asked about personal details not in the context, say "That's not included in Mihai's public information"
+- Be accurate based on what you actually see in the data`;
         }
 
         messageRequiresGithubStats(message) {
@@ -194,9 +204,10 @@
 
         formatEventAction(event) {
             switch (event.type) {
-                case 'PushEvent':
+                case 'PushEvent': {
                     const commitCount = event.payload?.commits?.length || 0;
                     return `Pushed ${commitCount} commit${commitCount !== 1 ? 's' : ''}`;
+                }
                 case 'CreateEvent':
                     return `Created ${event.payload?.ref_type} ${event.payload?.ref}`;
                 case 'PullRequestEvent':
@@ -309,7 +320,7 @@
         async initialize() {
             if (!this.htmlContent) {
                 this.htmlContent = await this.loadContentFiles();
-                this.systemPrompt = this.createSystemPrompt(this.htmlContent);
+                this.commitHistory = await this.loadCommitHistory();
             }
         }
 
@@ -355,15 +366,7 @@
             }
         }
 
-        buildMessagesForAI(message, githubContext) {
-            const fullSystemPrompt = this.createSystemPrompt(this.htmlContent, githubContext);
 
-            return [
-                { role: 'system', content: fullSystemPrompt },
-                ...this.conversationHistory.slice(-10),
-                { role: 'user', content: message },
-            ];
-        }
 
         async callOpenAIAPI(messages) {
             const response = await fetch('/api/chat', {
@@ -388,8 +391,15 @@
             return data.choices[0].message.content;
         }
 
+
+
         async generateAIResponse(message, githubContext) {
-            const messages = this.buildMessagesForAI(message, githubContext);
+            const systemPrompt = this.createSystemPrompt(this.htmlContent, githubContext);
+            const messages = [
+                { role: 'system', content: systemPrompt },
+                ...this.conversationHistory.slice(-10),
+                { role: 'user', content: message },
+            ];
             return this.callOpenAIAPI(messages);
         }
 

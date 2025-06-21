@@ -100,7 +100,7 @@ class ChatCLI {
     }
 
     showWelcome() {
-        console.log(`${COLORS.bot}Mihai: Hi! I'm ready to answer questions about my experience, skills, and projects.${COLORS.reset}`);
+        console.log(`${COLORS.bot}AI Assistant: Hi! I'm an AI chatbot that can answer questions about Mihai Popescu's experience, skills, and projects.${COLORS.reset}`);
         console.log(`${COLORS.system}Type '/help' for commands or just start chatting!${COLORS.reset}\n`);
         this.rl.prompt();
     }
