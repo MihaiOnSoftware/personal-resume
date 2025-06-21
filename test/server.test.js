@@ -201,6 +201,8 @@ describe('Server Integration Tests', () => {
                 .set('Content-Type', 'application/json')
                 .send('invalid json')
                 .expect(400);
+
+            expect(response.body).toBeDefined();
         });
     });
 
@@ -214,17 +216,21 @@ describe('Server Integration Tests', () => {
         });
 
         test('should handle preflight requests', async () => {
-            await request(app)
+            const response = await request(app)
                 .options('/api/chat')
                 .expect(204);
+
+            expect(response.status).toBe(204);
         });
     });
 
     describe('Error handling', () => {
         test('should handle 404 for unknown routes', async () => {
-            await request(app)
+            const response = await request(app)
                 .get('/api/unknown')
                 .expect(404);
+
+            expect(response.status).toBe(404);
         });
     });
 

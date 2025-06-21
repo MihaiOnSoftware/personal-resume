@@ -16,8 +16,7 @@ jest.mock('../src/chatbot-ui', () => ({
     toggleChatbot: jest.fn(),
 }));
 
-const { processMessage, clearHistory } = require('../src/chatbot');
-const { sendMessage, clearChat, addMessage, toggleChatbot } = require('../src/chatbot-ui');
+const { sendMessage, clearChat, addMessage } = require('../src/chatbot-ui');
 
 describe('ChatbotUI', () => {
     beforeEach(() => {
@@ -54,6 +53,10 @@ describe('ChatbotUI', () => {
         `;
 
         // Mock DOM methods
+        global.Element = class Element {
+            scrollTo() { }
+        };
+        // eslint-disable-next-line no-undef
         Element.prototype.scrollTo = jest.fn();
 
         // Reset all mocks
@@ -90,7 +93,6 @@ describe('ChatbotUI', () => {
     describe('toggle functionality', () => {
         test('should show chatbot when toggle is clicked', () => {
             const chatbotWindow = document.querySelector('.chatbot-window');
-            const toggle = document.querySelector('.chatbot-toggle');
 
             // Test the actual DOM manipulation directly
             chatbotWindow.style.display = 'flex'; // Simulate toggle behavior
