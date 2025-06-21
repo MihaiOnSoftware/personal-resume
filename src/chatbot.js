@@ -1,7 +1,6 @@
 (function () {
     'use strict';
 
-    // Configuration constants
     const CHATBOT_CONFIG = {
         githubUsername: 'MihaiOnSoftware',
         openaiModel: 'gpt-3.5-turbo',
@@ -9,20 +8,19 @@
         temperature: 0.3,
         githubKeywords: ['github', 'repository', 'repo', 'repositories', 'code', 'commits', 'contributions', 'followers', 'following', 'projects', 'website', 'site', 'development', 'built', 'features', 'technologies', 'build', 'develop'],
 
-        // GitHub API configuration
         github: {
             baseUrl: 'https://api.github.com',
             repoLimit: 10,
-            eventLimit: 5,
+            eventLimit: 100,
             displayRepoLimit: 5,
-            displayActivityLimit: 3,
+            displayActivityLimit: 10,
+            activityPeriodDays: 30
         },
     };
 
     class Chatbot {
         constructor() {
             this.htmlContent = null;
-            this.systemPrompt = null;
             this.conversationHistory = [];
         }
 
@@ -63,7 +61,7 @@
 
         formatCommitHistoryForContext(data) {
             const { repository_stats, commit_history } = data;
-            const recentCommits = commit_history.slice(0, 20); // Show last 20 commits
+            const recentCommits = commit_history.slice(0, 20);
 
             return `
             REPOSITORY DEVELOPMENT HISTORY:
@@ -102,14 +100,10 @@ RESPONSE RULES:
             return CHATBOT_CONFIG.githubKeywords.some(keyword => lowerMessage.includes(keyword));
         }
 
-
-
-        // Helper method to build GitHub API URLs
         buildGitHubUrl(endpoint) {
             return `${CHATBOT_CONFIG.github.baseUrl}/users/${CHATBOT_CONFIG.githubUsername}${endpoint}`;
         }
 
-        // Generic GitHub API fetch with error handling
         async fetchGitHubData(url, errorMessage) {
             try {
                 const response = await fetch(url);
@@ -122,32 +116,24 @@ RESPONSE RULES:
         }
 
         async fetchGitHubStats() {
-            try {
-                // Fetch basic profile stats
-                const profile = await this.fetchGitHubData(
-                    this.buildGitHubUrl(''),
-                    'Error fetching GitHub profile:',
-                );
-                if (!profile) return null;
+            const profile = await this.fetchGitHubData(
+                this.buildGitHubUrl(''),
+                'Error fetching GitHub profile:',
+            );
+            if (!profile) return null;
 
-                // Fetch additional data in parallel
-                const [reposData, eventsData] = await Promise.allSettled([
-                    this.fetchGitHubRepos(),
-                    this.fetchGitHubEvents(),
-                ]);
+            const [reposData, eventsData] = await Promise.allSettled([
+                this.fetchGitHubRepos(),
+                this.fetchGitHubEvents(),
+            ]);
 
-                return {
-                    ...this.extractBasicProfile(profile),
-                    repositories: reposData.status === 'fulfilled' ? reposData.value : null,
-                    recent_activity: eventsData.status === 'fulfilled' ? eventsData.value : null,
-                };
-            } catch (error) {
-                console.error('Error fetching GitHub stats:', error);
-                return null;
-            }
+            return {
+                ...this.extractBasicProfile(profile),
+                repositories: reposData.status === 'fulfilled' ? reposData.value : [],
+                recent_activity: eventsData.status === 'fulfilled' ? eventsData.value : [],
+            };
         }
 
-        // Extract basic profile fields for cleaner code
         extractBasicProfile(profile) {
             return {
                 public_repos: profile.public_repos,
@@ -164,22 +150,23 @@ RESPONSE RULES:
             const url = this.buildGitHubUrl(`/repos?sort=updated&per_page=${CHATBOT_CONFIG.github.repoLimit}`);
             const repos = await this.fetchGitHubData(url, 'Error fetching GitHub repositories:');
 
-            return repos ?
-                repos
-                    .map(this.transformRepo) : null;
+            return repos ? repos.map(this.transformRepo) : [];
+        }
+
+        getDateDaysAgo(days) {
+            const date = new Date();
+            date.setDate(date.getDate() - days);
+            return date.toISOString();
         }
 
         async fetchGitHubEvents() {
-            const url = this.buildGitHubUrl(`/events?per_page=${CHATBOT_CONFIG.github.eventLimit}`);
+            const sinceParam = this.getDateDaysAgo(CHATBOT_CONFIG.github.activityPeriodDays);
+            const url = this.buildGitHubUrl(`/events?per_page=${CHATBOT_CONFIG.github.eventLimit}&since=${sinceParam}`);
             const events = await this.fetchGitHubData(url, 'Error fetching GitHub events:');
 
-            return events ?
-                events
-                    .map(this.transformEvent.bind(this))
-                    .filter(event => event.repo) : null;
+            return events ? events.map(this.transformEvent.bind(this)).filter(event => event.repo) : [];
         }
 
-        // Transform raw repository data
         transformRepo(repo) {
             return {
                 name: repo.name,
@@ -191,7 +178,6 @@ RESPONSE RULES:
             };
         }
 
-        // Transform raw event data
         transformEvent(event) {
             return {
                 type: event.type,
@@ -244,14 +230,12 @@ RESPONSE RULES:
         }
 
         formatRepositoriesSection(repositories) {
-            if (!repositories?.length) return null;
-
             const repoList = repositories
                 .slice(0, CHATBOT_CONFIG.github.displayRepoLimit)
                 .map(this.formatRepository)
                 .join('\n            ');
 
-            return `\n            RECENT REPOSITORIES:\n            ${repoList}`;
+            return repoList.length ? `\n            RECENT REPOSITORIES:\n            ${repoList}` : null;
         }
 
         formatRepository(repo) {
@@ -267,7 +251,7 @@ RESPONSE RULES:
         }
 
         formatActivitySection(activities) {
-            if (!activities?.length) {
+            if (!activities.length) {
                 return '\n            NOTE: No recent public GitHub activity to display.';
             }
 
@@ -291,15 +275,11 @@ RESPONSE RULES:
             activities.forEach(activity => {
                 stats.totalActions++;
 
-                // Track activity types
                 const activityType = activity.type.replace('Event', '');
                 stats.activityTypes.add(activityType);
 
-                // Track active repositories
                 const repoName = activity.repo.replace('MihaiOnSoftware/', '');
                 stats.activeRepos.add(repoName);
-
-                // Track most recent date
                 const activityDate = new Date(activity.created_at);
                 if (!stats.mostRecentDate || activityDate > stats.mostRecentDate) {
                     stats.mostRecentDate = activityDate;
@@ -314,8 +294,6 @@ RESPONSE RULES:
             };
         }
 
-
-
         async initialize() {
             if (!this.htmlContent) {
                 this.htmlContent = await this.loadContentFiles();
@@ -324,9 +302,7 @@ RESPONSE RULES:
         }
 
         addMessageToHistory(role, content) {
-            const message = { role, content, timestamp: new Date() };
-            this.conversationHistory.push(message);
-            return message;
+            this.conversationHistory.push({ role, content, timestamp: new Date() });
         }
 
         async getGithubContextIfNeeded(message) {
@@ -365,8 +341,6 @@ RESPONSE RULES:
             }
         }
 
-
-
         async callOpenAIAPI(messages) {
             const response = await fetch('/api/chat', {
                 method: 'POST',
@@ -390,8 +364,6 @@ RESPONSE RULES:
             return data.choices[0].message.content;
         }
 
-
-
         async generateAIResponse(message, githubContext) {
             const systemPrompt = this.createSystemPrompt(this.htmlContent, githubContext);
             const messages = [
@@ -411,7 +383,6 @@ RESPONSE RULES:
         }
     }
 
-    // Create a singleton instance for the browser
     let chatbotInstance = null;
 
     function getChatbotInstance() {
@@ -421,7 +392,6 @@ RESPONSE RULES:
         return chatbotInstance;
     }
 
-    // Public API functions that use the singleton
     async function processMessage(message) {
         return getChatbotInstance().processMessage(message);
     }
@@ -438,7 +408,6 @@ RESPONSE RULES:
         return getChatbotInstance().initialize();
     }
 
-    // Export for testing
     if (typeof module !== 'undefined' && module.exports) {
         module.exports = {
             Chatbot,
@@ -449,7 +418,6 @@ RESPONSE RULES:
         };
     }
 
-    // Make available globally for browser
     if (typeof window !== 'undefined') {
         window.processMessage = processMessage;
         window.clearHistory = clearHistory;

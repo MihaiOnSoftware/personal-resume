@@ -7,9 +7,6 @@ const { Chatbot } = require('../src/chatbot');
 describe('Chatbot', () => {
     let chatbot;
 
-    // ========================================
-    // Mock Data Configuration
-    // ========================================
     const TEST_DATA = {
         content: {
             index: ['index.html', 'resume.html', '2024-2025-work-summary.md'],
@@ -42,80 +39,18 @@ describe('Chatbot', () => {
                     updated_at: '2021-09-29T21:05:54Z',
                 },
             ],
-            // Raw repository data (before filtering) - includes Nulogy repos
-            repositoriesRaw: [
-                {
-                    name: 'VRO',
-                    description: 'VRO mod for X4 foundations',
-                    language: 'JavaScript',
-                    stargazers_count: 2,
-                    updated_at: '2023-04-14T22:21:23Z',
-                    html_url: 'https://github.com/MihaiOnSoftware/VRO',
-                },
-                {
-                    name: 'grow-hex-rails',
-                    description: 'An example Rails app grown into hexagonal architecture',
-                    language: 'Ruby',
-                    stargazers_count: 5,
-                    updated_at: '2021-09-29T21:05:54Z',
-                    html_url: 'https://github.com/MihaiOnSoftware/grow-hex-rails',
-                },
-                {
-                    name: 'nulogy-internal-project',
-                    description: 'Internal Nulogy project',
-                    language: 'Ruby',
-                    stargazers_count: 0,
-                    updated_at: '2023-05-01T10:00:00Z',
-                    html_url: 'https://github.com/nulogy/internal-project',
-                },
-                {
-                    name: 'barcodeapi-server',
-                    description: 'Barcode API server for Nulogy',
-                    language: 'Ruby',
-                    stargazers_count: 1,
-                    updated_at: '2023-04-20T14:30:00Z',
-                    html_url: 'https://github.com/nulogy/barcodeapi-server',
-                },
-            ],
             events: [
                 {
                     type: 'PushEvent',
                     repo: { name: 'MihaiOnSoftware/VRO' },
-                    created_at: '2023-04-14T20:00:00Z',
+                    created_at: '2024-06-16T12:00:00.000Z',
                     payload: { commits: [{ message: 'Update documentation' }] },
                 },
                 {
                     type: 'CreateEvent',
                     repo: { name: 'MihaiOnSoftware/grow-hex-rails' },
-                    created_at: '2023-04-13T15:30:00Z',
+                    created_at: '2024-06-11T12:00:00.000Z',
                     payload: { ref_type: 'branch', ref: 'feature/improvements' },
-                },
-            ],
-            // Raw events data (before filtering) - includes Nulogy events
-            eventsRaw: [
-                {
-                    type: 'PushEvent',
-                    repo: { name: 'MihaiOnSoftware/VRO' },
-                    created_at: '2023-04-14T20:00:00Z',
-                    payload: { commits: [{ message: 'Update documentation' }] },
-                },
-                {
-                    type: 'CreateEvent',
-                    repo: { name: 'MihaiOnSoftware/grow-hex-rails' },
-                    created_at: '2023-04-13T15:30:00Z',
-                    payload: { ref_type: 'branch', ref: 'feature/improvements' },
-                },
-                {
-                    type: 'PushEvent',
-                    repo: { name: 'nulogy/barcodeapi-server' },
-                    created_at: '2023-04-15T09:00:00Z',
-                    payload: { commits: [{ message: 'Fix API endpoint' }] },
-                },
-                {
-                    type: 'CreateEvent',
-                    repo: { name: 'nulogy/internal-project' },
-                    created_at: '2023-04-12T16:45:00Z',
-                    payload: { ref_type: 'branch', ref: 'feature/new-feature' },
                 },
             ],
         },
@@ -148,9 +83,6 @@ describe('Chatbot', () => {
         },
     };
 
-    // ========================================
-    // Mock Response Builders
-    // ========================================
     const createSuccessResponse = (data, isJson = true) => ({
         ok: true,
         [isJson ? 'json' : 'text']: () => Promise.resolve(data),
@@ -161,40 +93,33 @@ describe('Chatbot', () => {
         status,
     });
 
-    const createGitHubMocks = (options = {}) => {
-        const {
-            profileFails = false,
-            reposFails = false,
-            eventsFails = false,
-            includeNulogyData = false,
-        } = options;
-
-        // Use raw data (with Nulogy) or filtered data based on test needs
-        const reposData = includeNulogyData ? TEST_DATA.github.repositoriesRaw : TEST_DATA.github.repositories;
-        const eventsData = includeNulogyData ? TEST_DATA.github.eventsRaw : TEST_DATA.github.events;
-
-        return {
-            'https://api.github.com/users/MihaiOnSoftware':
-                profileFails ? createErrorResponse(404) : createSuccessResponse(TEST_DATA.github.profile),
-            'https://api.github.com/users/MihaiOnSoftware/repos?sort=updated&per_page=10':
-                reposFails ? createErrorResponse(403) : createSuccessResponse(reposData),
-            'https://api.github.com/users/MihaiOnSoftware/events?per_page=5':
-                eventsFails ? createErrorResponse(403) : createSuccessResponse(eventsData),
-        };
+    const GITHUB_API = {
+        BASE_URL: 'https://api.github.com/users/MihaiOnSoftware',
+        get PROFILE() { return this.BASE_URL; },
+        get REPOS() { return `${this.BASE_URL}/repos?sort=updated&per_page=10`; },
+        EVENTS: (since) => `${GITHUB_API.BASE_URL}/events?per_page=100&since=${since}`,
     };
 
-    // ========================================
-    // Main Mock Factory
-    // ========================================
+    const MOCK_DATES = {
+        CURRENT: new Date('2024-06-21T12:00:00.000Z'),
+        THIRTY_DAYS_AGO: new Date('2024-05-22T12:00:00.000Z'),
+        get THIRTY_DAYS_AGO_ISO() { return this.THIRTY_DAYS_AGO.toISOString(); },
+    };
+
+    const GITHUB_MOCK_DATA = {
+        [GITHUB_API.PROFILE]: createSuccessResponse(TEST_DATA.github.profile),
+        [GITHUB_API.REPOS]: createSuccessResponse(TEST_DATA.github.repositories),
+        [GITHUB_API.EVENTS(MOCK_DATES.THIRTY_DAYS_AGO_ISO)]: createSuccessResponse(TEST_DATA.github.events),
+    };
+
     function createFetchMock(overrides = {}) {
         const defaultResponses = {
             'html-files-index.json': createSuccessResponse(TEST_DATA.content.index),
             'commit-history.json': createSuccessResponse(TEST_DATA.commitHistory),
             '/api/chat': createSuccessResponse(TEST_DATA.api.chat),
-            ...createGitHubMocks(),
+            ...GITHUB_MOCK_DATA,
         };
 
-        // Add content files
         Object.entries(TEST_DATA.content.files).forEach(([filename, content]) => {
             defaultResponses[filename] = createSuccessResponse(content, false);
         });
@@ -209,45 +134,46 @@ describe('Chatbot', () => {
         });
     }
 
-    // ========================================
-    // Test Helpers
-    // ========================================
     const getApiCall = (url = '/api/chat') => {
         return fetch.mock.calls.find(call => call[0] === url);
     };
 
     const getSystemMessage = () => {
         const apiCall = getApiCall();
-        if (!apiCall) return null;
-
         const requestBody = JSON.parse(apiCall[1].body);
         return requestBody.messages.find(msg => msg.role === 'system');
     };
 
-    const expectGitHubApiCalled = (enhanced = false) => {
-        expect(fetch).toHaveBeenCalledWith('https://api.github.com/users/MihaiOnSoftware');
-
-        if (enhanced) {
-            expect(fetch).toHaveBeenCalledWith('https://api.github.com/users/MihaiOnSoftware/repos?sort=updated&per_page=10');
-            expect(fetch).toHaveBeenCalledWith('https://api.github.com/users/MihaiOnSoftware/events?per_page=5');
-        }
+    const expectGitHubApiCalled = () => {
+        expect(fetch).toHaveBeenCalledWith(GITHUB_API.PROFILE);
+        expect(fetch).toHaveBeenCalledWith(GITHUB_API.REPOS);
+        expect(fetch).toHaveBeenCalledWith(GITHUB_API.EVENTS(MOCK_DATES.THIRTY_DAYS_AGO_ISO));
     };
 
-    // ========================================
-    // Test Setup
-    // ========================================
+    const expectSystemMessageContains = (...expectedContent) => {
+        const systemMessage = getSystemMessage();
+        expect(systemMessage).toBeTruthy();
+
+        expectedContent.forEach(content => {
+            expect(systemMessage.content).toContain(content);
+        });
+
+        return systemMessage;
+    };
+
     beforeEach(() => {
+        jest.useFakeTimers();
+        jest.setSystemTime(MOCK_DATES.CURRENT);
+
         chatbot = new Chatbot();
         global.fetch = createFetchMock();
     });
 
     afterEach(() => {
-        jest.resetAllMocks();
+        jest.useRealTimers();
+        jest.restoreAllMocks();
     });
 
-    // ========================================
-    // Test Suites
-    // ========================================
     describe('initialization', () => {
         test('should load content files index and commit history', async () => {
             await chatbot.initialize();
@@ -282,23 +208,23 @@ describe('Chatbot', () => {
         test('should include GitHub stats for relevant questions', async () => {
             const response = await chatbot.processMessage('How many GitHub repositories?');
 
-            expectGitHubApiCalled(true);
+            expectGitHubApiCalled();
             expect(response).toBe('Hello! I am Mihai.');
         });
 
         test('should include GitHub stats for website development questions', async () => {
             const response = await chatbot.processMessage('How did you build this website?');
 
-            expectGitHubApiCalled(true);
+            expectGitHubApiCalled();
             expect(response).toBe('Hello! I am Mihai.');
         });
 
         test('should handle GitHub API failures gracefully', async () => {
-            global.fetch = createFetchMock(createGitHubMocks({
-                profileFails: true,
-                reposFails: true,
-                eventsFails: true,
-            }));
+            global.fetch = createFetchMock({
+                [GITHUB_API.PROFILE]: createErrorResponse(404),
+                [GITHUB_API.REPOS]: createErrorResponse(403),
+                [GITHUB_API.EVENTS(MOCK_DATES.THIRTY_DAYS_AGO_ISO)]: createErrorResponse(403),
+            });
 
             const response = await chatbot.processMessage('Tell me about your GitHub');
             expect(response).toBe('Hello! I am Mihai.');
@@ -361,55 +287,35 @@ describe('Chatbot', () => {
         test('should include content in system prompt', async () => {
             await chatbot.processMessage('What is your experience?');
 
-            const systemMessage = getSystemMessage();
-            expect(systemMessage.content).toContain('Software Developer');
-            expect(systemMessage.content).toContain('Rails 7.1 upgrade');
+            expectSystemMessageContains('Software Developer', 'Rails 7.1 upgrade');
         });
 
         test('should include commit history in system prompt', async () => {
             await chatbot.processMessage('Tell me about this website development');
 
-            const systemMessage = getSystemMessage();
-            expect(systemMessage.content).toContain('REPOSITORY DEVELOPMENT HISTORY');
-            expect(systemMessage.content).toContain('Total commits: 42');
-            expect(systemMessage.content).toContain('Add chatbot functionality');
-            expect(systemMessage.content).toContain('RECENT COMMITS');
+            expectSystemMessageContains(
+                'REPOSITORY DEVELOPMENT HISTORY', 'Total commits: 42',
+                'Add chatbot functionality', 'RECENT COMMITS'
+            );
         });
 
         test('should combine content with GitHub stats when relevant', async () => {
             await chatbot.processMessage('How many GitHub repositories do you have?');
 
-            const systemMessage = getSystemMessage();
-            expect(systemMessage.content).toContain('Software Developer');
-            expect(systemMessage.content).toContain('13'); // public_repos from TEST_DATA
+            expectSystemMessageContains('Software Developer', '13');
         });
 
         test('should format GitHub data with activity statistics in context', async () => {
             await chatbot.processMessage('Tell me about your GitHub activity');
 
-            const systemMessage = getSystemMessage();
-
-            // Should include repositories
-            expect(systemMessage.content).toContain('RECENT REPOSITORIES');
-            expect(systemMessage.content).toContain('VRO');
-            expect(systemMessage.content).toContain('JavaScript');
-
-            // Should include activity statistics
-            expect(systemMessage.content).toContain('RECENT ACTIVITY SUMMARY');
-            expect(systemMessage.content).toContain('Recent actions: 2');
-            expect(systemMessage.content).toContain('Active repositories: 2');
-            expect(systemMessage.content).toContain('Most recent activity:');
-            expect(systemMessage.content).toContain('Activity types:');
+            expectSystemMessageContains(
+                'RECENT REPOSITORIES', 'VRO', 'JavaScript',
+                'RECENT ACTIVITY SUMMARY', 'Recent actions: 2', 'Active repositories: 2',
+                'Most recent activity:', 'Activity types:'
+            );
         });
 
-
-
-
-
-
-
         test('should display activity summary for non-push events', async () => {
-            // Mock with non-push events only
             const nonPushEvents = [
                 {
                     type: 'WatchEvent',
@@ -420,24 +326,20 @@ describe('Chatbot', () => {
             ];
 
             global.fetch = createFetchMock({
-                'https://api.github.com/users/MihaiOnSoftware/events?per_page=5':
+                [GITHUB_API.EVENTS(MOCK_DATES.THIRTY_DAYS_AGO_ISO)]:
                     createSuccessResponse(nonPushEvents),
             });
 
             await chatbot.processMessage('Tell me about your recent GitHub activity');
 
-            const systemMessage = getSystemMessage();
-
-            // Should show activity summary even for non-push events
-            expect(systemMessage.content).toContain('RECENT ACTIVITY SUMMARY');
-            expect(systemMessage.content).toContain('Recent actions: 1');
-            expect(systemMessage.content).toContain('Activity types: Watch');
+            expectSystemMessageContains(
+                'RECENT ACTIVITY SUMMARY', 'Recent actions: 1', 'Activity types: Watch'
+            );
         });
 
         test('should display note when no recent activity is available', async () => {
-            // Mock with empty events array
             global.fetch = createFetchMock({
-                'https://api.github.com/users/MihaiOnSoftware/events?per_page=5':
+                [GITHUB_API.EVENTS(MOCK_DATES.THIRTY_DAYS_AGO_ISO)]:
                     createSuccessResponse([]),
             });
 
@@ -445,7 +347,7 @@ describe('Chatbot', () => {
 
             const systemMessage = getSystemMessage();
 
-            // Should include the helpful note
+
             expect(systemMessage.content).toContain('No recent public GitHub activity to display');
             expect(systemMessage.content).not.toContain('RECENT ACTIVITY SUMMARY');
         });
