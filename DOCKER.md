@@ -1,55 +1,96 @@
-# Docker Deployment
+# Docker Setup for Personal Resume
 
-This project includes Docker support for containerized deployment.
+This document describes how to containerize and deploy the personal resume application using Docker and DigitalOcean Container Registry.
 
-## Building the Docker Image
+## Prerequisites
 
+1. Docker installed and running
+2. DigitalOcean account with Container Registry enabled
+3. Environment variables configured (see below)
+
+## Environment Variables
+
+Copy `.env.example` to `.env` and configure the following variables:
+
+```bash
+# OpenAI API Key for the chatbot
+OPENAI_API_KEY=your_openai_api_key_here
+
+# DigitalOcean Container Registry credentials
+# The registry token is also used for API calls to manage images
+DO_REGISTRY_TOKEN=your_do_registry_token_here
+DO_REGISTRY_EMAIL=your_do_account_email_here
+DO_REGISTRY_URL=registry.digitalocean.com/your-registry-name
+```
+
+### Getting DigitalOcean Credentials
+
+1. **Registry Token & URL**: 
+   - Go to [DigitalOcean Container Registry](https://cloud.digitalocean.com/registry)
+   - Create or select your registry
+   - Generate a new token or use existing one
+   - The URL format is: `registry.digitalocean.com/your-registry-name`
+
+2. **Registry Token Permissions**:
+   - The same registry token is used for both pushing images and API management
+   - Ensure your token has sufficient permissions to delete repository tags
+   - No separate API token needed
+
+## Scripts
+
+### `scripts/build-docker.sh`
+Builds the Docker image with git commit hash tagging:
 ```bash
 ./scripts/build-docker.sh
 ```
 
-This will:
-- Build a Docker image tagged with the current git commit hash
-- Also tag it as `latest`
-- Show the built images
-
-## Pushing to DigitalOcean Container Registry
-
-First, set up your environment variables:
-
-```bash
-export DO_REGISTRY_EMAIL="your-digitalocean-account-email@example.com"
-export DO_REGISTRY_TOKEN="your-digitalocean-registry-token"
-export DO_REGISTRY_URL="registry.digitalocean.com/your-registry-name"
-```
-
-Then push:
-
+### `scripts/push-docker.sh`
+Pushes the built image to DigitalOcean Container Registry:
 ```bash
 ./scripts/push-docker.sh
 ```
 
-This will:
-- Login to DigitalOcean Container Registry using your email and token
-- Tag the images for the registry
-- Push both the commit hash and latest tags
-- Logout for security
-
-## Environment Variables for Production
-
-The Docker container expects these environment variables:
-
-- `OPENAI_API_KEY` - Your OpenAI API key for the chatbot
-- `PORT` - Port to run the server on (defaults to 3000)
-
-## Running the Container
+### `scripts/cleanup-and-push.sh` (Recommended)
+**Space-efficient workflow** that:
+1. Deletes old images from the registry to free up space
+2. Builds a new Docker image
+3. Pushes the new image to the registry
 
 ```bash
-docker run -p 3000:3000 -e OPENAI_API_KEY="your-key" personal-resume:latest
+./scripts/cleanup-and-push.sh
 ```
 
-Or from the registry:
+This script is recommended for limited storage plans as it automatically manages registry space by removing old image tags before uploading new ones.
+
+## Local Development
+
+To run the container locally:
 
 ```bash
-docker run -p 3000:3000 -e OPENAI_API_KEY="your-key" registry.digitalocean.com/your-registry/personal-resume:latest
-``` 
+# Build the image
+./scripts/build-docker.sh
+
+# Run locally on port 3000
+docker run -d -p 3000:3000 --name personal-resume-container personal-resume:latest
+
+# View logs
+docker logs personal-resume-container
+
+# Stop and remove
+docker stop personal-resume-container
+docker rm personal-resume-container
+```
+
+## Deployment
+
+After pushing to the registry, you can deploy the image to any Docker-compatible hosting platform using:
+```
+registry.digitalocean.com/your-registry-name/personal-resume:latest
+```
+
+## Troubleshooting
+
+- **Storage quota exceeded**: Use `scripts/cleanup-and-push.sh` instead of separate build/push
+- **API authentication failed**: Verify your `DO_REGISTRY_TOKEN` has read/write permissions
+- **Registry login failed**: Check your `DO_REGISTRY_TOKEN` and `DO_REGISTRY_EMAIL`
+- **Image not found**: Ensure the `DO_REGISTRY_URL` matches your actual registry name 
