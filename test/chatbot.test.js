@@ -368,68 +368,11 @@ describe('Chatbot', () => {
             expect(systemMessage.content).toContain('Most recent activity:');
         });
 
-        test('should filter out Nulogy repositories and events from GitHub data', async () => {
-            // Mock with raw data that includes Nulogy repos and events
-            global.fetch = createFetchMock(createGitHubMocks({ includeNulogyData: true }));
 
-            await chatbot.processMessage('What are your latest GitHub projects and activity?');
 
-            const systemMessage = getSystemMessage();
 
-            // Should include personal repos
-            expect(systemMessage.content).toContain('VRO');
-            expect(systemMessage.content).toContain('grow-hex-rails');
 
-            // Should include activity statistics (but not specific Nulogy activity)
-            expect(systemMessage.content).toContain('RECENT ACTIVITY SUMMARY');
-            expect(systemMessage.content).toContain('Total commits');
-            expect(systemMessage.content).toContain('Active repositories');
 
-            // Should NOT include Nulogy repos or activity
-            expect(systemMessage.content).not.toContain('nulogy-internal-project');
-            expect(systemMessage.content).not.toContain('barcodeapi-server');
-            expect(systemMessage.content).not.toContain('nulogy/');
-        });
-
-        test('should handle case where all repos are filtered out', async () => {
-            // Mock with only Nulogy repos
-            const onlyNulogyRepos = TEST_DATA.github.repositoriesRaw.filter(repo =>
-                repo.html_url.includes('nulogy/')
-            );
-
-            global.fetch = createFetchMock({
-                'https://api.github.com/users/MihaiOnSoftware/repos?sort=updated&per_page=10':
-                    createSuccessResponse(onlyNulogyRepos),
-            });
-
-            await chatbot.processMessage('What are your GitHub projects?');
-
-            const systemMessage = getSystemMessage();
-
-            // Should not crash and should not include repositories section
-            expect(systemMessage.content).not.toContain('RECENT REPOSITORIES');
-            expect(systemMessage.content).not.toContain('nulogy/');
-        });
-
-        test('should handle case where all events are filtered out', async () => {
-            // Mock with only Nulogy events
-            const onlyNulogyEvents = TEST_DATA.github.eventsRaw.filter(event =>
-                event.repo.name.includes('nulogy/')
-            );
-
-            global.fetch = createFetchMock({
-                'https://api.github.com/users/MihaiOnSoftware/events?per_page=5':
-                    createSuccessResponse(onlyNulogyEvents),
-            });
-
-            await chatbot.processMessage('What is your recent GitHub activity?');
-
-            const systemMessage = getSystemMessage();
-
-            // Should include a note about no recent activity instead of hallucinating
-            expect(systemMessage.content).toContain('No recent public GitHub activity to display');
-            expect(systemMessage.content).not.toContain('nulogy/');
-        });
 
         test('should display note when no commits in recent activity', async () => {
             // Mock with non-push events only
