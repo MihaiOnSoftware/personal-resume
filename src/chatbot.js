@@ -16,6 +16,8 @@
             eventLimit: 5,
             displayRepoLimit: 5,
             displayActivityLimit: 3,
+            // Filtering configuration
+            excludePatterns: ['nulogy/'],
         },
     };
 
@@ -85,6 +87,28 @@
             return CHATBOT_CONFIG.githubKeywords.some(keyword => lowerMessage.includes(keyword));
         }
 
+        // Check if a repository should be filtered out
+        shouldFilterRepo(repo) {
+            const repoUrl = repo.html_url || repo.url || '';
+            const repoName = repo.name || '';
+            const fullName = repo.full_name || '';
+
+            return CHATBOT_CONFIG.github.excludePatterns.some(pattern =>
+                repoUrl.includes(pattern) ||
+                repoName.includes(pattern) ||
+                fullName.includes(pattern)
+            );
+        }
+
+        // Check if an event should be filtered out
+        shouldFilterEvent(event) {
+            const repoName = event.repo?.name || '';
+
+            return CHATBOT_CONFIG.github.excludePatterns.some(pattern =>
+                repoName.includes(pattern)
+            );
+        }
+
         // Helper method to build GitHub API URLs
         buildGitHubUrl(endpoint) {
             return `${CHATBOT_CONFIG.github.baseUrl}/users/${CHATBOT_CONFIG.githubUsername}${endpoint}`;
@@ -145,7 +169,10 @@
             const url = this.buildGitHubUrl(`/repos?sort=updated&per_page=${CHATBOT_CONFIG.github.repoLimit}`);
             const repos = await this.fetchGitHubData(url, 'Error fetching GitHub repositories:');
 
-            return repos ? repos.map(this.transformRepo) : null;
+            return repos ?
+                repos
+                    .filter(repo => !this.shouldFilterRepo(repo))
+                    .map(this.transformRepo) : null;
         }
 
         async fetchGitHubEvents() {
@@ -153,7 +180,9 @@
             const events = await this.fetchGitHubData(url, 'Error fetching GitHub events:');
 
             return events ?
-                events.map(this.transformEvent.bind(this))
+                events
+                    .filter(event => !this.shouldFilterEvent(event))
+                    .map(this.transformEvent.bind(this))
                     .filter(event => event.repo) : null;
         }
 
