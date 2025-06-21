@@ -7,61 +7,154 @@ const { Chatbot } = require('../src/chatbot');
 describe('Chatbot', () => {
     let chatbot;
 
-    // Reusable mock data
-    const mockContentIndex = ['index.html', 'resume.html', '2024-2025-work-summary.md'];
-    const mockContentFiles = {
-        'index.html': '<html><body><h1>Mihai Popescu</h1><p>Software Developer</p></body></html>',
-        'resume.html': '<html><body><h2>Experience</h2><p>Ruby, Rails, React</p></body></html>',
-        '2024-2025-work-summary.md': '# Work Summary\n- Rails 7.1 upgrade\n- Database optimization'
+    // ========================================
+    // Mock Data Configuration
+    // ========================================
+    const TEST_DATA = {
+        content: {
+            index: ['index.html', 'resume.html', '2024-2025-work-summary.md'],
+            files: {
+                'index.html': '<html><body><h1>Mihai Popescu</h1><p>Software Developer</p></body></html>',
+                'resume.html': '<html><body><h2>Experience</h2><p>Ruby, Rails, React</p></body></html>',
+                '2024-2025-work-summary.md': '# Work Summary\n- Rails 7.1 upgrade\n- Database optimization',
+            },
+        },
+        github: {
+            profile: {
+                public_repos: 13,
+                followers: 4,
+                following: 0,
+                created_at: '2013-05-17T20:37:24Z',
+            },
+            repositories: [
+                {
+                    name: 'VRO',
+                    description: 'VRO mod for X4 foundations',
+                    language: 'JavaScript',
+                    stargazers_count: 2,
+                    updated_at: '2023-04-14T22:21:23Z',
+                },
+                {
+                    name: 'grow-hex-rails',
+                    description: 'An example Rails app grown into hexagonal architecture',
+                    language: 'Ruby',
+                    stargazers_count: 5,
+                    updated_at: '2021-09-29T21:05:54Z',
+                },
+            ],
+            events: [
+                {
+                    type: 'PushEvent',
+                    repo: { name: 'MihaiOnSoftware/VRO' },
+                    created_at: '2023-04-14T20:00:00Z',
+                    payload: { commits: [{ message: 'Update documentation' }] },
+                },
+                {
+                    type: 'CreateEvent',
+                    repo: { name: 'MihaiOnSoftware/grow-hex-rails' },
+                    created_at: '2023-04-13T15:30:00Z',
+                    payload: { ref_type: 'branch', ref: 'feature/improvements' },
+                },
+            ],
+        },
+        api: {
+            chat: {
+                choices: [{ message: { content: 'Hello! I am Mihai.' } }],
+            },
+            errors: {
+                network: new Error('Network error'),
+                rateLimited: {
+                    ok: false,
+                    status: 429,
+                    json: () => Promise.resolve({ error: 'Server error: 429' }),
+                },
+            },
+        },
     };
 
-    // Helper function to create standard fetch mock
+    // ========================================
+    // Mock Response Builders
+    // ========================================
+    const createSuccessResponse = (data, isJson = true) => ({
+        ok: true,
+        [isJson ? 'json' : 'text']: () => Promise.resolve(data),
+    });
+
+    const createErrorResponse = (status) => ({
+        ok: false,
+        status,
+    });
+
+    const createGitHubMocks = (options = {}) => {
+        const {
+            profileFails = false,
+            reposFails = false,
+            eventsFails = false,
+        } = options;
+
+        return {
+            'https://api.github.com/users/MihaiOnSoftware':
+                profileFails ? createErrorResponse(404) : createSuccessResponse(TEST_DATA.github.profile),
+            'https://api.github.com/users/MihaiOnSoftware/repos?sort=updated&per_page=10':
+                reposFails ? createErrorResponse(403) : createSuccessResponse(TEST_DATA.github.repositories),
+            'https://api.github.com/users/MihaiOnSoftware/events?per_page=5':
+                eventsFails ? createErrorResponse(403) : createSuccessResponse(TEST_DATA.github.events),
+        };
+    };
+
+    // ========================================
+    // Main Mock Factory
+    // ========================================
     function createFetchMock(overrides = {}) {
+        const defaultResponses = {
+            'html-files-index.json': createSuccessResponse(TEST_DATA.content.index),
+            '/api/chat': createSuccessResponse(TEST_DATA.api.chat),
+            ...createGitHubMocks(),
+        };
+
+        // Add content files
+        Object.entries(TEST_DATA.content.files).forEach(([filename, content]) => {
+            defaultResponses[filename] = createSuccessResponse(content, false);
+        });
+
+        const responses = { ...defaultResponses, ...overrides };
+
         return jest.fn((url) => {
-            // Default responses
-            const responses = {
-                'html-files-index.json': {
-                    ok: true,
-                    json: () => Promise.resolve(mockContentIndex)
-                },
-                '/api/chat': {
-                    ok: true,
-                    json: () => Promise.resolve({
-                        choices: [{ message: { content: 'Hello! I am Mihai.' } }]
-                    })
-                },
-                'https://api.github.com/users/mihaip': {
-                    ok: true,
-                    json: () => Promise.resolve({
-                        public_repos: 25,
-                        followers: 100,
-                        following: 50,
-                        created_at: '2020-01-01T00:00:00Z'
-                    })
-                }
-            };
-
-            // Add content files with proper response format
-            Object.keys(mockContentFiles).forEach(filename => {
-                responses[filename] = {
-                    ok: true,
-                    text: () => Promise.resolve(mockContentFiles[filename])
-                };
-            });
-
-            // Apply overrides
-            Object.assign(responses, overrides);
-
             if (responses[url]) {
                 return Promise.resolve(responses[url]);
             }
-
             return Promise.reject(new Error(`Unmocked URL: ${url}`));
         });
     }
 
+    // ========================================
+    // Test Helpers
+    // ========================================
+    const getApiCall = (url = '/api/chat') => {
+        return fetch.mock.calls.find(call => call[0] === url);
+    };
+
+    const getSystemMessage = () => {
+        const apiCall = getApiCall();
+        if (!apiCall) return null;
+
+        const requestBody = JSON.parse(apiCall[1].body);
+        return requestBody.messages.find(msg => msg.role === 'system');
+    };
+
+    const expectGitHubApiCalled = (enhanced = false) => {
+        expect(fetch).toHaveBeenCalledWith('https://api.github.com/users/MihaiOnSoftware');
+
+        if (enhanced) {
+            expect(fetch).toHaveBeenCalledWith('https://api.github.com/users/MihaiOnSoftware/repos?sort=updated&per_page=10');
+            expect(fetch).toHaveBeenCalledWith('https://api.github.com/users/MihaiOnSoftware/events?per_page=5');
+        }
+    };
+
+    // ========================================
+    // Test Setup
+    // ========================================
     beforeEach(() => {
-        // Create a fresh chatbot instance for each test
         chatbot = new Chatbot();
         global.fetch = createFetchMock();
     });
@@ -70,6 +163,9 @@ describe('Chatbot', () => {
         jest.resetAllMocks();
     });
 
+    // ========================================
+    // Test Suites
+    // ========================================
     describe('initialization', () => {
         test('should load content files index', async () => {
             await chatbot.initialize();
@@ -78,7 +174,7 @@ describe('Chatbot', () => {
 
         test('should handle index loading failure', async () => {
             global.fetch = createFetchMock({
-                'html-files-index.json': { ok: false, status: 404 }
+                'html-files-index.json': createErrorResponse(404),
             });
 
             await expect(chatbot.initialize()).rejects.toThrow('Failed to load content files index: 404');
@@ -90,28 +186,25 @@ describe('Chatbot', () => {
             const response = await chatbot.processMessage('Hello');
 
             expect(response).toBe('Hello! I am Mihai.');
-            expect(chatbot.getHistory()).toHaveLength(2); // user + bot message
+            expect(chatbot.getHistory()).toHaveLength(2);
         });
 
         test('should maintain conversation history', async () => {
             await chatbot.processMessage('Hello');
             await chatbot.processMessage('How are you?');
 
-            expect(chatbot.getHistory()).toHaveLength(4); // 2 user + 2 bot messages
+            expect(chatbot.getHistory()).toHaveLength(4);
         });
 
         test('should include GitHub stats for relevant questions', async () => {
             const response = await chatbot.processMessage('How many GitHub repositories?');
 
-            // Verify GitHub API was called
-            expect(fetch).toHaveBeenCalledWith('https://api.github.com/users/mihaip');
+            expectGitHubApiCalled();
             expect(response).toBe('Hello! I am Mihai.');
         });
 
         test('should handle GitHub API failures gracefully', async () => {
-            global.fetch = createFetchMock({
-                'https://api.github.com/users/mihaip': { ok: false, status: 404 }
-            });
+            global.fetch = createFetchMock(createGitHubMocks({ profileFails: true }));
 
             const response = await chatbot.processMessage('Tell me about your GitHub');
             expect(response).toBe('Hello! I am Mihai.');
@@ -119,7 +212,7 @@ describe('Chatbot', () => {
 
         test('should handle server API errors', async () => {
             global.fetch = createFetchMock({
-                '/api/chat': Promise.reject(new Error('Network error'))
+                '/api/chat': Promise.reject(TEST_DATA.api.errors.network),
             });
 
             const response = await chatbot.processMessage('Hello');
@@ -128,11 +221,7 @@ describe('Chatbot', () => {
 
         test('should handle rate limiting', async () => {
             global.fetch = createFetchMock({
-                '/api/chat': {
-                    ok: false,
-                    status: 429,
-                    json: () => Promise.resolve({ error: 'Server error: 429' })
-                }
+                '/api/chat': TEST_DATA.api.errors.rateLimited,
             });
 
             const response = await chatbot.processMessage('Hello');
@@ -156,11 +245,11 @@ describe('Chatbot', () => {
             expect(history).toHaveLength(2);
             expect(history[0]).toMatchObject({
                 role: 'user',
-                content: 'Hello'
+                content: 'Hello',
             });
             expect(history[1]).toMatchObject({
                 role: 'assistant',
-                content: 'Hello! I am Mihai.'
+                content: 'Hello! I am Mihai.',
             });
         });
     });
@@ -170,7 +259,7 @@ describe('Chatbot', () => {
             await chatbot.initialize();
 
             expect(fetch).toHaveBeenCalledWith('html-files-index.json');
-            mockContentIndex.forEach(filename => {
+            TEST_DATA.content.index.forEach(filename => {
                 expect(fetch).toHaveBeenCalledWith(filename);
             });
         });
@@ -178,27 +267,44 @@ describe('Chatbot', () => {
         test('should include content in system prompt', async () => {
             await chatbot.processMessage('What is your experience?');
 
-            const apiCall = fetch.mock.calls.find(call => call[0] === '/api/chat');
-            expect(apiCall).toBeTruthy();
-
-            const requestBody = JSON.parse(apiCall[1].body);
-            const systemMessage = requestBody.messages.find(msg => msg.role === 'system');
-
-            // Verify content from different file types is included
-            expect(systemMessage.content).toContain('Software Developer'); // HTML
-            expect(systemMessage.content).toContain('Rails 7.1 upgrade'); // Markdown
+            const systemMessage = getSystemMessage();
+            expect(systemMessage.content).toContain('Software Developer');
+            expect(systemMessage.content).toContain('Rails 7.1 upgrade');
         });
 
         test('should combine content with GitHub stats when relevant', async () => {
             await chatbot.processMessage('How many GitHub repositories do you have?');
 
-            const apiCall = fetch.mock.calls.find(call => call[0] === '/api/chat');
-            const requestBody = JSON.parse(apiCall[1].body);
-            const systemMessage = requestBody.messages.find(msg => msg.role === 'system');
-
-            // Should include both content and GitHub stats
+            const systemMessage = getSystemMessage();
             expect(systemMessage.content).toContain('Software Developer');
-            expect(systemMessage.content).toContain('25'); // public_repos
+            expect(systemMessage.content).toContain('13'); // public_repos from TEST_DATA
+        });
+
+        test('should fetch enhanced GitHub data including repositories and recent activity', async () => {
+            await chatbot.processMessage('What are your latest GitHub projects?');
+
+            expectGitHubApiCalled(true);
+        });
+
+        test('should format enhanced GitHub data in context', async () => {
+            await chatbot.processMessage('Tell me about your GitHub activity');
+
+            const systemMessage = getSystemMessage();
+            expect(systemMessage.content).toContain('RECENT REPOSITORIES');
+            expect(systemMessage.content).toContain('VRO');
+            expect(systemMessage.content).toContain('JavaScript');
+            expect(systemMessage.content).toContain('RECENT ACTIVITY');
+            expect(systemMessage.content).toContain('Pushed 1 commit');
+        });
+
+        test('should handle enhanced GitHub API failures gracefully', async () => {
+            global.fetch = createFetchMock(createGitHubMocks({
+                reposFails: true,
+                eventsFails: true,
+            }));
+
+            const response = await chatbot.processMessage('Tell me about your GitHub projects');
+            expect(response).toBe('Hello! I am Mihai.');
         });
     });
 }); 

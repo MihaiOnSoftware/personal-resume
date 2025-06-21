@@ -3,11 +3,20 @@
 
     // Configuration constants
     const CHATBOT_CONFIG = {
-        githubUsername: 'mihaip',
+        githubUsername: 'MihaiOnSoftware',
         openaiModel: 'gpt-3.5-turbo',
         maxTokens: 150,
         temperature: 0.7,
         githubKeywords: ['github', 'repository', 'repo', 'repositories', 'code', 'commits', 'contributions', 'followers', 'following', 'projects'],
+
+        // GitHub API configuration
+        github: {
+            baseUrl: 'https://api.github.com',
+            repoLimit: 10,
+            eventLimit: 5,
+            displayRepoLimit: 5,
+            displayActivityLimit: 3,
+        },
     };
 
     class Chatbot {
@@ -76,20 +85,42 @@
             return CHATBOT_CONFIG.githubKeywords.some(keyword => lowerMessage.includes(keyword));
         }
 
+        // Helper method to build GitHub API URLs
+        buildGitHubUrl(endpoint) {
+            return `${CHATBOT_CONFIG.github.baseUrl}/users/${CHATBOT_CONFIG.githubUsername}${endpoint}`;
+        }
+
+        // Generic GitHub API fetch with error handling
+        async fetchGitHubData(url, errorMessage) {
+            try {
+                const response = await fetch(url);
+                if (!response.ok) return null;
+                return await response.json();
+            } catch (error) {
+                console.error(errorMessage, error);
+                return null;
+            }
+        }
+
         async fetchGitHubStats() {
             try {
-                const response = await fetch(`https://api.github.com/users/${CHATBOT_CONFIG.githubUsername}`);
-                if (!response.ok) return null;
+                // Fetch basic profile stats
+                const profile = await this.fetchGitHubData(
+                    this.buildGitHubUrl(''),
+                    'Error fetching GitHub profile:',
+                );
+                if (!profile) return null;
 
-                const stats = await response.json();
+                // Fetch additional data in parallel
+                const [reposData, eventsData] = await Promise.allSettled([
+                    this.fetchGitHubRepos(),
+                    this.fetchGitHubEvents(),
+                ]);
+
                 return {
-                    public_repos: stats.public_repos,
-                    followers: stats.followers,
-                    following: stats.following,
-                    created_at: stats.created_at,
-                    bio: stats.bio,
-                    location: stats.location,
-                    company: stats.company,
+                    ...this.extractBasicProfile(profile),
+                    repositories: reposData.status === 'fulfilled' ? reposData.value : null,
+                    recent_activity: eventsData.status === 'fulfilled' ? eventsData.value : null,
                 };
             } catch (error) {
                 console.error('Error fetching GitHub stats:', error);
@@ -97,7 +128,86 @@
             }
         }
 
+        // Extract basic profile fields for cleaner code
+        extractBasicProfile(profile) {
+            return {
+                public_repos: profile.public_repos,
+                followers: profile.followers,
+                following: profile.following,
+                created_at: profile.created_at,
+                bio: profile.bio,
+                location: profile.location,
+                company: profile.company,
+            };
+        }
+
+        async fetchGitHubRepos() {
+            const url = this.buildGitHubUrl(`/repos?sort=updated&per_page=${CHATBOT_CONFIG.github.repoLimit}`);
+            const repos = await this.fetchGitHubData(url, 'Error fetching GitHub repositories:');
+
+            return repos ? repos.map(this.transformRepo) : null;
+        }
+
+        async fetchGitHubEvents() {
+            const url = this.buildGitHubUrl(`/events?per_page=${CHATBOT_CONFIG.github.eventLimit}`);
+            const events = await this.fetchGitHubData(url, 'Error fetching GitHub events:');
+
+            return events ?
+                events.map(this.transformEvent.bind(this))
+                    .filter(event => event.repo) : null;
+        }
+
+        // Transform raw repository data
+        transformRepo(repo) {
+            return {
+                name: repo.name,
+                description: repo.description,
+                language: repo.language,
+                stars: repo.stargazers_count,
+                updated_at: repo.updated_at,
+                url: repo.html_url,
+            };
+        }
+
+        // Transform raw event data
+        transformEvent(event) {
+            return {
+                type: event.type,
+                repo: event.repo?.name,
+                created_at: event.created_at,
+                action: this.formatEventAction(event),
+            };
+        }
+
+        formatEventAction(event) {
+            switch (event.type) {
+                case 'PushEvent':
+                    const commitCount = event.payload?.commits?.length || 0;
+                    return `Pushed ${commitCount} commit${commitCount !== 1 ? 's' : ''}`;
+                case 'CreateEvent':
+                    return `Created ${event.payload?.ref_type} ${event.payload?.ref}`;
+                case 'PullRequestEvent':
+                    return `${event.payload?.action} pull request`;
+                case 'IssuesEvent':
+                    return `${event.payload?.action} issue`;
+                case 'ForkEvent':
+                    return 'Forked repository';
+                case 'WatchEvent':
+                    return 'Starred repository';
+                default:
+                    return event.type.replace('Event', '');
+            }
+        }
+
         formatGithubStatsForContext(stats) {
+            return [
+                this.formatBasicGitHubStats(stats),
+                this.formatRepositoriesSection(stats.repositories),
+                this.formatActivitySection(stats.recent_activity),
+            ].filter(Boolean).join('\n');
+        }
+
+        formatBasicGitHubStats(stats) {
             return `
             CURRENT GITHUB STATISTICS:
             - Public repositories: ${stats.public_repos}
@@ -108,6 +218,46 @@
             - Location: ${stats.location}
             - Company: ${stats.company}
             `;
+        }
+
+        formatRepositoriesSection(repositories) {
+            if (!repositories?.length) return null;
+
+            const repoList = repositories
+                .slice(0, CHATBOT_CONFIG.github.displayRepoLimit)
+                .map(this.formatRepository)
+                .join('\n            ');
+
+            return `\n            RECENT REPOSITORIES:\n            ${repoList}`;
+        }
+
+        formatRepository(repo) {
+            const parts = [
+                `- ${repo.name}`,
+                repo.language ? `(${repo.language})` : '',
+                repo.description ? `- ${repo.description}` : '',
+                repo.stars > 0 ? `⭐${repo.stars}` : '',
+                `(Updated: ${new Date(repo.updated_at).toLocaleDateString()})`,
+            ];
+
+            return parts.filter(Boolean).join(' ');
+        }
+
+        formatActivitySection(activities) {
+            if (!activities?.length) return null;
+
+            const activityList = activities
+                .slice(0, CHATBOT_CONFIG.github.displayActivityLimit)
+                .map(this.formatActivity)
+                .join('\n            ');
+
+            return `\n            RECENT ACTIVITY:\n            ${activityList}`;
+        }
+
+        formatActivity(activity) {
+            const date = new Date(activity.created_at).toLocaleDateString();
+            const repoName = activity.repo.replace('MihaiOnSoftware/', '');
+            return `- ${activity.action} in ${repoName} (${date})`;
         }
 
         async initialize() {

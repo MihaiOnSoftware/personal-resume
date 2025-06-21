@@ -13,12 +13,12 @@ describe('HtmlIndexPlugin', () => {
 
         // Mock fs module
         jest.mock('fs', () => ({
-            writeFileSync: jest.fn()
+            writeFileSync: jest.fn(),
         }));
 
         // Mock path module  
         jest.mock('path', () => ({
-            join: jest.fn((...args) => args.join('/'))
+            join: jest.fn((...args) => args.join('/')),
         }));
 
         // Create mock compiler and compilation
@@ -29,21 +29,21 @@ describe('HtmlIndexPlugin', () => {
                 'contact.html': { source: () => '<html>Contact</html>' },
                 'chatbot.js': { source: () => 'console.log("chatbot")' },
                 'navigation.js': { source: () => 'console.log("nav")' },
-                'styles.css': { source: () => 'body { margin: 0; }' }
-            }
+                'styles.css': { source: () => 'body { margin: 0; }' },
+            },
         };
 
         mockCompiler = {
             hooks: {
                 afterEmit: {
-                    tap: jest.fn()
-                }
+                    tap: jest.fn(),
+                },
             },
             options: {
                 output: {
-                    path: '/dist'
-                }
-            }
+                    path: '/dist',
+                },
+            },
         };
 
         // Import the plugin after mocking dependencies
@@ -81,7 +81,7 @@ describe('HtmlIndexPlugin', () => {
 
         expect(mockCompiler.hooks.afterEmit.tap).toHaveBeenCalledWith(
             'HtmlIndexPlugin',
-            expect.any(Function)
+            expect.any(Function),
         );
     });
 
@@ -99,7 +99,7 @@ describe('HtmlIndexPlugin', () => {
         // Should have written the HTML files index
         expect(fs.writeFileSync).toHaveBeenCalledWith(
             '/dist/html-files-index.json',
-            JSON.stringify(['index.html', 'resume.html', 'contact.html'], null, 2)
+            JSON.stringify(['index.html', 'resume.html', 'contact.html'], null, 2),
         );
     });
 
@@ -135,7 +135,7 @@ describe('HtmlIndexPlugin', () => {
 
         expect(fs.writeFileSync).toHaveBeenCalledWith(
             '/dist/html-files-index.json',
-            JSON.stringify([], null, 2)
+            JSON.stringify([], null, 2),
         );
     });
 
@@ -151,15 +151,15 @@ describe('HtmlIndexPlugin', () => {
             assets: {
                 'app.js': { source: () => 'console.log("app")' },
                 'styles.css': { source: () => 'body {}' },
-                'image.png': { source: () => 'binary data' }
-            }
+                'image.png': { source: () => 'binary data' },
+            },
         };
 
         callback(nonHtmlCompilation);
 
         expect(fs.writeFileSync).toHaveBeenCalledWith(
             '/dist/html-files-index.json',
-            JSON.stringify([], null, 2)
+            JSON.stringify([], null, 2),
         );
     });
 
@@ -172,9 +172,9 @@ describe('HtmlIndexPlugin', () => {
             ...mockCompiler,
             options: {
                 output: {
-                    path: '/custom/build/dir'
-                }
-            }
+                    path: '/custom/build/dir',
+                },
+            },
         };
 
         const plugin = new HtmlIndexPlugin();
@@ -186,7 +186,7 @@ describe('HtmlIndexPlugin', () => {
         expect(path.join).toHaveBeenCalledWith('/custom/build/dir', 'html-files-index.json');
         expect(fs.writeFileSync).toHaveBeenCalledWith(
             '/custom/build/dir/html-files-index.json',
-            expect.any(String)
+            expect.any(String),
         );
     });
 }); 
