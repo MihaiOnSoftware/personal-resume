@@ -26,12 +26,6 @@ IMAGE_NAME="personal-resume"
 COMMIT_HASH=$(git rev-parse --short HEAD)
 REGISTRY_IMAGE="${DO_REGISTRY_URL}/${IMAGE_NAME}"
 
-echo "=== Cleaning up old images from DigitalOcean registry ==="
-
-# Use the dedicated cleanup script
-./scripts/cleanup-registry.sh
-
-echo ""
 echo "=== Building new Docker image ==="
 
 # Build the new image
@@ -57,6 +51,13 @@ docker push "${REGISTRY_IMAGE}:latest"
 echo "Successfully pushed Docker images:"
 echo "  ${REGISTRY_IMAGE}:${COMMIT_HASH}"
 echo "  ${REGISTRY_IMAGE}:latest"
+
+echo "=== Cleaning up old images from DigitalOcean registry ==="
+
+# Use the dedicated cleanup script
+./scripts/cleanup-registry.sh
+
+echo ""
 
 # Logout for security
 docker logout registry.digitalocean.com
