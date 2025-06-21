@@ -112,7 +112,7 @@ ${stats.company ? `- Company: ${stats.company}` : ''}`;
         }
     }
 
-    async function processMessage(message, apiKey) {
+    async function processMessage(message, apiKey = null) {
         // Initialize if needed (like weather.js auto-initialization)
         await initializeChatbot();
 
@@ -129,7 +129,7 @@ ${stats.company ? `- Company: ${stats.company}` : ''}`;
                 }
             }
 
-            const response = await generateAIResponse(message, githubContext, apiKey);
+            const response = await generateAIResponse(message, githubContext);
             const botMessage = { role: 'assistant', content: response, timestamp: new Date() };
             conversationHistory.push(botMessage);
 
@@ -149,7 +149,7 @@ ${stats.company ? `- Company: ${stats.company}` : ''}`;
         }
     }
 
-    async function generateAIResponse(message, githubContext, apiKey) {
+    async function generateAIResponse(message, githubContext) {
         // Create system prompt with HTML content and optional GitHub context
         const fullSystemPrompt = createSystemPrompt(htmlContent, githubContext);
 
@@ -159,10 +159,9 @@ ${stats.company ? `- Company: ${stats.company}` : ''}`;
             { role: 'user', content: message },
         ];
 
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        const response = await fetch('/api/chat', {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${apiKey}`,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
@@ -174,7 +173,8 @@ ${stats.company ? `- Company: ${stats.company}` : ''}`;
         });
 
         if (!response.ok) {
-            throw new Error(`OpenAI API error: ${response.status}`);
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.error || `Server error: ${response.status}`);
         }
 
         const data = await response.json();

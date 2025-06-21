@@ -6,7 +6,6 @@
         containerId: 'chatbot-container',
         welcomeDelay: 500,
         focusDelay: 100,
-        apiKey: process.env.OPENAI_API_KEY,
     };
 
     // UI Template (like navigation.js SOCIAL_LINKS_HTML)
@@ -148,12 +147,6 @@
     async function sendMessage(message) {
         if (!message.trim()) return;
 
-        // Check if API key is configured
-        if (!CHATBOT_UI_CONFIG.apiKey) {
-            addMessage('⚠️ Chatbot is not configured. Please set the OPENAI_API_KEY environment variable.', 'bot', true);
-            return;
-        }
-
         addMessage(message, 'user');
         const typingIndicator = showTypingIndicator();
 
@@ -167,7 +160,7 @@
                 throw new Error('processMessage function not available');
             }
 
-            const response = await processMessageFn(message, CHATBOT_UI_CONFIG.apiKey);
+            const response = await processMessageFn(message);
             removeTypingIndicator(typingIndicator);
             addMessage(response, 'bot');
         } catch (error) {

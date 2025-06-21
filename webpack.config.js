@@ -2,7 +2,6 @@ const path = require("path");
 const fs = require("fs");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
-const webpack = require("webpack");
 
 // Plugin to generate an index of all content files (HTML and Markdown)
 class ContentIndexPlugin {
@@ -34,9 +33,6 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin(),
-    new webpack.DefinePlugin({
-      'process.env.OPENAI_API_KEY': JSON.stringify(process.env.OPENAI_API_KEY || ''),
-    }),
     new CopyWebpackPlugin({
       patterns: [
         {

@@ -8,7 +8,9 @@
     "lint": "eslint \"src\" \"test\"",
     "format": "prettier-eslint --write \"src/**/*.*\" \"test/**/*.*\"",
     "build": "webpack",
-    "watch": "webpack --watch"
+    "watch": "webpack --watch",
+    "start": "node server.js",
+    "dev": "npm run build && npm start"
   },
   "keywords": [],
   "author": "Mihai Popescu",
@@ -23,13 +25,33 @@
     "jest-environment-jsdom": "^30.0.2",
     "node-fetch": "^3.3.0",
     "prettier-eslint-cli": "^8.0.1",
+    "supertest": "^6.3.3",
     "webpack": "^5.75.0",
     "webpack-cli": "^6.0.1"
   },
   "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^4.21.2",
     "moment": "^2.29.4"
   },
   "jest": {
-    "testEnvironment": "jsdom"
+    "testEnvironment": "jsdom",
+    "projects": [
+      {
+        "displayName": "client",
+        "testEnvironment": "jsdom",
+        "testMatch": [
+          "<rootDir>/test/!(server)*.test.js"
+        ]
+      },
+      {
+        "displayName": "server",
+        "testEnvironment": "node",
+        "testMatch": [
+          "<rootDir>/test/server.test.js"
+        ]
+      }
+    ]
   }
 }
