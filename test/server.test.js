@@ -2,7 +2,7 @@ const request = require('supertest');
 
 // Mock dotenv before requiring the server
 jest.mock('dotenv', () => ({
-    config: jest.fn()
+    config: jest.fn(),
 }));
 
 // Mock fetch for OpenAI API calls
@@ -32,7 +32,7 @@ describe('Server Integration Tests', () => {
 
             expect(response.body).toMatchObject({
                 status: 'ok',
-                hasApiKey: false
+                hasApiKey: false,
             });
             expect(response.body.timestamp).toBeDefined();
         });
@@ -46,7 +46,7 @@ describe('Server Integration Tests', () => {
 
             expect(response.body).toMatchObject({
                 status: 'ok',
-                hasApiKey: true
+                hasApiKey: true,
             });
         });
     });
@@ -58,19 +58,19 @@ describe('Server Integration Tests', () => {
 
         test('should proxy successful OpenAI API request', async () => {
             const mockOpenAIResponse = {
-                choices: [{ message: { content: 'Hello! I am Mihai.' } }]
+                choices: [{ message: { content: 'Hello! I am Mihai.' } }],
             };
 
             global.fetch.mockResolvedValueOnce({
                 ok: true,
-                json: () => Promise.resolve(mockOpenAIResponse)
+                json: () => Promise.resolve(mockOpenAIResponse),
             });
 
             const requestBody = {
                 messages: [
                     { role: 'system', content: 'You are Mihai' },
-                    { role: 'user', content: 'Hello' }
-                ]
+                    { role: 'user', content: 'Hello' },
+                ],
             };
 
             const response = await request(app)
@@ -99,14 +99,14 @@ describe('Server Integration Tests', () => {
         test('should handle custom model parameters', async () => {
             global.fetch.mockResolvedValueOnce({
                 ok: true,
-                json: () => Promise.resolve({ choices: [{ message: { content: 'Test' } }] })
+                json: () => Promise.resolve({ choices: [{ message: { content: 'Test' } }] }),
             });
 
             const requestBody = {
                 messages: [{ role: 'user', content: 'Test' }],
                 model: 'gpt-4',
                 max_tokens: 200,
-                temperature: 0.5
+                temperature: 0.5,
             };
 
             await request(app)
@@ -120,7 +120,7 @@ describe('Server Integration Tests', () => {
             expect(requestBodySent).toMatchObject({
                 model: 'gpt-4',
                 max_tokens: 200,
-                temperature: 0.5
+                temperature: 0.5,
             });
         });
 
@@ -133,7 +133,7 @@ describe('Server Integration Tests', () => {
                 .expect(500);
 
             expect(response.body).toEqual({
-                error: 'OpenAI API key not configured on server'
+                error: 'OpenAI API key not configured on server',
             });
 
             expect(global.fetch).not.toHaveBeenCalled();
@@ -146,7 +146,7 @@ describe('Server Integration Tests', () => {
                 .expect(400);
 
             expect(response.body).toEqual({
-                error: 'Messages array is required'
+                error: 'Messages array is required',
             });
 
             expect(global.fetch).not.toHaveBeenCalled();
@@ -159,7 +159,7 @@ describe('Server Integration Tests', () => {
                 .expect(400);
 
             expect(response.body).toEqual({
-                error: 'Messages array is required'
+                error: 'Messages array is required',
             });
         });
 
@@ -167,7 +167,7 @@ describe('Server Integration Tests', () => {
             global.fetch.mockResolvedValueOnce({
                 ok: false,
                 status: 429,
-                text: () => Promise.resolve('Rate limit exceeded')
+                text: () => Promise.resolve('Rate limit exceeded'),
             });
 
             const response = await request(app)
@@ -177,7 +177,7 @@ describe('Server Integration Tests', () => {
 
             expect(response.body).toEqual({
                 error: 'OpenAI API error: 429',
-                details: 'Rate limit exceeded'
+                details: 'Rate limit exceeded',
             });
         });
 
@@ -191,7 +191,7 @@ describe('Server Integration Tests', () => {
 
             expect(response.body).toEqual({
                 error: 'Internal server error',
-                message: 'Network error'
+                message: 'Network error',
             });
         });
 
@@ -238,7 +238,7 @@ describe('Server Integration Tests', () => {
             // The static middleware should be in the stack
             const staticMiddleware = app._router.stack.find(layer =>
                 layer.name === 'serveStatic' ||
-                (layer.handle && layer.handle.name === 'serveStatic')
+                (layer.handle && layer.handle.name === 'serveStatic'),
             );
             expect(staticMiddleware).toBeDefined();
         });
