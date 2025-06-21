@@ -3,6 +3,34 @@ const path = require('path');
 const cors = require('cors');
 require('dotenv').config();
 
+// Weather service configuration
+const WEATHER_CONFIG = {
+    cityId: "6091104", // North York, Toronto
+    iconBaseUrl: "http://openweathermap.org/img/wn/",
+    apiBaseUrl: "https://api.openweathermap.org/data/2.5/weather"
+};
+
+// Weather service functions
+async function fetchWeatherData(cityId, apiKey) {
+    const url = `${WEATHER_CONFIG.apiBaseUrl}?id=${cityId}&appid=${apiKey}`;
+    const response = await fetch(url);
+
+    if (!response.ok) {
+        throw new Error(`Weather API error: ${response.status}`);
+    }
+
+    return response.json();
+}
+
+function transformWeatherData(weatherApiResponse) {
+    const weather = weatherApiResponse.weather[0];
+    return {
+        description: weather.description,
+        iconId: weather.icon,
+        iconUrl: `${WEATHER_CONFIG.iconBaseUrl}${weather.icon}.png`
+    };
+}
+
 function createApp() {
     const app = express();
 
@@ -75,22 +103,10 @@ function createApp() {
                 return res.status(500).json({ error: 'Weather API not configured' });
             }
 
-            const northYorkId = "6091104";
-            const openWeatherApiUrl = `https://api.openweathermap.org/data/2.5/weather?id=${northYorkId}&appid=${weatherApiKey}`;
+            const weatherData = await fetchWeatherData(WEATHER_CONFIG.cityId, weatherApiKey);
+            const transformedData = transformWeatherData(weatherData);
 
-            const response = await fetch(openWeatherApiUrl);
-            if (!response.ok) {
-                throw new Error(`Weather API error: ${response.status}`);
-            }
-
-            const data = await response.json();
-            const weather = data.weather[0];
-
-            res.json({
-                description: weather.description,
-                iconId: weather.icon,
-                iconUrl: `http://openweathermap.org/img/wn/${weather.icon}.png`
-            });
+            res.json(transformedData);
         } catch (error) {
             console.error('Weather API error:', error);
             res.status(500).json({ error: 'Failed to fetch weather data' });
