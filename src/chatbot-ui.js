@@ -32,7 +32,7 @@
             <input 
               type="text" 
               class="chatbot-input" 
-              placeholder="Ask me about my experience, skills, or projects..."
+              placeholder="Ask me about Mihai!"
               autocomplete="off"
             />
             <button type="submit" class="chatbot-send" title="Send message">
@@ -43,7 +43,7 @@
       </div>
     `;
 
-    const WELCOME_MESSAGE = "👋 Hi there! I'm an AI chatbot that can answer questions about Mihai Popescu. I know about his experience, skills, projects, and can tell you about his recent GitHub activity. What would you like to know?";
+    const WELCOME_MESSAGE = "👋 Hi there! I'm an AI chatbot that can answer questions about Mihai Popescu. I know about his experience, skills, projects, recent GitHub activity, and details about how he built this website. What would you like to know?";
 
     // Global state (like hamburger.js simple state)
     let isOpen = false;

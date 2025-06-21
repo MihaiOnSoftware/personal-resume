@@ -42,7 +42,7 @@ describe('ChatbotUI', () => {
                     
                     <div class="chatbot-input-container">
                         <form class="chatbot-input-form">
-                            <input type="text" class="chatbot-input" placeholder="Ask me about my experience..." autocomplete="off" />
+                            <input type="text" class="chatbot-input" placeholder="Ask me about Mihai!" autocomplete="off" />
                             <button type="submit" class="chatbot-send" title="Send message">
                                 <i class="fas fa-paper-plane"></i>
                             </button>
