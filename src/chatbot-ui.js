@@ -12,7 +12,6 @@
     const CHATBOT_HTML = `
       <div class="chatbot-toggle" title="Chat with AI Assistant">
         <i class="fas fa-comments"></i>
-        <div class="chatbot-notification">💬</div>
       </div>
       
       <div class="chatbot-window" style="display: none;">
@@ -118,7 +117,6 @@
 
     function toggleChatbot() {
         const chatbotWindow = document.querySelector('.chatbot-window');
-        const notification = document.querySelector('.chatbot-notification');
 
         if (!chatbotWindow) return;
 
@@ -127,7 +125,6 @@
         } else {
             chatbotWindow.style.display = 'flex';
             isOpen = true;
-            if (notification) notification.style.display = 'none';
 
             const input = document.querySelector('.chatbot-input');
             if (input) {
