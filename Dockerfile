@@ -8,11 +8,13 @@ WORKDIR /app
 ARG GITHUB_TOKEN
 ARG GITHUB_OWNER=MihaiOnSoftware
 ARG GITHUB_REPO=personal-resume
+ARG GITHUB_COMMIT_LIMIT
 
 # Set environment variables for the build process
 ENV GITHUB_TOKEN=$GITHUB_TOKEN
 ENV GITHUB_OWNER=$GITHUB_OWNER
 ENV GITHUB_REPO=$GITHUB_REPO
+ENV GITHUB_COMMIT_LIMIT=$GITHUB_COMMIT_LIMIT
 
 # Copy package files and install ALL dependencies (including dev dependencies for build)
 COPY package*.json ./
