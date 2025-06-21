@@ -362,3 +362,15 @@
         transform: translateY(0);
     }
 }
+
+@media print {
+    .chatbot-container {
+        display: none;
+        visibility: hidden;
+    }
+
+    .chatbot-toggle {
+        display: none;
+        visibility: hidden;
+    }
+}
