@@ -24,10 +24,9 @@ describe('ChatbotUI', () => {
         // Set up DOM
         document.body.innerHTML = `
             <div id="chatbot-container">
-                <div class="chatbot-toggle" title="Chat with AI Assistant">
-                    <i class="fas fa-comments"></i>
-                    <div class="chatbot-notification">💬</div>
-                </div>
+                        <div class="chatbot-toggle" title="Chat with AI Assistant">
+          <i class="fas fa-comments"></i>
+        </div>
                 
                 <div class="chatbot-window" style="display: none;">
                     <div class="chatbot-header">
