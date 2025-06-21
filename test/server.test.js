@@ -17,6 +17,7 @@ describe('Server Integration Tests', () => {
 
         // Reset environment variables
         delete process.env.OPENAI_API_KEY;
+        delete process.env.OPENWEATHERMAP_API_KEY;
         delete process.env.PORT;
 
         // Import the actual server app
@@ -33,6 +34,7 @@ describe('Server Integration Tests', () => {
             expect(response.body).toMatchObject({
                 status: 'ok',
                 hasApiKey: false,
+                hasWeatherApiKey: false,
             });
             expect(response.body.timestamp).toBeDefined();
         });
@@ -47,6 +49,21 @@ describe('Server Integration Tests', () => {
             expect(response.body).toMatchObject({
                 status: 'ok',
                 hasApiKey: true,
+                hasWeatherApiKey: false,
+            });
+        });
+
+        test('should return health status with weather API key', async () => {
+            process.env.OPENWEATHERMAP_API_KEY = 'test-weather-key';
+
+            const response = await request(app)
+                .get('/api/health')
+                .expect(200);
+
+            expect(response.body).toMatchObject({
+                status: 'ok',
+                hasApiKey: false,
+                hasWeatherApiKey: true,
             });
         });
     });
@@ -231,6 +248,82 @@ describe('Server Integration Tests', () => {
                 .expect(404);
 
             expect(response.status).toBe(404);
+        });
+    });
+
+    describe('GET /api/weather', () => {
+        beforeEach(() => {
+            process.env.OPENWEATHERMAP_API_KEY = 'test-weather-key';
+        });
+
+        test('should return weather data successfully', async () => {
+            const mockWeatherResponse = {
+                weather: [{
+                    description: 'clear sky',
+                    icon: '01d'
+                }]
+            };
+
+            global.fetch.mockResolvedValueOnce({
+                ok: true,
+                json: () => Promise.resolve(mockWeatherResponse),
+            });
+
+            const response = await request(app)
+                .get('/api/weather')
+                .expect(200);
+
+            expect(response.body).toEqual({
+                description: 'clear sky',
+                iconId: '01d',
+                iconUrl: 'http://openweathermap.org/img/wn/01d.png'
+            });
+
+            // Verify the OpenWeatherMap API was called correctly
+            expect(global.fetch).toHaveBeenCalledWith(
+                'https://api.openweathermap.org/data/2.5/weather?id=6091104&appid=test-weather-key'
+            );
+        });
+
+        test('should return 500 when weather API key is not configured', async () => {
+            delete process.env.OPENWEATHERMAP_API_KEY;
+
+            const response = await request(app)
+                .get('/api/weather')
+                .expect(500);
+
+            expect(response.body).toEqual({
+                error: 'Weather API not configured',
+            });
+
+            expect(global.fetch).not.toHaveBeenCalled();
+        });
+
+        test('should handle weather API errors', async () => {
+            global.fetch.mockResolvedValueOnce({
+                ok: false,
+                status: 401,
+            });
+
+            const response = await request(app)
+                .get('/api/weather')
+                .expect(500);
+
+            expect(response.body).toEqual({
+                error: 'Failed to fetch weather data',
+            });
+        });
+
+        test('should handle network errors', async () => {
+            global.fetch.mockRejectedValueOnce(new Error('Network error'));
+
+            const response = await request(app)
+                .get('/api/weather')
+                .expect(500);
+
+            expect(response.body).toEqual({
+                error: 'Failed to fetch weather data',
+            });
         });
     });
 

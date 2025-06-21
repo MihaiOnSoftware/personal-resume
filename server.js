@@ -67,12 +67,43 @@ function createApp() {
         }
     });
 
+    // Weather endpoint
+    app.get('/api/weather', async (req, res) => {
+        try {
+            const weatherApiKey = process.env.OPENWEATHERMAP_API_KEY;
+            if (!weatherApiKey) {
+                return res.status(500).json({ error: 'Weather API not configured' });
+            }
+
+            const northYorkId = "6091104";
+            const openWeatherApiUrl = `https://api.openweathermap.org/data/2.5/weather?id=${northYorkId}&appid=${weatherApiKey}`;
+
+            const response = await fetch(openWeatherApiUrl);
+            if (!response.ok) {
+                throw new Error(`Weather API error: ${response.status}`);
+            }
+
+            const data = await response.json();
+            const weather = data.weather[0];
+
+            res.json({
+                description: weather.description,
+                iconId: weather.icon,
+                iconUrl: `http://openweathermap.org/img/wn/${weather.icon}.png`
+            });
+        } catch (error) {
+            console.error('Weather API error:', error);
+            res.status(500).json({ error: 'Failed to fetch weather data' });
+        }
+    });
+
     // Health check endpoint
     app.get('/api/health', (req, res) => {
         res.json({
             status: 'ok',
             timestamp: new Date().toISOString(),
-            hasApiKey: !!process.env.OPENAI_API_KEY
+            hasApiKey: !!process.env.OPENAI_API_KEY,
+            hasWeatherApiKey: !!process.env.OPENWEATHERMAP_API_KEY
         });
     });
 

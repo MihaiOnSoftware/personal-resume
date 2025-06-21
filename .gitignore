@@ -3,3 +3,6 @@ node_modules/
 .env
 .env.local
 dist/
+
+# TODO list (personal development tracking)
+TODO.md
