@@ -148,10 +148,8 @@
         const typingIndicator = showTypingIndicator();
 
         try {
-            // Access processMessage from global scope or module
-            const processMessageFn = typeof window !== 'undefined' && window.processMessage
-                ? window.processMessage
-                : (typeof processMessage !== 'undefined' ? processMessage : null);
+            // Access processMessage from global scope
+            const processMessageFn = window.processMessage;
 
             if (!processMessageFn) {
                 throw new Error('processMessage function not available');
@@ -227,10 +225,8 @@
             messagesContainer.innerHTML = '';
         }
 
-        // Access clearHistory from global scope or module
-        const clearHistoryFn = typeof window !== 'undefined' && window.clearHistory
-            ? window.clearHistory
-            : (typeof clearHistory !== 'undefined' ? clearHistory : null);
+        // Access clearHistory from global scope
+        const clearHistoryFn = window.clearHistory;
 
         if (clearHistoryFn) {
             clearHistoryFn();
