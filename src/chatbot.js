@@ -273,19 +273,77 @@
         }
 
         formatActivitySection(activities) {
-            if (!activities?.length) return null;
+            if (!activities?.length) {
+                return '\n            NOTE: No recent public GitHub activity to display.';
+            }
 
-            const activityList = activities
-                .slice(0, CHATBOT_CONFIG.github.displayActivityLimit)
-                .map(this.formatActivity)
-                .join('\n            ');
+            const commitStats = this.calculateCommitStats(activities);
+            return this.formatActivitySummary(commitStats);
+        }
 
-            return `\n            RECENT ACTIVITY:\n            ${activityList}`;
+        formatActivitySummary(commitStats) {
+            if (commitStats.totalCommits === 0) {
+                return '\n            RECENT ACTIVITY: No commits in recent public activity.';
+            }
+
+            return `\n            RECENT ACTIVITY SUMMARY:
+            - Total commits in recent activity: ${commitStats.totalCommits}
+            - Active repositories: ${commitStats.activeRepos}
+            - Most recent activity: ${commitStats.mostRecentDate}`;
+        }
+
+        calculateCommitStats(activities) {
+            const stats = {
+                totalCommits: 0,
+                activeRepos: new Set(),
+                mostRecentDate: null,
+            };
+
+            activities.forEach(activity => {
+                this.processActivityForStats(activity, stats);
+            });
+
+            return {
+                totalCommits: stats.totalCommits,
+                activeRepos: stats.activeRepos.size,
+                mostRecentDate: stats.mostRecentDate?.toLocaleDateString() || 'Unknown',
+            };
+        }
+
+        processActivityForStats(activity, stats) {
+            // Count commits from push events
+            if (activity.type === 'PushEvent') {
+                const commitCount = this.extractCommitCount(activity.action);
+                stats.totalCommits += commitCount;
+            }
+
+            // Track active repositories
+            const repoName = this.extractRepoName(activity.repo);
+            stats.activeRepos.add(repoName);
+
+            // Track most recent date
+            this.updateMostRecentDate(activity.created_at, stats);
+        }
+
+        extractCommitCount(actionText) {
+            const commitMatch = actionText.match(/Pushed (\d+) commit/);
+            return commitMatch ? parseInt(commitMatch[1], 10) : 0;
+        }
+
+        extractRepoName(repoFullName) {
+            return repoFullName.replace('MihaiOnSoftware/', '');
+        }
+
+        updateMostRecentDate(dateString, stats) {
+            const activityDate = new Date(dateString);
+            if (!stats.mostRecentDate || activityDate > stats.mostRecentDate) {
+                stats.mostRecentDate = activityDate;
+            }
         }
 
         formatActivity(activity) {
             const date = new Date(activity.created_at).toLocaleDateString();
-            const repoName = activity.repo.replace('MihaiOnSoftware/', '');
+            const repoName = this.extractRepoName(activity.repo);
             return `- ${activity.action} in ${repoName} (${date})`;
         }
 
