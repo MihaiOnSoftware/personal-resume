@@ -74,7 +74,7 @@
             GUIDELINES:
             - Answer from the info above, but keep it concise
             - If someone asks about tech stuff, mention it briefly then ask if they want more details
-            - For GitHub questions, I can pull live stats
+            - For GitHub questions, I can show recent activity and repository info
             - If you don't know something, just say so casually
             - Use emojis sparingly (maybe 1 per response max)
             `;
