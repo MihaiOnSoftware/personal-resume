@@ -16,8 +16,6 @@
             eventLimit: 5,
             displayRepoLimit: 5,
             displayActivityLimit: 3,
-            // Filtering configuration
-            excludePatterns: ['nulogy/'],
         },
     };
 
@@ -87,27 +85,7 @@
             return CHATBOT_CONFIG.githubKeywords.some(keyword => lowerMessage.includes(keyword));
         }
 
-        // Check if a repository should be filtered out
-        shouldFilterRepo(repo) {
-            const repoUrl = repo.html_url || repo.url || '';
-            const repoName = repo.name || '';
-            const fullName = repo.full_name || '';
 
-            return CHATBOT_CONFIG.github.excludePatterns.some(pattern =>
-                repoUrl.includes(pattern) ||
-                repoName.includes(pattern) ||
-                fullName.includes(pattern)
-            );
-        }
-
-        // Check if an event should be filtered out
-        shouldFilterEvent(event) {
-            const repoName = event.repo?.name || '';
-
-            return CHATBOT_CONFIG.github.excludePatterns.some(pattern =>
-                repoName.includes(pattern)
-            );
-        }
 
         // Helper method to build GitHub API URLs
         buildGitHubUrl(endpoint) {
@@ -171,7 +149,6 @@
 
             return repos ?
                 repos
-                    .filter(repo => !this.shouldFilterRepo(repo))
                     .map(this.transformRepo) : null;
         }
 
@@ -181,7 +158,6 @@
 
             return events ?
                 events
-                    .filter(event => !this.shouldFilterEvent(event))
                     .map(this.transformEvent.bind(this))
                     .filter(event => event.repo) : null;
         }
@@ -278,10 +254,7 @@
             }
 
             const commitStats = this.calculateCommitStats(activities);
-            return this.formatActivitySummary(commitStats);
-        }
 
-        formatActivitySummary(commitStats) {
             if (commitStats.totalCommits === 0) {
                 return '\n            RECENT ACTIVITY: No commits in recent public activity.';
             }
@@ -306,46 +279,30 @@
             return {
                 totalCommits: stats.totalCommits,
                 activeRepos: stats.activeRepos.size,
-                mostRecentDate: stats.mostRecentDate?.toLocaleDateString() || 'Unknown',
+                mostRecentDate: stats.mostRecentDate ? stats.mostRecentDate.toLocaleDateString() : 'Unknown',
             };
         }
 
         processActivityForStats(activity, stats) {
             // Count commits from push events
             if (activity.type === 'PushEvent') {
-                const commitCount = this.extractCommitCount(activity.action);
+                const commitMatch = activity.action.match(/Pushed (\d+) commit/);
+                const commitCount = commitMatch ? parseInt(commitMatch[1], 10) : 0;
                 stats.totalCommits += commitCount;
             }
 
             // Track active repositories
-            const repoName = this.extractRepoName(activity.repo);
+            const repoName = activity.repo.replace('MihaiOnSoftware/', '');
             stats.activeRepos.add(repoName);
 
             // Track most recent date
-            this.updateMostRecentDate(activity.created_at, stats);
-        }
-
-        extractCommitCount(actionText) {
-            const commitMatch = actionText.match(/Pushed (\d+) commit/);
-            return commitMatch ? parseInt(commitMatch[1], 10) : 0;
-        }
-
-        extractRepoName(repoFullName) {
-            return repoFullName.replace('MihaiOnSoftware/', '');
-        }
-
-        updateMostRecentDate(dateString, stats) {
-            const activityDate = new Date(dateString);
+            const activityDate = new Date(activity.created_at);
             if (!stats.mostRecentDate || activityDate > stats.mostRecentDate) {
                 stats.mostRecentDate = activityDate;
             }
         }
 
-        formatActivity(activity) {
-            const date = new Date(activity.created_at).toLocaleDateString();
-            const repoName = this.extractRepoName(activity.repo);
-            return `- ${activity.action} in ${repoName} (${date})`;
-        }
+
 
         async initialize() {
             if (!this.htmlContent) {
