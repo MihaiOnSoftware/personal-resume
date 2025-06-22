@@ -2,7 +2,7 @@ Status: [![CircleCI](https://circleci.com/gh/MihaiOnSoftware/personal-resume/tre
 
 # Purpose
 
-This is the repo for my personal website [mihai.software](https://mihai.software). Currently just a couple of flat html files with a touch of javascript.
+This is the repo for my personal website [mihai.software](https://mihai.software). Originally just a couple of flat html files with a touch of javascript, now it's got a little server to connect to various APIs so it doesn't have to serve secrets over the web.
 
 ## Setup
 
@@ -13,15 +13,12 @@ The application requires API keys for the chatbot and weather functionality. Cre
 ```bash
 # Copy the example file
 cp .env.example .env
-
-# Edit .env and add your API keys
-OPENAI_API_KEY=your_openai_api_key_here
-OPENWEATHERMAP_API_KEY=your_openweathermap_api_key_here
 ```
 
 Get your API keys from:
 - OpenAI: [OpenAI Platform](https://platform.openai.com/api-keys)
 - OpenWeatherMap: [OpenWeatherMap API](https://openweathermap.org/api)
+- Github Token: [Github Tokens](https://github.com/settings/personal-access-tokens)
 
 ### Build and Run
 
