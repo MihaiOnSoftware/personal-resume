@@ -22,6 +22,7 @@ docker buildx build --platform linux/amd64 \
   --build-arg GITHUB_TOKEN="$GITHUB_TOKEN" \
   --build-arg GITHUB_OWNER="${GITHUB_OWNER:-MihaiOnSoftware}" \
   --build-arg GITHUB_REPO="${GITHUB_REPO:-personal-resume}" \
+  --load \
   -t "${IMAGE_NAME}:${COMMIT_HASH}" \
   -t "${IMAGE_NAME}:latest" .
 

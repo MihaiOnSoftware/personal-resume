@@ -1,6 +1,6 @@
 # Multi-stage build for optimized production image
 # Stage 1: Build stage
-FROM node:18-alpine AS builder
+FROM node:20-alpine AS builder
 
 WORKDIR /app
 
@@ -29,7 +29,7 @@ RUN echo "GITHUB_COMMIT_LIMIT: $GITHUB_COMMIT_LIMIT"
 RUN npm run build
 
 # Stage 2: Production stage
-FROM node:18-alpine AS production
+FROM node:20-alpine AS production
 
 WORKDIR /app
 

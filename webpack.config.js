@@ -27,6 +27,7 @@ class ContentIndexPlugin {
 
 
 module.exports = {
+  mode: 'production',
   entry: {
     hamburger: "./src/hamburger.js",
     navigation: "./src/navigation.js",
@@ -63,5 +64,10 @@ module.exports = {
   output: {
     filename: "[name].js",
     path: path.resolve(__dirname, "dist"),
+  },
+  performance: {
+    hints: 'warning',
+    maxAssetSize: 2000000, // 2MB in bytes
+    maxEntrypointSize: 2000000, // 2MB in bytes
   },
 };
