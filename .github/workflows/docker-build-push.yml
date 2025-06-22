@@ -14,18 +14,25 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
     
-    - name: Build and push Docker image
+    - name: Build Docker image
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GITHUB_OWNER: ${{ github.repository_owner }}
         GITHUB_REPO: ${{ github.event.repository.name }}
         GITHUB_COMMIT_LIMIT: 500
+      run: ./scripts/build-docker.sh
+        
+    - name: Push Docker image with retry
+      uses: nick-fields/retry@v3
+      with:
+        timeout_minutes: 10
+        max_attempts: 3
+        retry_wait_seconds: 30
+        command: ./scripts/push-docker.sh
+      env:
         DO_REGISTRY_TOKEN: ${{ secrets.DO_REGISTRY_TOKEN }}
         DO_REGISTRY_EMAIL: ${{ secrets.DO_REGISTRY_EMAIL }}
         DO_REGISTRY_URL: ${{ secrets.DO_REGISTRY_URL }}
-      run: |
-        ./scripts/build-docker.sh
-        ./scripts/push-docker.sh || ./scripts/push-docker.sh
         
     - name: Clean up Docker images
       if: always()
