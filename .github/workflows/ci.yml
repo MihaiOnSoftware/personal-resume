@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ master, main ]
+    branches: [ main ]
   pull_request:
-    branches: [ master, main ]
+    branches: [ main ]
 
 jobs:
   test-and-lint:
@@ -48,7 +48,7 @@ jobs:
   trigger-docker-build:
     needs: test-and-lint
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     
     steps:
     - name: Trigger Docker build and push workflow
@@ -60,6 +60,6 @@ jobs:
             owner: context.repo.owner,
             repo: context.repo.repo,
             workflow_id: 'docker-build-push.yml',
-            ref: 'master'
+            ref: 'main'
           });
           console.log('Docker build and push workflow triggered successfully'); 
