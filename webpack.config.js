@@ -55,6 +55,16 @@ module.exports = {
           from: "2024-2025-work-summary.md",
           context: "./assets",
         },
+        {
+          from: "favicon*.{ico,png}",
+          context: "./assets",
+          noErrorOnMissing: true,
+        },
+        {
+          from: "apple-touch-icon.png",
+          context: "./assets",
+          noErrorOnMissing: true,
+        },
       ],
     }),
     new ContentIndexPlugin(),
