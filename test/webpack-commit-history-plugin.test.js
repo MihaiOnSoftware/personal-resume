@@ -188,7 +188,7 @@ describe('CommitHistoryPlugin', () => {
 
             expect(mockFetch).toHaveBeenCalledWith(
                 'https://api.github.com/repos/MihaiOnSoftware/personal-resume',
-                expect.objectContaining({ headers: expect.any(Object) })
+                expect.objectContaining({ headers: expect.any(Object) }),
             );
         });
 
@@ -225,11 +225,11 @@ describe('CommitHistoryPlugin', () => {
 
             expect(mockFetch).toHaveBeenCalledWith(
                 'https://api.github.com/repos/TestOwner/test-repo/commits?per_page=100&page=1',
-                expect.objectContaining({ headers: expect.any(Object) })
+                expect.objectContaining({ headers: expect.any(Object) }),
             );
             expect(mockFetch).toHaveBeenCalledWith(
                 'https://api.github.com/repos/TestOwner/test-repo/commits?per_page=100&page=2',
-                expect.objectContaining({ headers: expect.any(Object) })
+                expect.objectContaining({ headers: expect.any(Object) }),
             );
         });
     });

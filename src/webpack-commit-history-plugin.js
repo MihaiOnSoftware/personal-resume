@@ -78,7 +78,7 @@ class CommitHistoryPlugin {
     async fetchCommitsPage(owner, repo, headers, page) {
         return this.fetchGitHubData(
             `https://api.github.com/repos/${owner}/${repo}/commits?per_page=100&page=${page}`,
-            headers
+            headers,
         );
     }
 
