@@ -1,0 +1,35 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+    
+    - name: Build and push Docker image
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_OWNER: ${{ github.repository_owner }}
+        GITHUB_REPO: ${{ github.event.repository.name }}
+        GITHUB_COMMIT_LIMIT: 500
+        DO_REGISTRY_TOKEN: ${{ secrets.DO_REGISTRY_TOKEN }}
+        DO_REGISTRY_EMAIL: ${{ secrets.DO_REGISTRY_EMAIL }}
+        DO_REGISTRY_URL: ${{ secrets.DO_REGISTRY_URL }}
+      run: |
+        ./scripts/build-docker.sh
+        ./scripts/push-docker.sh || ./scripts/push-docker.sh
+        
+    - name: Clean up Docker images
+      if: always()
+      run: |
+        docker system prune -f 
