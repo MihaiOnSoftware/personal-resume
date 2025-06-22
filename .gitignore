@@ -4,5 +4,12 @@ node_modules/
 .env.local
 dist/
 
+# macOS system files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
 # TODO list (personal development tracking)
 TODO.md
