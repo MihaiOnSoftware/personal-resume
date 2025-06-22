@@ -109,6 +109,10 @@ div {
 }
 
 @media print {
+  .printable {
+    display: block;
+  }
+
   .content {
     width: 100%;
     margin: 0;
@@ -124,6 +128,7 @@ div {
   .arial,
   .mono {
     font-size: 10pt;
+    line-height: 120%;
   }
 
   .print-break {

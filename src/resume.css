@@ -54,6 +54,10 @@
     padding: 0;
   }
 
+  .name-title {
+    margin-top: -5px;
+  }
+
   .job {
     font-size: 12pt;
   }
@@ -62,8 +66,8 @@
     display: flex;
   }
 
-  .mono {
-    line-height: 120%;
+  .small-text {
+    margin: 0;
   }
 
   section {
