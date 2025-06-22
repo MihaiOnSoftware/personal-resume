@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-const { Chatbot } = require('../src/chatbot');
+const { Chatbot } = require('../../src/chatbot/chatbot');
 
 describe('Chatbot', () => {
     let chatbot;

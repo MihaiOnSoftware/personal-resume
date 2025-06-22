@@ -44,9 +44,9 @@ This project integrates an AI-powered chatbot into Mihai Popescu's personal webs
 ## Key Files
 
 ### Core Components
-- `src/chatbot.js` - Main chatbot logic and OpenAI integration
-- `src/chatbot-ui.js` - User interface components and interactions
-- `src/chatbot.css` - Styling for the chat interface
+- `src/chatbot/chatbot.js` - Main chatbot logic and OpenAI integration
+- `src/chatbot/chatbot-ui.js` - User interface components and interactions
+- `src/chatbot/chatbot.css` - Styling for the chat interface
 - `server.js` - Express server with API endpoints for chat, weather, and health checks
 
 ### Build System

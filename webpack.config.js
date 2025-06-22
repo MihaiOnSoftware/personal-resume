@@ -30,7 +30,7 @@ module.exports = {
   entry: {
     hamburger: "./src/hamburger.js",
     navigation: "./src/navigation.js",
-    chatbot: ["./src/chatbot.js", "./src/chatbot-ui.js", "./src/chatbot-init.js"],
+    "chatbot/chatbot": ["./src/chatbot/chatbot.js", "./src/chatbot/chatbot-ui.js", "./src/chatbot/chatbot-init.js"],
     "faq/time": "./src/faq/time.js",
     "faq/weather": "./src/faq/weather.js",
   },

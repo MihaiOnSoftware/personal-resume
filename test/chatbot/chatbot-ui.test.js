@@ -3,20 +3,20 @@
  */
 
 // Mock the chatbot functions
-jest.mock('../src/chatbot', () => ({
+jest.mock('../../src/chatbot/chatbot', () => ({
     processMessage: jest.fn(),
     clearHistory: jest.fn(),
 }));
 
 // Mock the chatbot-ui functions
-jest.mock('../src/chatbot-ui', () => ({
+jest.mock('../../src/chatbot/chatbot-ui', () => ({
     sendMessage: jest.fn(),
     clearChat: jest.fn(),
     addMessage: jest.fn(),
     toggleChatbot: jest.fn(),
 }));
 
-const { sendMessage, clearChat, addMessage } = require('../src/chatbot-ui');
+const { sendMessage, clearChat, addMessage } = require('../../src/chatbot/chatbot-ui');
 
 describe('ChatbotUI', () => {
     beforeEach(() => {

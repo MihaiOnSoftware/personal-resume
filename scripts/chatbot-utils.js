@@ -1,4 +1,4 @@
-const { Chatbot } = require('../src/chatbot.js');
+const { Chatbot } = require('../src/chatbot/chatbot.js');
 
 const SERVER_URL = 'http://localhost:3000';
 
