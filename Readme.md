@@ -1,4 +1,4 @@
-Status: [![CircleCI](https://circleci.com/gh/MihaiOnSoftware/personal-resume/tree/master.svg?style=svg)](https://circleci.com/gh/MihaiOnSoftware/personal-resume/tree/master)
+Status: [![CI](https://github.com/MihaiOnSoftware/personal-resume/workflows/CI/badge.svg)](https://github.com/MihaiOnSoftware/personal-resume/actions/workflows/ci.yml)
 
 # Purpose
 
