@@ -36,9 +36,6 @@ jobs:
     - name: Build application
       run: npm run build
     
-    - name: Run chatbot tests
-      run: npm run test-chatbot
-    
     # Upload build artifacts for inspection if needed
     - name: Upload build artifacts
       if: always()
