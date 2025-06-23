@@ -56,12 +56,12 @@ module.exports = {
           context: "./assets",
         },
         {
-          from: "favicon*.{ico,png}",
+          from: "*.ico",
           context: "./assets",
           noErrorOnMissing: true,
         },
         {
-          from: "apple-touch-icon.png",
+          from: "*.png",
           context: "./assets",
           noErrorOnMissing: true,
         },
