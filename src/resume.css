@@ -46,7 +46,31 @@
   cursor: pointer;
   display: block;
   margin: 5px 0;
-  padding: 2px 5px;
+  padding: 8px 12px;
+  /* Ensure minimum 44px click target for accessibility */
+  min-height: 44px;
+  box-sizing: border-box;
+  text-decoration: none;
+  border-radius: 3px;
+  transition: all 0.2s ease;
+}
+
+/* Hover effects using existing .hover-green pattern */
+.career-nav a:hover {
+  color: #bada55;
+  background-color: rgba(186, 218, 85, 0.1);
+}
+
+/* Focus states for keyboard navigation */
+.career-nav a:focus {
+  outline: 2px solid #bada55;
+  outline-offset: 2px;
+  color: #bada55;
+}
+
+/* Active state */
+.career-nav a:active {
+  background-color: rgba(186, 218, 85, 0.2);
 }
 
 @media only screen and (max-device-width: 615px) {
