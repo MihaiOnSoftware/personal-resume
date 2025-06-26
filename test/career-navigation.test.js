@@ -8,37 +8,33 @@ const path = require('path');
 
 describe('Career Navigation HTML Structure', () => {
     let resumeHtml;
+    let careerNav;
 
     beforeAll(() => {
-        // Load the actual resume.html file
         const resumePath = path.join(__dirname, '../src/resume.html');
         resumeHtml = fs.readFileSync(resumePath, 'utf8');
     });
 
     beforeEach(() => {
-        // Parse the actual HTML file
         document.documentElement.innerHTML = resumeHtml;
+        careerNav = document.querySelector('.career-nav');
     });
 
     afterEach(() => {
-        // Clean up the DOM
         document.documentElement.innerHTML = '';
+        careerNav = null;
     });
 
     test('career navigation container exists with class "career-nav"', () => {
-        const careerNav = document.querySelector('.career-nav');
         expect(careerNav).toBeTruthy();
-        expect(careerNav.classList.contains('career-nav')).toBe(true);
     });
 
     test('container contains exactly 7 year links', () => {
-        const careerNav = document.querySelector('.career-nav');
         const yearLinks = careerNav.querySelectorAll('a');
         expect(yearLinks).toHaveLength(7);
     });
 
     test('each year link has correct href attribute matching job anchor IDs', () => {
-        const careerNav = document.querySelector('.career-nav');
         const yearLinks = careerNav.querySelectorAll('a');
         const expectedHrefs = ['#nulogy', '#shopify', '#caseware', '#garner', '#moh', '#eui', '#alpha'];
 
@@ -48,7 +44,6 @@ describe('Career Navigation HTML Structure', () => {
     });
 
     test('each year link contains correct year text', () => {
-        const careerNav = document.querySelector('.career-nav');
         const yearLinks = careerNav.querySelectorAll('a');
         const expectedYears = ['2020', '2018', '2017', '2014', '2013', '2011', '2008'];
 
@@ -58,12 +53,10 @@ describe('Career Navigation HTML Structure', () => {
     });
 
     test('navigation is initially hidden', () => {
-        const careerNav = document.querySelector('.career-nav');
         expect(careerNav.style.display).toBe('none');
     });
 
     test('year links have required CSS classes', () => {
-        const careerNav = document.querySelector('.career-nav');
         const yearLinks = careerNav.querySelectorAll('a');
 
         yearLinks.forEach(link => {
