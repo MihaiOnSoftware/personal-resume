@@ -30,6 +30,10 @@ a:link {
 
 /* end text formatting */
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   position: relative;
   padding-top: 40px;
@@ -96,6 +100,11 @@ div {
 
 .hover-green:hover {
   color: #bada55;
+}
+
+.local-anchor {
+  padding-top: 100px;
+  margin-top: -100px;
 }
 
 @media only screen and (max-device-width: 615px) {

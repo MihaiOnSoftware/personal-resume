@@ -71,10 +71,11 @@
   cursor: pointer;
   display: block;
   margin: 8px 0;
+  padding-top: 0px;
   box-sizing: border-box;
   text-decoration: none;
   transition: all 0.2s ease;
-  backdrop-filter: blur(1px);
+  backdrop-filter: blur(10px);
 }
 
 .career-nav a:hover {
