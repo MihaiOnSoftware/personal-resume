@@ -186,17 +186,11 @@ Add smooth scrolling and final polish
 ## Step 1: Create Navigation HTML Structure
 
 ```
-Using red-green-blue TDD methodology from @tdd.md, and quality standards from @quality.md, implement the basic HTML structure for the career navigation feature.
+Using quality standards from @quality.md, implement the basic HTML structure for the career navigation feature.
 
-**RED Phase - Write Failing Tests:**
-Create a test file `test/career-navigation.test.js` that verifies:
-1. A career navigation container exists with class "career-nav"
-2. The container contains exactly 7 year links
-3. Each year link has the correct href attribute matching the job anchor IDs
-4. Each year link contains the correct year text (2020, 2018, 2017, 2014, 2013, 2011, 2008)
-5. The navigation is initially hidden (style="display: none")
+**Note: We do not test static HTML/CSS code - tests are only for dynamic JavaScript functionality.**
 
-**GREEN Phase - Make Tests Pass:**
+**Implementation:**
 Add the HTML structure to `src/resume.html` immediately after the opening of the experience section:
 - Create a div with class "career-nav" and initial style="display: none"
 - Add 7 anchor links with the following mapping:
@@ -214,7 +208,6 @@ Add the HTML structure to `src/resume.html` immediately after the opening of the
 - Ensure proper HTML indentation
 - Verify semantic HTML structure
 - Remove any duplicate or unused code
-- Run tests to confirm all pass
 - Check that existing functionality is not broken
 - Update TODO.md: Mark Step 1 as completed and add any implementation notes
 
@@ -224,16 +217,11 @@ Test the implementation by opening the resume in a browser and using developer t
 ## Step 2: Basic Navigation CSS
 
 ```
-Using red-green-blue TDD methodology from @tdd.md, and quality standards from @quality.md, implement the basic CSS styling for the career navigation.
+Using quality standards from @quality.md, implement the basic CSS styling for the career navigation.
 
-**RED Phase - Write Failing Tests:**
-Add tests to verify:
-1. The career navigation container has initial positioning styles applied
-2. Navigation links are styled with proper typography
-3. The navigation container has appropriate z-index for layering
-4. Links have proper cursor and interaction states
+**Note: We do not test static HTML/CSS code - tests are only for dynamic JavaScript functionality.**
 
-**GREEN Phase - Make Tests Pass:**
+**Implementation:**
 Add CSS to `src/resume.css`:
 - Style .career-nav with basic positioning (position: absolute initially)
 - Style .career-nav a with the existing mono, green, small-text appearance
@@ -256,16 +244,11 @@ Verify the implementation by temporarily removing display: none from the HTML to
 ## Step 3: Year Link Styling
 
 ```
-Using red-green-blue TDD methodology from @tdd.md, and quality standards from @quality.md, enhance the visual styling of the year links.
+Using quality standards from @quality.md, enhance the visual styling of the year links.
 
-**RED Phase - Write Failing Tests:**
-Add tests to verify:
-1. Year links have proper hover states
-2. Links have adequate click target size
-3. Links maintain readability and accessibility
-4. Styling is consistent with existing site navigation
+**Note: We do not test static HTML/CSS code - tests are only for dynamic JavaScript functionality.**
 
-**GREEN Phase - Make Tests Pass:**
+**Implementation:**
 Enhance the CSS in `src/resume.css`:
 - Add hover effects using the existing .hover-green pattern
 - Ensure minimum click target size (44px recommended for accessibility)
@@ -288,16 +271,11 @@ Test the styling by temporarily showing the navigation and interacting with the 
 ## Step 4: Sticky Positioning
 
 ```
-Using red-green-blue TDD methodology from @tdd.md, and quality standards from @quality.md, implement sticky positioning for the career navigation.
+Using quality standards from @quality.md, implement sticky positioning for the career navigation.
 
-**RED Phase - Write Failing Tests:**
-Create tests to verify:
-1. Navigation uses sticky positioning when visible
-2. Navigation maintains 50px distance from viewport top
-3. Navigation doesn't interfere with existing page layout
-4. Sticky behavior works across different viewport sizes
+**Note: We do not test static HTML/CSS code - tests are only for dynamic JavaScript functionality.**
 
-**GREEN Phase - Make Tests Pass:**
+**Implementation:**
 Update CSS in `src/resume.css`:
 - Change .career-nav from position: absolute to position: sticky
 - Set top: 50px for the sticky offset
@@ -320,16 +298,11 @@ Test by scrolling through the resume page to verify sticky behavior (though navi
 ## Step 5: Timeline Alignment
 
 ```
-Using red-green-blue TDD methodology from @tdd.md, and quality standards from @quality.md, align the navigation with the green timeline.
+Using quality standards from @quality.md, align the navigation with the green timeline.
 
-**RED Phase - Write Failing Tests:**
-Add visual regression tests to verify:
-1. Navigation appears to overlap the green timeline line
-2. Navigation is positioned at the left edge of the experience section
-3. Year links are properly spaced vertically
-4. Alignment is consistent across different content lengths
+**Note: We do not test static HTML/CSS code - tests are only for dynamic JavaScript functionality.**
 
-**GREEN Phase - Make Tests Pass:**
+**Implementation:**
 Refine CSS positioning in `src/resume.css`:
 - Position navigation to align with the green border-left: 2px solid #bada55
 - Use precise left positioning to overlay the timeline
@@ -351,16 +324,11 @@ Visually test alignment by temporarily showing the navigation and comparing with
 ## Step 6: Responsive Adjustments
 
 ```
-Using red-green-blue TDD methodology from @tdd.md, and quality standards from @quality.md, add responsive behavior for the career navigation.
+Using quality standards from @quality.md, add responsive behavior for the career navigation.
 
-**RED Phase - Write Failing Tests:**
-Create tests for responsive behavior:
-1. Navigation adapts appropriately on mobile devices
-2. Touch targets are adequately sized for mobile interaction
-3. Navigation doesn't break layout on small screens
-4. Text remains readable at different zoom levels
+**Note: We do not test static HTML/CSS code - tests are only for dynamic JavaScript functionality.**
 
-**GREEN Phase - Make Tests Pass:**
+**Implementation:**
 Add responsive CSS to `src/resume.css`:
 - Add media queries for mobile devices (max-width: 615px to match existing pattern)
 - Adjust navigation positioning for smaller screens
@@ -475,23 +443,17 @@ Test by scrolling through the page and verifying navigation appears/disappears a
 ## Step 10: Smooth Scrolling CSS
 
 ```
-Using red-green-blue TDD methodology from @tdd.md, and quality standards from @quality.md, implement smooth scrolling for anchor navigation.
+Using quality standards from @quality.md, implement smooth scrolling for anchor navigation.
 
-**RED Phase - Write Failing Tests:**
-Add tests to verify:
-1. CSS scroll-behavior: smooth is applied to html element
-2. Anchor link navigation scrolls smoothly in supported browsers
-3. Fallback behavior works in browsers without smooth scroll support
-4. Scroll animation duration is appropriate
+**Note: We do not test static HTML/CSS code - tests are only for dynamic JavaScript functionality.**
 
-**GREEN Phase - Make Tests Pass:**
+**Implementation:**
 Add CSS to `src/resume.css`:
 - Add scroll-behavior: smooth to html element
 - Ensure smooth scrolling doesn't conflict with existing styles
 - Test that smooth scrolling works with career navigation links
 
 **BLUE Phase - Refactor and Clean Up:**
-- Follow all BLUE phase cleanup rules from @tdd.md
 - Verify smooth scrolling doesn't cause performance issues
 - Consider adding CSS feature detection or polyfill for older browsers
 - Test smooth scrolling across different page lengths
@@ -571,8 +533,8 @@ Perform final testing of the complete career navigation feature to ensure it mee
 ## Implementation Notes
 
 - Each step should be implemented completely before moving to the next
-- Tests should be written before implementation code (red-green-blue cycle)
-- All tests must pass before moving to the next step
+- Tests are only written for dynamic JavaScript functionality, not static HTML/CSS
+- All JavaScript tests must pass before moving to the next step
 - Regular commits after each completed step with descriptive commit messages
-- Visual testing should be performed alongside unit tests
+- Visual testing should be performed for HTML/CSS changes
 - Performance testing should be conducted for scroll-related functionality 
