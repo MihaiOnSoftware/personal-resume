@@ -38,8 +38,21 @@
 
 /* Career Navigation Basic Styling */
 .career-nav {
-  position: absolute;
+  position: sticky;
+  top: 50px;
   z-index: 10;
+  width: fit-content;
+  height: fit-content;
+  /* Fallback for browsers that don't support sticky */
+  position: -webkit-sticky;
+}
+
+/* Fallback for browsers without sticky support */
+@supports not (position: sticky) {
+  .career-nav {
+    position: absolute;
+    top: 50px;
+  }
 }
 
 .career-nav a {
