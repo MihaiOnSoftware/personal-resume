@@ -45,6 +45,8 @@
   height: fit-content;
   /* Fallback for browsers that don't support sticky */
   position: -webkit-sticky;
+  /* Timeline alignment - use negative margin to align with green line */
+  margin-left: -15px;
 }
 
 /* Fallback for browsers without sticky support */
@@ -52,26 +54,25 @@
   .career-nav {
     position: absolute;
     top: 50px;
+    margin-left: -15px;
   }
 }
 
 .career-nav a {
   cursor: pointer;
   display: block;
-  margin: 5px 0;
-  padding: 8px 12px;
+  margin: 8px 0;
+  padding: 4px 8px;
   /* Ensure minimum 44px click target for accessibility */
   min-height: 44px;
   box-sizing: border-box;
   text-decoration: none;
-  border-radius: 3px;
   transition: all 0.2s ease;
 }
 
 /* Hover effects using existing .hover-green pattern */
 .career-nav a:hover {
   color: #bada55;
-  background-color: rgba(186, 218, 85, 0.1);
 }
 
 /* Focus states for keyboard navigation */
@@ -83,7 +84,7 @@
 
 /* Active state */
 .career-nav a:active {
-  background-color: rgba(186, 218, 85, 0.2);
+  color: #bada55;
 }
 
 @media only screen and (max-device-width: 615px) {
