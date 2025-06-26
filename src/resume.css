@@ -75,7 +75,7 @@
   box-sizing: border-box;
   text-decoration: none;
   transition: all 0.2s ease;
-  backdrop-filter: blur(10px);
+  background-color: white;
 }
 
 .career-nav a:hover {
