@@ -12,7 +12,7 @@ class ContentIndexPlugin {
 
       // Find all HTML and markdown files in the output
       for (const filename of Object.keys(compilation.assets)) {
-        if (filename.endsWith('.html') || filename.endsWith('.md')) {
+        if (filename.endsWith('.html')) {
           contentFiles.push(filename);
         }
       }
