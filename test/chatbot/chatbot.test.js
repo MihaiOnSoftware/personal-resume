@@ -96,8 +96,8 @@ describe('Chatbot', () => {
     const GITHUB_API = {
         BASE_URL: 'https://api.github.com/users/MihaiOnSoftware',
         get PROFILE() { return this.BASE_URL; },
-        get REPOS() { return `${this.BASE_URL}/repos?sort=updated&per_page=10`; },
-        get EVENTS() { return `${this.BASE_URL}/events?per_page=100`; },
+        get REPOS() { return `${this.BASE_URL}/repos?sort=updated&per_page=5`; },
+        get EVENTS() { return `${this.BASE_URL}/events?per_page=50`; },
     };
 
 
