@@ -12,7 +12,7 @@ class ContentIndexPlugin {
 
       // Find all HTML and markdown files in the output
       for (const filename of Object.keys(compilation.assets)) {
-        if (filename.endsWith('.html')) {
+        if (filename.endsWith('.html') || filename.endsWith('2024-2025-work-summary.md')) {
           contentFiles.push(filename);
         }
       }
