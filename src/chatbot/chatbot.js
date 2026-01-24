@@ -10,9 +10,9 @@
 
         github: {
             baseUrl: 'https://api.github.com',
-            repoLimit: 10,
-            eventLimit: 100,
-            displayRepoLimit: 5,
+            repoLimit: 5,
+            eventLimit: 50,
+            displayRepoLimit: 3,
         },
     };
 
