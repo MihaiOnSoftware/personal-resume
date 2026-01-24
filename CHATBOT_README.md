@@ -4,16 +4,18 @@
 
 ## Overview
 
-This project integrates an AI-powered chatbot into Mihai Popescu's personal website. The chatbot uses OpenAI's GPT-3.5-turbo model and is equipped with comprehensive knowledge about Mihai's professional experience, skills, projects, and can fetch real-time GitHub statistics and commit history.
+This project integrates an AI-powered chatbot into Mihai Popescu's personal website. The chatbot uses OpenAI's GPT-4o model and is equipped with comprehensive knowledge about Mihai's professional experience, skills, projects, and can fetch real-time GitHub statistics and commit history.
 
 ## Features
 
 ### 🤖 AI-Powered Responses
-- Uses OpenAI GPT-3.5-turbo for natural, conversational responses
+
+- Uses OpenAI GPT-4o for natural, conversational responses
 - Responds in first person as Mihai Popescu
 - Maintains conversation context and history
 
 ### 📚 Knowledge Base
+
 - **Professional Experience**: Details about software development and engineering management roles
 - **Technical Skills**: Programming languages, frameworks, tools, and methodologies
 - **Achievements**: Notable accomplishments at companies like Nulogy and Shopify
@@ -21,6 +23,7 @@ This project integrates an AI-powered chatbot into Mihai Popescu's personal webs
 - **Personal Interests**: D&D, reading, guitar, gaming
 
 ### 🔄 GitHub Integration
+
 - **Real-time API**: Fetches current GitHub statistics (repositories, followers, etc.)
 - **Build-time Generation**: Webpack plugin generates commit history during build process
 - **Configurable Limits**: Set commit count via `GITHUB_COMMIT_LIMIT` environment variable (default: 20)
@@ -30,11 +33,13 @@ This project integrates an AI-powered chatbot into Mihai Popescu's personal webs
 - Handles API errors gracefully
 
 ### 🌦️ Weather API Integration
+
 - Server-side weather data endpoint at `/api/weather`
 - Secure API key handling for weather services
 - Error handling and graceful degradation
 
 ### 💬 Modern UI
+
 - Beautiful, responsive chat interface
 - Floating chat button with notification indicator
 - Typing indicators and smooth animations
@@ -44,16 +49,19 @@ This project integrates an AI-powered chatbot into Mihai Popescu's personal webs
 ## Key Files
 
 ### Core Components
+
 - `src/chatbot/chatbot.js` - Main chatbot logic and OpenAI integration
 - `src/chatbot/chatbot-ui.js` - User interface components and interactions
 - `src/chatbot/chatbot.css` - Styling for the chat interface
 - `server.js` - Express server with API endpoints for chat, weather, and health checks
 
 ### Build System
+
 - `src/webpack-commit-history-plugin.js` - Webpack plugin for GitHub commit history generation
 - `webpack.config.js` - Updated with commit history plugin integration
 
 ### Testing & Utilities
+
 - Comprehensive test suite with 93 tests covering all functionality
 - `scripts/chat-cli.js` - Command-line interface for chatbot testing
 - `scripts/test-chatbot.js` - Automated testing script
@@ -61,6 +69,7 @@ This project integrates an AI-powered chatbot into Mihai Popescu's personal webs
 ## Setup and Configuration
 
 ### 1. Environment Variables
+
 Create a `.env` file in the project root:
 
 ```bash
@@ -72,6 +81,7 @@ GITHUB_REPO=your_repo_name           # Optional: defaults to personal-resume
 ```
 
 ### 2. Installation and Deployment
+
 ```bash
 # Install dependencies
 npm install
@@ -88,23 +98,27 @@ npm test
 ```
 
 ### 3. Integration
+
 The chatbot is automatically integrated into website pages through the build process.
 
 ## Usage Examples
 
 ### Sample Questions
+
 - "Tell me about your professional experience"
 - "What programming languages do you know?"
 - "How many GitHub repositories do you have?"
 - "What are your recent commits?"
 
 ### Programmatic Usage
+
 ```javascript
 window.chatbot.processMessage("Hello!");
 window.chatbotUI.sendProgrammaticMessage("What are your skills?");
 ```
 
 ### Command Line Testing
+
 ```bash
 node scripts/chat-cli.js    # Interactive CLI
 node scripts/test-chatbot.js # Automated testing
@@ -113,11 +127,13 @@ node scripts/test-chatbot.js # Automated testing
 ## Technical Architecture
 
 ### AI Integration
-- **Model**: OpenAI GPT-3.5-turbo
+
+- **Model**: OpenAI GPT-4o
 - **Context Management**: Includes conversation history and system prompts
 - **Dynamic Context**: Adds GitHub stats and commit history when relevant to the question
 
 ### Knowledge Base Structure
+
 ```javascript
 {
   personal: { name, role, description, interests },
@@ -129,6 +145,7 @@ node scripts/test-chatbot.js # Automated testing
 ```
 
 ### Server Architecture
+
 - **Express Server**: Secure API proxy endpoints (`/api/chat`, `/api/health`, `/api/weather`)
 - **CORS Support**: Configured for development and production
 - **Static Serving**: Hosts the website files
@@ -137,6 +154,7 @@ node scripts/test-chatbot.js # Automated testing
 ## Security & Performance
 
 ### Security
+
 - API keys secured in environment variables (never client-side)
 - Server-side proxy prevents API key exposure
 - Input sanitization for user messages
@@ -144,6 +162,7 @@ node scripts/test-chatbot.js # Automated testing
 - Get API keys from: [OpenAI Platform](https://platform.openai.com/api-keys) and [GitHub Settings](https://github.com/settings/tokens)
 
 ### Performance
+
 - **Lazy Loading**: Chatbot loads only when needed
 - **Optimized Requests**: Includes only necessary context in API calls
 - **Caching**: Conversation history maintained locally
@@ -152,6 +171,7 @@ node scripts/test-chatbot.js # Automated testing
 ## Testing
 
 The project includes comprehensive testing with 93 tests covering:
+
 - **Unit Tests**: Core chatbot functionality, knowledge base, message processing
 - **Server Tests**: API endpoints, proxy behavior, error handling, CORS
 - **Integration Tests**: GitHub workflow, webpack plugin functionality
@@ -165,4 +185,4 @@ The chatbot is integrated into the main website pages. After building and starti
 
 ## Development Notes
 
-The implementation follows TDD principles with comprehensive test coverage. The code is linted and follows consistent style guidelines. The modular architecture allows for easy extension and maintenance. 
+The implementation follows TDD principles with comprehensive test coverage. The code is linted and follows consistent style guidelines. The modular architecture allows for easy extension and maintenance.

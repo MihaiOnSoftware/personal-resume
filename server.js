@@ -47,7 +47,7 @@ function createApp() {
     // Proxy endpoint for OpenAI API
     app.post('/api/chat', async (req, res) => {
         try {
-            const { messages, model = 'gpt-3.5-turbo', max_tokens = 150, temperature = 0.7 } = req.body;
+            const { messages, model = 'gpt-4o', max_tokens = 150, temperature = 0.7 } = req.body;
 
             if (!process.env.OPENAI_API_KEY) {
                 return res.status(500).json({

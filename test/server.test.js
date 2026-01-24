@@ -105,7 +105,7 @@ describe('Server Integration Tests', () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    model: 'gpt-3.5-turbo',
+                    model: 'gpt-4o',
                     messages: requestBody.messages,
                     max_tokens: 150,
                     temperature: 0.7,

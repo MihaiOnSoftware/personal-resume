@@ -3,7 +3,7 @@
 
     const CHATBOT_CONFIG = {
         githubUsername: 'MihaiOnSoftware',
-        openaiModel: 'gpt-3.5-turbo',
+        openaiModel: 'gpt-4o',
         maxTokens: 150,
         temperature: 0.3,
         githubKeywords: ['github', 'repository', 'repo', 'repositories', 'code', 'commits', 'contributions', 'followers', 'following', 'projects', 'website', 'site', 'development', 'built', 'features', 'technologies', 'build', 'develop'],
